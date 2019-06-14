@@ -1,15 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router"
-import Main from 'pages/Main.vue'
-import Login from 'pages/Login.vue'
 import Test from  'pages/Test.vue'
+import Title from 'pages/Title.vue'
+import Main from "pages/Main.vue";
 
 Vue.use(VueRouter)
 
 const routes = [
-    { path: '/', component: Main},
+    { path: '/tit', component: Title},
     { path: '/test', component: Test},
-    { path: '/login', component: Login},
 ]
 
 export default new VueRouter({

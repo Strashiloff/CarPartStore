@@ -1,14 +1,18 @@
-<template>
+<template xmlns:th="http://www.w3.org/1999/xhtml">
     <div>
-        <h1>Hello world</h1>
-        <router-link to="/login">Sign in</router-link>
-        <router-link to="/test">Test</router-link>
+        <h1>Title</h1>
+
     </div>
 </template>
 
 <script>
+    import Vue from 'vue'
+    import VueResource from 'vue-resource'
+
+    Vue.use(VueResource);
+
     export default {
-        name: "Title"
+        name: "Title",
     }
 </script>
 
