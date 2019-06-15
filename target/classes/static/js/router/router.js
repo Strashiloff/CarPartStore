@@ -1,8 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router"
-import Test from  'pages/Test.vue'
+import Test from 'pages/Test.vue'
 import Title from 'pages/Title.vue'
-import Main from "pages/Main.vue";
 
 Vue.use(VueRouter)
 

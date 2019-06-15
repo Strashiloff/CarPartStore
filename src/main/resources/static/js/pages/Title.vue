@@ -1,4 +1,4 @@
-<template xmlns:th="http://www.w3.org/1999/xhtml">
+<template>
     <div>
         <h1>Title</h1>
 

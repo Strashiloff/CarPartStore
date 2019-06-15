@@ -10,9 +10,9 @@ public class PageController {
 
     @GetMapping
     public String greeting(){
-        return "index.html";
+        return "index";
     }
 
     @GetMapping("/test")
-    public String test(){return "test.html";}
+    public String test(){return "index";}
 }

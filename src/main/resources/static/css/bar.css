@@ -1,0 +1,17 @@
+body{
+    margin: 0;
+}
+
+.bar{
+    height: 60px;
+    width: 100%;
+    background: #34495e;
+}
+
+.bar-elem{
+    float: right;
+    text-align: center; /* Center-align text */
+    color: white; /* White text color */
+    font-size: 36px; /* Increased font size */
+}
+
