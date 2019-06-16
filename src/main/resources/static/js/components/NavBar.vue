@@ -1,15 +1,13 @@
 <template>
-    <div>
-        Main
-    </div>
+
 </template>
 
 <script>
     export default {
-        name: 'Main',
+        name: "NavBar"
     }
 </script>
 
-<style>
+<style scoped>
 
 </style>

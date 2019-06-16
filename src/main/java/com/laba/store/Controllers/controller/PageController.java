@@ -1,18 +1,53 @@
 package com.laba.store.Controllers.controller;
 
+import com.laba.store.Controllers.repos.UserRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/")
 public class PageController {
 
+    @Value("${spring.profiles.active}")
+    private String profile;
+
+    @Autowired
+    private UserRepo userRepo;
+
     @GetMapping
-    public String greeting(){
+    public String greeting(Model model){
+        HashMap<Object, Object> data = new HashMap<>();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        data.put("profile", userName);
+        model.addAttribute("frontendData", data);
+        model.addAttribute("idDevMode", "dev".equals(profile));
         return "index";
     }
 
-    @GetMapping("/test")
-    public String test(){return "index";}
+    @PostMapping("/registration")
+    public void registration(){
+
+
+    }
+    @GetMapping("/logout")
+    public String userLogout(HttpServletRequest request, HttpServletResponse response){
+         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+         if(auth != null){
+             new SecurityContextLogoutHandler().logout(request, response, auth);
+         }
+        return "redirect:/login?logout";
+    }
 }
