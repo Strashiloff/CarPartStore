@@ -1,5 +1,6 @@
 package com.laba.store.Controllers.controller;
 
+import com.laba.store.Controllers.domain.User;
 import com.laba.store.Controllers.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +10,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,16 +31,11 @@ public class PageController {
         HashMap<Object, Object> data = new HashMap<>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
-        data.put("profile", userName);
+        User user = userRepo.findByUsername(userName);
+        data.put("profile", user.getName()+ " " + user.getSurname());
         model.addAttribute("frontendData", data);
         model.addAttribute("idDevMode", "dev".equals(profile));
         return "index";
-    }
-
-    @PostMapping("/registration")
-    public void registration(){
-
-
     }
     @GetMapping("/logout")
     public String userLogout(HttpServletRequest request, HttpServletResponse response){

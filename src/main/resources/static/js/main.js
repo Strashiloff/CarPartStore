@@ -7,6 +7,7 @@ import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(VueResources)
 Vue.use(Vuetify)
+Vue.http.headers.common['X-CSRF-TOKEN'] = token
 
 new Vue({
     el: '#app',

@@ -3,6 +3,8 @@
         <v-app>
             <v-toolbar app dark>
                 <v-toolbar-title class="display-1">Store</v-toolbar-title>
+                <v-list-tile :to="'/registration'"></v-list-tile>
+                <router-link to="/registration">Registration</router-link>
                 <v-spacer></v-spacer>
                 <v-toolbar-title class="headline">{{profile}}</v-toolbar-title>
                 <v-btn icon href="/logout">

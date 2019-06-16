@@ -1,10 +1,13 @@
 package com.laba.store.Controllers.domain;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "usr")
+@ToString(of = {"username", "password", "name", "surname"})
 public class User {
 
     @Id
@@ -12,6 +15,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private boolean action;
     private String name;
     private String surname;
 
@@ -19,6 +23,14 @@ public class User {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    public boolean isAction() {
+        return action;
+    }
+
+    public void setAction(boolean action) {
+        this.action = action;
+    }
 
     public Long getId() {
         return id;

@@ -1,6 +1,13 @@
 import Vue from 'vue'
 import router from 'router/router'
-import Title from "./pages/Title.vue"
+import Title from './pages/Title.vue'
+import VueResources from 'vue-resource'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+
+Vue.use(VueResources)
+Vue.use(Vuetify)
+Vue.http.headers.common['X-CSRF-TOKEN'] = token
 
 new Vue({
     el: '#app',

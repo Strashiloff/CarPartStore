@@ -1,7 +1,6 @@
 <template>
     <div>
-
-        <router-view></router-view>
+        Main
     </div>
 </template>
 
