@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-    <title>Test</title>
+    <title>StoreApp</title>
     <script th:inline="javascript">
         var frontendData = [[${frontendData}]];
         var token = [[${_csrf.token}]];
@@ -13,7 +13,6 @@
 </head>
 <body>
     <div id="app"></div>
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" v-model="testing">
     <script th:src="${idDevMode} ? 'http://localhost:8000/main.js' : '/js/main.js'"></script>
 </body>
 </html>
