@@ -1,14 +1,16 @@
-package com.laba.store.Controllers.controller;
+package com.laba.store.controller;
 
-import com.laba.store.Controllers.domain.User;
-import com.laba.store.Controllers.repos.UserRepo;
+import com.laba.store.domain.User;
+import com.laba.store.repos.UserRepo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/registration")
 public class RegistrationController {
 
     private final UserRepo userRepo;
@@ -18,16 +20,18 @@ public class RegistrationController {
         this.userRepo = userRepo;
     }
 
-    @PostMapping("/registration")
+    @PostMapping
     public String registration(@RequestBody User user){
         User userFromDb = userRepo.findByUsername(user.getUsername());
         JSONObject object = new JSONObject();
         if(userFromDb !=null){
-            object.put("error", user.getUsername() + " is exist!");
+            object.put("error", "User \"" + user.getUsername() + "\" is exist!");
+            object.put("check", true);
             return object.toString();
         }
         user.setAction(true);
         object.put("error", "");
+        object.put("check", false);
         userRepo.save(user);
         return object.toString();
     }

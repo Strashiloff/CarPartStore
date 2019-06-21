@@ -1,7 +1,7 @@
-package com.laba.store.Controllers.controller;
+package com.laba.store.controller;
 
-import com.laba.store.Controllers.domain.User;
-import com.laba.store.Controllers.repos.UserRepo;
+import com.laba.store.domain.User;
+import com.laba.store.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

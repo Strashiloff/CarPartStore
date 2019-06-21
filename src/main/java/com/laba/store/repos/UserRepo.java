@@ -1,6 +1,6 @@
-package com.laba.store.Controllers.repos;
+package com.laba.store.repos;
 
-import com.laba.store.Controllers.domain.User;
+import com.laba.store.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepo extends JpaRepository<User, Long> {

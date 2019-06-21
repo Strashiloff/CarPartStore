@@ -1,4 +1,4 @@
-package com.laba.store.Controllers.domain;
+package com.laba.store.domain;
 
 import lombok.ToString;
 

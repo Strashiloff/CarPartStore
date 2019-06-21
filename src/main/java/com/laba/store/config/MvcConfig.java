@@ -1,4 +1,4 @@
-package com.laba.store.Controllers.config;
+package com.laba.store.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

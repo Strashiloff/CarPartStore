@@ -1,4 +1,4 @@
-package com.laba.store.Controllers.config;
+package com.laba.store.config;
 
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.ErrorPage;

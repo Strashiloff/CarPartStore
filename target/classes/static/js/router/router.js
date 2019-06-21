@@ -1,13 +1,27 @@
 import Vue from "vue";
 import VueRouter from "vue-router"
-import Title from 'pages/Title.vue'
-import AddUser from "pages/AddUser.vue"
+import AddUser from "pages/admin/AddUser.vue"
+import Admin from 'pages/admin/Admin.vue'
+import Users from "pages/admin/Users.vue";
 
 Vue.use(VueRouter)
 
 const routes = [
-    { path: '/tit', component: Title},
-    { path: '/registration', component: AddUser},
+    {
+        path: '/admin',
+        component: Admin,
+        children:[
+            {
+                path: 'registration',
+                component: AddUser
+            },
+            {
+                path: 'users',
+                component: Users
+            }
+        ]
+    },
+
 ]
 
 export default new VueRouter({
