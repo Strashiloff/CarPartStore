@@ -23,10 +23,10 @@
                 <td class="text-xs-left">{{props.item.name}}</td>
                 <td class="text-xs-left">{{props.item.surname}}</td>
                 <td class="text-xs-left" ><i v-for="role in props.item.roles">{{role + ' '}}</i></td>
-                <v-btn icon>
-                    <v-icon>edit</v-icon>
+                <v-btn icon @click="dialog2 = true" :disabled="dialog2">
+                    <v-icon @click="editUser(props.item)">edit</v-icon>
                 </v-btn>
-                <v-btn @click="test(props.item.id)" :disabled="dialog" icon>
+                <v-btn @click="removeUser(props.item)" :disabled="dialog" icon>
                     <v-icon>delete</v-icon>
                 </v-btn>
             </template>
@@ -34,28 +34,24 @@
                 <v-alert :value="true" color="error" icon="warning"></v-alert>
             </template>
         </v-data-table>
-        <v-dialog v-model="dialog" max-width="290">
-            <v-card>
-                <v-card-title class="headline">You want to delete this user?</v-card-title>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn flat="flat" @click="dialog = false">
-                        Disagree
-                    </v-btn>
-                    <v-btn flat="flat" @click="dialog = false">
-                        Agree
-                    </v-btn>
-                </v-card-actions>
+        <v-dialog persistent v-model="dialog2" max-width="400" >
+            <v-card style="padding: 50px">
+                <user-dialog :userFrom="user" :mode="true" :editMethod="updateUser"></user-dialog>
             </v-card>
         </v-dialog>
+        <ask-dialog :dialog="dialog"></ask-dialog>
     </v-card>
 </template>
 
 <script>
     import {mapActions, mapState} from 'vuex'
+    import AskDialog from 'components/AskDialog.vue'
+    import UserDialog from 'components/UserDialog.vue'
+    import {eventBus} from 'main';
 
     export default {
         name: "Users",
+        components: { AskDialog, UserDialog},
         data: function () {
             return{
                 headers:[
@@ -68,22 +64,62 @@
                 ],
                 search:'',
                 text: 'You want to delete this user?',
-                dialog: false
+                dialog: false,
+                dialog2: false,
+                user: {
+                    username: '',
+                    name: '',
+                    surname: '',
+                    password: '',
+                    roles:['USER']
+                }
             }
         },
-        computed: mapState(['users']),
+        computed: {
+            ...mapState(['users', 'admin']),
+        },
         methods: {
-            ...mapActions(['getUsersAction']),
-            test(id){
+            ...mapActions(['getUsersAction', 'removeUserAction', 'updateUserAction']),
+            removeUser(data){
+                this.user = data
                 this.dialog = true
-                console.log(this.dialog + '   ' + id)
+            },
+            editUser(data){
+                this.user = Object.assign({}, data);
+                setTimeout(()=>this.dialog2 = true, 50)
+            },
+            onKeydown(e){
+                if (e.keyCode === 27) {
+                    this.user = null
+                }
+            },
+            updateUser(upUser){
+                eventBus.$emit('error', {check:false})
+                this.updateUserAction(upUser)
             }
         },
         mounted(){
-
+            eventBus.$on('dialog', (ok) =>{
+                this.dialog = false
+                if(ok){
+                    this.removeUserAction(this.user)
+                }
+                this.user = null
+            })
+            eventBus.$on('dialog2', (ok) =>{
+                this.dialog2 = false
+                this.user = {username: '',
+                    name: '',
+                    surname: '',
+                    password: '',
+                    roles:['USER']
+                }
+            })
         },
         created() {
             this.getUsersAction()
+            this.dialog=false
+            this.dialog2=false
         }
     }
 </script>

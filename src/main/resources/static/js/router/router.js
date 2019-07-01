@@ -25,8 +25,7 @@ const routes = [
     {
         path: '/tit',
         component: Test,
-    }
-
+    },
 ]
 
 export default new VueRouter({

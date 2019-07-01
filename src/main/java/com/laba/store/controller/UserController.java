@@ -2,12 +2,10 @@ package com.laba.store.controller;
 
 import com.laba.store.domain.User;
 import com.laba.store.repos.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,7 +13,6 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController {
 
-    @Autowired
     private final UserRepo userRepo;
 
     public UserController(UserRepo userRepo) { this.userRepo = userRepo; }
@@ -31,5 +28,16 @@ public class UserController {
         User user = userRepo.findByUsername(authentication.getName());
         user.setPassword("");
         return user;
+    }
+
+    @PutMapping("{id}")
+    public void Update(@PathVariable("id") User userFromDb, @RequestBody User user){
+        BeanUtils.copyProperties(user, userFromDb, "id");
+        userRepo.save(userFromDb);
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteUser(@PathVariable("id") User user){
+        userRepo.delete(user);
     }
 }

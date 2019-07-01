@@ -5,11 +5,10 @@
                 <v-toolbar-title class="display-1">
                     Store
                 </v-toolbar-title>
-                <v-toolbar-items class="hidden-sm-and-down">
+                <v-toolbar-items class="hidden-xs-only">
                     <v-btn class="ml-4" to="/" icon><v-icon>home</v-icon></v-btn>
-                    <v-btn v-if="admin" flat to="/admin">Admin</v-btn>
-                    <v-btn flat to="/tit">Some</v-btn>
-                    <v-btn flat >Another</v-btn>
+                    <v-btn v-if="admin" flat to="/admin/">Admin</v-btn>
+                    <v-btn flat to="/tit">Test</v-btn>
                 </v-toolbar-items>
                 <v-spacer></v-spacer>
                 <v-toolbar-title class="headline">{{profile.name + ' ' + profile.surname}}</v-toolbar-title>
@@ -35,20 +34,17 @@
             NavBar,
             AskDialog
         },
-        data(){
-          return{
-              roles:[],
-          }
-        },
         methods:{
-            ...mapActions(['getCurrentUserAction']),
+            ...mapActions(['getCurrentUserAction', 'getPostsAction', 'addPostAction']),
         },
         computed: {
             ...mapState(['profile', 'admin']),
         },
         created() {
-            // this.$store.dispatch('getCurrentUserAction')
+            // this.$store.dispatch('getCurrentUserAction'
             this.getCurrentUserAction()
+            this.getPostsAction()
+            this.addPostAction({post: 'Chief Administrator'})
         }
     }
 </script>

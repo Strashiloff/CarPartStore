@@ -7,12 +7,10 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueValidate from 'vee-validate'
 import store from 'store/store'
-
 Vue.use(Vuetify)
 Vue.use(VueValidate)
 Vue.http.headers.common['X-CSRF-TOKEN'] = token
-
-const eventBus = new Vue()
+export const eventBus = new Vue()
 
 new Vue({
     el: '#app',

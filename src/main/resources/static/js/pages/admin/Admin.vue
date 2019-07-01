@@ -9,20 +9,20 @@
 </template>
 
 <script>
-
     import {mapState} from 'vuex'
 
     export default {
         name: "Admin",
-        data(){
-            return{
-
+        computed: mapState(['admin']),
+        beforeRouteUpdate(to, from, next){
+            if(this.admin){
+                next();
+            }else{
+                next('/');
             }
         },
-        computed: mapState(['admin']),
-        mounted() {
-            if(this.admin)this.$router.replace('/admin/registration')
-            else this.$router.replace('/')
+        created() {
+            this.$router.push('/admin/users')
         }
     }
 </script>

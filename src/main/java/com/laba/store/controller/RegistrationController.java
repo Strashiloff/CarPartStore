@@ -1,6 +1,8 @@
 package com.laba.store.controller;
 
+import com.laba.store.domain.Post;
 import com.laba.store.domain.User;
+import com.laba.store.repos.PostRepo;
 import com.laba.store.repos.UserRepo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationController {
 
     private final UserRepo userRepo;
+
+    @Autowired
+    private PostRepo postRepo;
 
     @Autowired
     public RegistrationController(UserRepo userRepo) {
@@ -32,6 +37,10 @@ public class RegistrationController {
         user.setAction(true);
         object.put("error", "");
         object.put("check", false);
+        Post post = new Post();
+        post.setPost("Chief Administrator");
+        postRepo.save(post);
+        user.setPosition(post);
         userRepo.save(user);
         return object.toString();
     }

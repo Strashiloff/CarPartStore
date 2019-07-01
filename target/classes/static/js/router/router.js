@@ -3,6 +3,7 @@ import VueRouter from "vue-router"
 import AddUser from "pages/admin/AddUser.vue"
 import Admin from 'pages/admin/Admin.vue'
 import Users from "pages/admin/Users.vue";
+import Test from "pages/Test.vue";
 
 Vue.use(VueRouter)
 
@@ -21,7 +22,10 @@ const routes = [
             }
         ]
     },
-
+    {
+        path: '/tit',
+        component: Test,
+    },
 ]
 
 export default new VueRouter({
