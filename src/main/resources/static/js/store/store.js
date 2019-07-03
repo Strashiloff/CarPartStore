@@ -39,7 +39,7 @@ export default new Vuex.Store({
               post
             ]
         },
-        removePostAction(state, post){
+        removePostMutation(state, post){
             state.posts.splice(state.posts.indexOf(post), 1)
         },
         getCurrentUserMutation(state, user){
@@ -104,7 +104,7 @@ export default new Vuex.Store({
         },
         async removePostAction({commit}, post){
             const result = await postsApi.removePost(post.id)
-            if(result.ok) commit('addPostMutation', post)
+            if(result.ok) commit('removePostMutation', post)
 
         }
     }

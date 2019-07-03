@@ -1,6 +1,5 @@
 package com.laba.store.controller;
 
-import com.laba.store.domain.Post;
 import com.laba.store.domain.User;
 import com.laba.store.repos.PostRepo;
 import com.laba.store.repos.UserRepo;
@@ -34,13 +33,9 @@ public class RegistrationController {
             object.put("check", true);
             return object.toString();
         }
-        user.setAction(true);
+        user.setAction(false);
         object.put("error", "");
         object.put("check", false);
-        Post post = new Post();
-        post.setPost("Chief Administrator");
-        postRepo.save(post);
-        user.setPosition(post);
         userRepo.save(user);
         return object.toString();
     }

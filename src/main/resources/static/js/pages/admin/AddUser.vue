@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-layout row>
-            <v-flex xs12 sm6 offset-sm3 pt-5 style="border: 25px solid #373737; border-radius: 20px; padding: 30px; margin-top: 50px">
+            <v-flex xs12 sm6 offset-sm3 pt-5 style="border: 20px solid #373737; border-radius: 20px; padding: 20px; margin-top: 20px">
                 <user-dialog :userFrom="user" :mode="false" :editMethod="registrationMethod"></user-dialog>
             </v-flex>
         </v-layout>
@@ -24,6 +24,7 @@
                     name: '',
                     surname: '',
                     password: '',
+                    post: { post: ''},
                     roles:['USER']
                 }
             }
@@ -32,12 +33,14 @@
         methods:{
             ...mapActions(['addUserAction']),
             registrationMethod(newUser){
+                console.log(newUser);
                 this.addUserAction(newUser)
                 this.user = {
                     username: '',
                     name: '',
                     surname: '',
                     password: '',
+                    post: { post: ''},
                     roles:['USER']
                 }
             }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-text-field data-vv-name="name" :rules="[rules.fill]" clearable v-model="userFrom.username" required label="Login" v-validate="'required|max:20'" :counter="20"></v-text-field>
-        <v-text-field
+        <v-text-field oninput="this.value = this.value.replace(' ', '')"
                 v-model="password = userFrom.password"
                 :append-icon="show1 ? 'visibility' : 'visibility_off'"
                 :rules="[rules.min]"
@@ -20,6 +20,7 @@
         <v-text-field :rules="[rules.fill]" clearable v-model="userFrom.name" :type="'text'" data-vv-name="name" name="name" label="Name"></v-text-field>
         <v-text-field :rules="[rules.fill]" clearable v-model="userFrom.surname" :type="'text'" data-vv-name="surname" name="password" label="Surname"></v-text-field>
         <v-select v-if="admin" v-model="userFrom.roles" :items="roles" attach label="User roles:" multiple></v-select>
+        <v-select v-if="admin" v-model="post = userFrom.position" :items="posts" return-object item-text="post" label="Positions"></v-select>
         <v-alert class="text-xs-center body-1" style="border-radius: 5px; padding: 5px" :value="errorAddUser.check">{{errorAddUser.error}}</v-alert>
         <v-card-actions>
             <v-spacer></v-spacer>
@@ -40,6 +41,8 @@
             return{
                 confPas:'',
                 password:'',
+                text:[],
+                post: {},
                 show1: false,
                 enter:false,
                 rules: {
@@ -62,9 +65,12 @@
             changeUser(){
                 this.userFrom.password = this.password
                 var user = this.userFrom
-                console.log(user)
-                if(user.username != null && user.name != null && user.surname != null && user.password != null){
-                    this.editMethod(this.userFrom)
+                user.post = this.post
+                if(user.username !== '' && user.name !== '' && user.surname !== '' && user.password !== ''){
+                    user.username.replace(' ', '_')
+                    user.name.replace(' ', '_')
+                    user.surname.replace(' ', '_')
+                    this.editMethod(user)
                 }
                 else this.errorAction({check:true, error:'Fill in all the fields!'})
             },
@@ -72,7 +78,7 @@
                 eventBus.$emit('dialog2', false)
             }
         },
-        computed: mapState(['errorAddUser', 'roles', 'admin']),
+        computed: mapState(['errorAddUser', 'roles', 'admin', 'posts']),
         mounted() {
             eventBus.$on('error', (data) =>{
                 if(data.check === false) {

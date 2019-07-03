@@ -2,16 +2,16 @@
     <div>
         <v-app dark>
             <v-toolbar app dark>
-                <v-toolbar-title class="display-1">
+                <v-toolbar-title class="display-1 hidden-xs-only">
                     Store
                 </v-toolbar-title>
-                <v-toolbar-items class="hidden-xs-only">
+                <v-toolbar-items>
                     <v-btn class="ml-4" to="/" icon><v-icon>home</v-icon></v-btn>
                     <v-btn v-if="admin" flat to="/admin/">Admin</v-btn>
                     <v-btn flat to="/tit">Test</v-btn>
                 </v-toolbar-items>
                 <v-spacer></v-spacer>
-                <v-toolbar-title class="headline">{{profile.name + ' ' + profile.surname}}</v-toolbar-title>
+                <v-toolbar-title class="headline hidden-xs-only">{{profile.name + ' ' + profile.surname}}</v-toolbar-title>
                 <v-btn icon href="/logout">
                     <v-icon large>exit_to_app</v-icon>
                 </v-btn>
@@ -44,7 +44,6 @@
             // this.$store.dispatch('getCurrentUserAction'
             this.getCurrentUserAction()
             this.getPostsAction()
-            this.addPostAction({post: 'Chief Administrator'})
         }
     }
 </script>

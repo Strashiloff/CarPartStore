@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mt-2">
+    <v-card class="mt-2 ml-2 mr-2">
         <v-card-title class="display-1">
             Users
             <v-spacer></v-spacer>
@@ -22,6 +22,7 @@
                 <td class="text-xs-left">{{props.item.username}}</td>
                 <td class="text-xs-left">{{props.item.name}}</td>
                 <td class="text-xs-left">{{props.item.surname}}</td>
+                <td class="text-xs-left">{{props.item.position.post}}</td>
                 <td class="text-xs-left" ><i v-for="role in props.item.roles">{{role + ' '}}</i></td>
                 <v-btn icon @click="dialog2 = true" :disabled="dialog2">
                     <v-icon @click="editUser(props.item)">edit</v-icon>
@@ -39,7 +40,7 @@
                 <user-dialog :userFrom="user" :mode="true" :editMethod="updateUser"></user-dialog>
             </v-card>
         </v-dialog>
-        <ask-dialog :dialog="dialog"></ask-dialog>
+        <ask-dialog :dialog="dialog" :text="text"></ask-dialog>
     </v-card>
 </template>
 
@@ -59,6 +60,7 @@
                     {text: 'Login', value: 'username'},
                     {text: 'Name', value: 'name'},
                     {text: 'Surname', value: 'surname'},
+                    {text: 'Position', value: 'post'},
                     {text: 'System role', value: 'roles'},
                     {text: 'Edit', value: ''}
                 ],
@@ -71,6 +73,7 @@
                     name: '',
                     surname: '',
                     password: '',
+                    post: { post: ''},
                     roles:['USER']
                 }
             }
@@ -86,7 +89,7 @@
             },
             editUser(data){
                 this.user = Object.assign({}, data);
-                setTimeout(()=>this.dialog2 = true, 50)
+                setTimeout(()=>this.dialog2 = true, 100)
             },
             onKeydown(e){
                 if (e.keyCode === 27) {
@@ -104,7 +107,13 @@
                 if(ok){
                     this.removeUserAction(this.user)
                 }
-                this.user = null
+                this.user = {username: '',
+                    name: '',
+                    surname: '',
+                    password: '',
+                    post: { post: ''},
+                    roles:['USER']
+                }
             })
             eventBus.$on('dialog2', (ok) =>{
                 this.dialog2 = false
@@ -112,6 +121,7 @@
                     name: '',
                     surname: '',
                     password: '',
+                    post: { post: ''},
                     roles:['USER']
                 }
             })

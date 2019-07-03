@@ -3,6 +3,7 @@
         <v-tabs centered>
             <v-tab to="/admin/registration">Registration</v-tab>
             <v-tab to="/admin/users">Users</v-tab>
+            <v-tab to="/admin/posts">Positions</v-tab>
         </v-tabs>
         <router-view></router-view>
     </div>
