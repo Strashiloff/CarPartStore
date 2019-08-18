@@ -14,8 +14,8 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = token
 export const eventBus = new Vue()
 
 new Vue({
-    el: '#app',
-    router,
-    store,
-    render: h => h(Title)
+	el: '#app',
+	router,
+	store,
+	render: h => h(Title)
 });
