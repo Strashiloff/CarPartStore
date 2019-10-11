@@ -121,7 +121,7 @@ end;
 $$
 language plpgsql;
 
-create or replace function dell_type(_id integer)
+create or replace function del_type(_id integer)
     returns boolean as
 $$
 begin
@@ -172,6 +172,271 @@ begin
     if not exists(select * from "position" where id_spare_part = _id) then
 		delete from "spare_part" where id_spare_part = _id;
         return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/*
+    Category
+*/
+
+create or replace function add_category(_name character varying (255))
+    returns boolean as
+$$
+begin
+    if not exists(select * from "category" where "name" = _name) then
+        insert into "category"("name") values (_name);
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_category(_id integer, _name character varying (255))
+    returns boolean as
+$$
+begin
+    if exists(select * from "category" where "name" = _name) then
+        update "category" set "name" = _name where id_type = _id;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_category(_id integer)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "purveyor" where id_category = _id) then
+		delete from "category" where id_category = _id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/*
+    Country
+*/
+
+create or replace function add_country(_name character varying (255))
+    returns boolean as
+$$
+begin
+    if not exists(select * from "country" where "name" = _name) then
+        insert into "country"("name") values (_name);
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_country(_id integer, _name character varying (255))
+    returns boolean as
+$$
+begin
+    if exists(select * from "country" where "name" = _name) then
+        update "country" set "name" = _name where id_country = _id;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_country(_id integer)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "purveyor" where id_country = _id) then
+		delete from "country" where id_country = _id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/*
+    purveyor
+*/
+
+create or replace function add_purveyor(_id_category integer, _id_country integer,
+	_warranty varchar(255), _name varchar(500), _adress varchar(255))
+    returns boolean as
+$$
+begin
+    if not exists(select * from "purveyor" where id_category =_id_category and "name" = _name) then
+        insert into "purveyor"(id_category, id_country, warranty, "name", adress)
+        values(_id_category, _id_country, _warranty, _name, _adress);
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_purveyor(_id integer, _id_category integer, _id_country integer,
+	_warranty varchar(255), _name varchar(500), _adress varchar(255))
+    returns boolean as
+$$
+begin
+    if exists(select * from "purveyor" where id_purveyor = _id) then
+        update "purveyor" set id_category = _id_category, id_country =_id_country,
+		warranty = _warranty, "name" = _name, adress = _adress where id_purveyor = _id;
+		return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_purveyor(_id integer)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "suply" where id_purveyor = _id) then
+		delete from "purveyor" where id_purveyor = _id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/*
+    supply
+*/
+
+create or replace function add_supply(_id_contract integer, _id_purveyor integer,
+	_data timestamp, _tax real)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "supply" where id_contract =_id_contract) then
+        insert into "supply"(id_contract, id_purveyor, "data", tax)
+        values(_id_contract, _id_purveyor, _data, _tax);
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_supply(_id_supply integer, _id_contract integer, _id_purveyor integer,
+	_data timestamp, _tax real)
+    returns boolean as
+$$
+begin
+    if exists(select * from "supply" where id_supply =_id_supply) then
+        update "supply" set id_contract = _id_contract, id_purveyor =_id_purveyor,
+		"data" = _data, tax = _tax where id_supply = _id_supply;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_supply(_id_supply integer)
+    returns boolean as
+$$
+begin
+    if exists(select * from "supply" where id_supply =_id_supply) then
+        delete from "supply" where id_supply =_id_supply;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/* Contract */
+
+create or replace function add_contract(_member_one varchar(255), _member_two varchar(255),
+	_body text, _date timestamp)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "contract" where id_contract =_id_contract) then
+        insert into "contract"(member_one, member_two, body, "date")
+        values(_member_one, _member_two, _body, _date);
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_contract(id_contract integer, _member_one varchar(255), _member_two varchar(255),
+	_body text, _date timestamp)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "contract" where id_contract =_id_contract) then
+        update "contract" set member_one = _member_one, member_two =_member_two,
+		body = _body, "date" = _date where id_supply = _id_supply;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_contract(_id_contract integer)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "supply" where id_contract =_id_contract) then
+		delete from "contract" where id_contract =_id_contract;
+		return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/* Position */
+
+create or replace function add_position(_id_supply integer, _id_spare_part integer,
+	_amount integer, _price real)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "position" where id_spare_part =_id_spare_part) then
+        insert into "position"(id_supply, id_spare_part, amount, price)
+        values(_id_supply, _id_spare_part, _amount, _price);
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_position(_id integer, _id_supply integer, _id_spare_part integer,
+	_amount integer, _price real)
+    returns boolean as
+$$
+begin
+    if exists(select * from "position" where id_position =_id) then
+        update "position" set id_supply=_id_supply, id_spare_part=_id_spare_part,
+		amount=_amount, price=_price where id_position=_id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_position(_id_position integer)
+    returns boolean as
+$$
+begin
+    if exists(select * from "position" where id_position =_id_position) then
+		delete from "contract" where id_position =_id_position;
+		return true;
     else return false;
     end if;
 end;

@@ -1,9 +1,6 @@
 package com.laba.store.services;
 
-import com.laba.store.domain.Section;
-import com.laba.store.domain.Spare_part;
-import com.laba.store.domain.Stoke;
-import com.laba.store.domain.Type;
+import com.laba.store.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Service
@@ -177,17 +175,17 @@ public class DataBaseService {
     }
 
     public boolean addTypeRequest(Type type) {
-        String request = "select add_section("+type.getName()+")";
+        String request = "select add_type("+type.getName()+")";
         return boolResponse(request);
     }
 
     public boolean saveTypeRequest(Type type) {
-        String request = "select update_section("+type.getId()+","+type.getName()+")";
+        String request = "select update_type("+type.getId()+","+type.getName()+")";
         return boolResponse(request);
     }
 
     public boolean deleteTypeRequest(Type type) {
-        String request = "select del_section("+type.getId()+")";
+        String request = "select del_type("+type.getId()+")";
         return boolResponse(request);
     }
 
@@ -241,6 +239,271 @@ public class DataBaseService {
         String request = "select del_section(" + spare_part.getId() + ")";
         return boolResponse(request);
     }
+
+    /*Category*/
+
+    public ArrayList<Category> getAllCategories() {
+        ArrayList<Category> arrayList= new ArrayList<>();
+        String request = "select * from category;";
+        ResultSet resultSet = getDataFromDb(request);
+        try {
+            Category category;
+            while(resultSet.next()){
+                category = new Category();
+                category.setId(Long.getLong(resultSet.getString(1)));
+                category.setName(resultSet.getString(2));
+                arrayList.add(category);
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Ошибка выполнения getAllTypes : " + e);
+        }
+        return arrayList;
+    }
+
+    public boolean addCategoryRequest(Category category) {
+        String request = "select add_section("+category.getName()+")";
+        return boolResponse(request);
+    }
+
+    public boolean saveCategoryRequest(Category category) {
+        String request = "select update_section("+category.getId()+","+category.getName()+")";
+        return boolResponse(request);
+    }
+
+    public boolean deleteCategoryRequest(Category category) {
+        String request = "select del_section("+category.getId()+")";
+        return boolResponse(request);
+    }
+
+    /*Country*/
+
+    public ArrayList<Country> getAllCountries() {
+        ArrayList<Country> arrayList= new ArrayList<>();
+        String request = "select * from country;";
+        ResultSet resultSet = getDataFromDb(request);
+        try {
+            Country country;
+            while(resultSet.next()){
+                country = new Country();
+                country.setId(Long.getLong(resultSet.getString(1)));
+                country.setName(resultSet.getString(2));
+                arrayList.add(country);
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Ошибка выполнения getAllCountries : " + e);
+        }
+        return arrayList;
+    }
+
+    public boolean addCountryRequest(Country country) {
+        String request = "select add_section("+country.getName()+")";
+        return boolResponse(request);
+    }
+
+    public boolean saveCountryRequest(Country country) {
+        String request = "select update_section("+country.getId()+","+country.getName()+")";
+        return boolResponse(request);
+    }
+
+    public boolean deleteCountryRequest(Country country) {
+        String request = "select del_section("+country.getId()+")";
+        return boolResponse(request);
+    }
+
+    /*Purveyor*/
+
+    public ArrayList<Purveyor> getAllPurveyorRequest() {
+        ArrayList<Purveyor> arrayList= new ArrayList<>();
+        String request = "select * from purveyor;";
+        ResultSet resultSet = getDataFromDb(request);
+        try {
+            Purveyor purveyor;
+            while(resultSet.next()){
+                purveyor = new Purveyor();
+                purveyor.setId(Long.getLong(resultSet.getString(1)));
+                purveyor.setId_category(Long.getLong(resultSet.getString(2)));
+                purveyor.setId_country(Long.getLong(resultSet.getString(3)));
+                purveyor.setWarranty(resultSet.getString(4));
+                purveyor.setName(resultSet.getString(5));
+                purveyor.setAdress(resultSet.getString(6));
+                arrayList.add(purveyor);
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Ошибка выполнения getAllPurveyorRequest : " + e);
+        }
+        return arrayList;
+    }
+
+    public boolean addPurveyorRequest(Purveyor purveyor) {
+        String request = "select add_purveyor("
+            +purveyor.getId_category()+","
+            +purveyor.getId_country()+","
+            +purveyor.getWarranty()+","
+            +purveyor.getName()+","
+            +purveyor.getAdress()+")";
+        return boolResponse(request);
+    }
+
+    public boolean savePurveyorRequest(Purveyor purveyor) {
+        String request = "select update_section("
+            +purveyor.getId()+","
+            +purveyor.getId_category()+","
+            +purveyor.getId_country()+","
+            +purveyor.getWarranty()+","
+            +purveyor.getName()+","
+            +purveyor.getAdress()+")";
+        return boolResponse(request);
+    }
+
+    public boolean deletePurveyorRequest(Purveyor purveyor) {
+        String request = "select del_section("+purveyor.getId()+")";
+        return boolResponse(request);
+    }
+
+    /* Supply */
+
+    public ArrayList<Supply> getAllSupplyRequest() {
+        ArrayList<Supply> arrayList= new ArrayList<>();
+        String request = "select * from supply;";
+        ResultSet resultSet = getDataFromDb(request);
+        try {
+            Supply supply;
+            while(resultSet.next()){
+                supply = new Supply();
+                supply.setId(Long.getLong(resultSet.getString(1)));
+                supply.setId_contract(Long.getLong(resultSet.getString(2)));
+                supply.setId_purveyor(Long.getLong(resultSet.getString(3)));
+                supply.setDate(LocalDateTime.parse(resultSet.getString(4)));
+                supply.setTax(resultSet.getDouble(5));
+                arrayList.add(supply);
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Ошибка выполнения getAllSupplyRequest : " + e);
+        }
+        return arrayList;
+    }
+
+    public boolean addSupplyRequest(Supply supply) {
+        String request = "select add_supply("
+            +supply.getId_contract()+","
+            +supply.getId_purveyor()+","
+            +supply.getDate()+","
+            +supply.getTax()+")";
+        return boolResponse(request);
+    }
+
+    public boolean saveSupplyRequest(Supply supply) {
+        String request = "select update_supply("
+            +supply.getId()+","
+            +supply.getId_contract()+","
+            +supply.getId_purveyor()+","
+            +supply.getDate()+","
+            +supply.getTax()+")";
+        return boolResponse(request);
+    }
+
+    public boolean deleteSupplyRequest(Supply supply) {
+        String request = "select del_supply("+supply.getId()+")";
+        return boolResponse(request);
+    }
+
+    /* Contract */
+
+    public ArrayList<Contract> getAllContractRequest() {
+        ArrayList<Contract> arrayList= new ArrayList<>();
+        String request = "select * from contract;";
+        ResultSet resultSet = getDataFromDb(request);
+        try {
+            Contract contract;
+            while(resultSet.next()){
+                contract = new Contract();
+                contract.setId(Long.getLong(resultSet.getString(1)));
+                contract.setMember_one(resultSet.getString(2));
+                contract.setMember_two(resultSet.getString(3));
+                contract.setBody(resultSet.getString(4));
+                contract.setDate(LocalDateTime.parse(resultSet.getString(5)));
+                arrayList.add(contract);
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Ошибка выполнения getAllContractRequest : " + e);
+        }
+        return arrayList;
+    }
+
+    public boolean addContractRequest(Contract contract) {
+        String request = "select add_contract("
+            +contract.getMember_one()+","
+            +contract.getMember_two()+","
+            +contract.getBody()+","
+            +contract.getDate()+")";
+        return boolResponse(request);
+    }
+
+    public boolean saveContractRequest(Contract contract) {
+        String request = "select update_contract("
+            +contract.getId()+","
+            +contract.getMember_one()+","
+            +contract.getMember_two()+","
+            +contract.getBody()+","
+            +contract.getDate()+")";
+        return boolResponse(request);
+    }
+
+    public boolean deleteContractRequest(Contract contract) {
+        String request = "select del_contract("+contract.getId()+")";
+        return boolResponse(request);
+    }
+
+    /* Position */
+
+    public ArrayList<Position> getPositionFromSupply(Long id_supply) {
+        ArrayList<Position> arrayList= new ArrayList<>();
+        String request = "select * from position where id_supply="+id_supply+";";
+        ResultSet resultSet = getDataFromDb(request);
+        try {
+            Position position;
+            while(resultSet.next()){
+                position = new Position();
+                position.setId(Long.valueOf(resultSet.getString(1)));
+                position.setId_supply(Long.valueOf(resultSet.getString(2)));
+                position.setId_spare_part(Long.valueOf(resultSet.getString(3)));
+                position.setAmount(resultSet.getInt(4));
+                position.setPrice(resultSet.getDouble(5));
+                arrayList.add(position);
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Ошибка выполнения getPositionFromSupply : " + e);
+        }
+        return arrayList;
+    }
+
+    public boolean addPositionRequest(Position position) {
+        String request = "select add_position("
+            +position.getId_supply()+","
+            +position.getId_spare_part()+","
+            +position.getAmount()+","
+            +position.getPrice()+")";
+        return boolResponse(request);
+    }
+
+    public boolean savePositionRequest(Position position) {
+        String request = "select update_position("
+            +position.getId()+","
+            +position.getId_supply()+","
+            +position.getId_spare_part()+","
+            +position.getAmount()+","
+            +position.getPrice()+")";
+        return boolResponse(request);
+    }
+
+    public boolean deletePositionRequest(Position position) {
+        String request = "select del_position("+position.getId()+")";
+        return boolResponse(request);
+    }
 }
-
-
