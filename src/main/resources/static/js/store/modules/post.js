@@ -1,7 +1,7 @@
 import postsApi from "../../api/post"
 
 export const modulePost = {
-	namespaced: false,
+	namespaced: true,
 	state: {
 		posts: [],
 	},

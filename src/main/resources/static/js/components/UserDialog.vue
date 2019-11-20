@@ -68,7 +68,7 @@
 			}
 		},
 		methods: {
-			...mapActions(['addUserAction', 'errorAction']),
+			...mapActions('users', ['addUserAction', 'errorAction']),
 			changeUser() {
 				this.userFrom.password = this.password
 				var user = this.userFrom
@@ -85,7 +85,9 @@
 			}
 		},
 		computed: {
-			...mapGetters(['getErrorAddUser', 'getRoles', 'getIsAdmin', 'getAllPosts'])
+			...mapGetters('users', ['getErrorAddUser']),
+			...mapGetters('app', ['getRoles', 'getIsAdmin']),
+			...mapGetters('posts', ['getAllPosts'])
     },
 		mounted() {
 			eventBus.$on('error', (data) => {

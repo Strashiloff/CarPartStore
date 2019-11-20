@@ -32,7 +32,7 @@
 		},
 
 		methods: {
-			...mapActions(['addUserAction']),
+			...mapActions('users',['addUserAction']),
 			registrationMethod(newUser) {
 				this.addUserAction(newUser)
 				this.user = {

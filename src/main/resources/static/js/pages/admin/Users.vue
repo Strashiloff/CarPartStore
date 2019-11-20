@@ -1,13 +1,13 @@
 <template>
   <v-card class="mt-2 ml-2 mr-2">
     <v-card-title class="display-1">
-      Users
+      Пользователи
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
       <v-text-field
           v-model="search"
           append-icon="search"
-          lable="Search"
+          label="Поиск"
           single-line
           hide-details
       ></v-text-field>
@@ -18,21 +18,23 @@
         :search="search"
     >
       <template v-slot:items="props">
-        <td class="text-xs-left"><i>{{props.item.id}}</i></td>
-        <td class="text-xs-left">{{props.item.username.toString()}}</td>
-        <td class="text-xs-left">{{props.item.name}}</td>
-        <td class="text-xs-left">{{props.item.surname}}</td>
-        <td class="text-xs-left">{{props.item.position.post}}</td>
-        <td class="text-xs-left"><i v-for="role in props.item.roles">{{role + ' '}}</i></td>
-        <v-btn icon @click="editUser(props.item)" :disabled="dialog2">
-          <v-icon>edit</v-icon>
-        </v-btn>
-        <v-btn @click="removeUser(props.item)" :disabled="dialog" icon>
-          <v-icon>delete</v-icon>
-        </v-btn>
+        <td class="text-xs-left subtitle-1"><i>{{props.item.id}}</i></td>
+        <td class="text-xs-center title">{{props.item.username}}</td>
+        <td class="text-xs-center title">{{props.item.name}}</td>
+        <td class="text-xs-center title">{{props.item.surname}}</td>
+        <td class="text-xs-center title">{{props.item.position.post}}</td>
+        <td class="text-xs-center title"><i v-bind:key="role" v-for="role in props.item.roles">{{role + ' '}}</i></td>
+        <td class="text-xs-center title">
+					<v-btn icon @click="editUser(props.item)" :disabled="dialog2">
+						<v-icon>edit</v-icon>
+					</v-btn>
+					<v-btn @click="removeUser(props.item)" :disabled="dialog" icon>
+						<v-icon>delete</v-icon>
+					</v-btn>
+				</td>
       </template>
       <template v-slot:no-results>
-        <v-alert :value="true" color="error" icon="warning"></v-alert>
+        <v-alert :value="true" color="error" icon="warning">Такого пользователя нет</v-alert>
       </template>
     </v-data-table>
     <v-dialog persistent v-model="dialog2" max-width="400">
@@ -56,16 +58,51 @@
 		data: function () {
 			return {
 				headers: [
-					{text: 'ID', value: 'id'},
-					{text: 'Login', value: 'username'},
-					{text: 'Name', value: 'name'},
-					{text: 'Surname', value: 'surname'},
-					{text: 'Position', value: 'position.post'},
-					{text: 'System role', value: 'roles'},
-					{text: 'Edit', value: ''}
+					{
+						text: 'ID',
+						class: 'title',
+						value: 'id'
+					},
+					{
+						text: 'Логин',
+						value: 'username',
+						class: 'title',
+						align: 'center'
+					},
+					{
+						text: 'Имя',
+						value: 'name',
+						class: 'title',
+						align: 'center'
+					},
+					{
+						text: 'Фамилия',
+						value: 'surname',
+						class: 'title',
+						align: 'center'
+					},
+					{
+						text: 'Должность',
+						value: 'position.post',
+						class: 'title',
+						align: 'center'
+					},
+					{
+						text: 'Системная роль',
+						value: 'roles',
+						class: 'title',
+						align: 'center'
+					},
+					{
+						text: 'Редактировать',
+						value: '',
+						align: 'center',
+						class: 'title',
+						sortable: false
+					}
 				],
 				search: '',
-				text: 'You want to delete this user?',
+				text: 'Вы точно хотите удалить этого пользователя?',
 				dialog: false,
 				dialog2: false,
 				user: {
@@ -73,13 +110,13 @@
 					name: '',
 					surname: '',
 					password: '',
-					position: {post: ''},
+					position: { post: '' },
 					roles: ['USER']
 				}
 			}
 		},
 		computed: {
-      ...mapGetters(['getUsers'])
+      ...mapGetters('users', ['getUsers'])
 		},
 		watch: {
 			search() {
@@ -87,7 +124,7 @@
 			}
 		},
 		methods: {
-			...mapActions(['getUsersAction', 'removeUserAction', 'updateUserAction']),
+			...mapActions('users', ['getUsersAction', 'removeUserAction', 'updateUserAction']),
 			removeUser(data) {
 				this.user = data
 				this.dialog = true

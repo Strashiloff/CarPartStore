@@ -4950,6 +4950,11 @@ vue-resource@^1.5.1:
   dependencies:
     got "^8.0.3"
 
+vue-router-user-roles@^0.1.92:
+  version "0.1.92"
+  resolved "https://registry.yarnpkg.com/vue-router-user-roles/-/vue-router-user-roles-0.1.92.tgz#1097014a39854a38682ea9e36ed080e37b6cb629"
+  integrity sha512-0t8hty+l8DRJIFgh7W6VRuuRGw//tibWMwHK23lJAxcW/XsEZ34VMGXsRdYRCmgjgVCtqEsfbsNRB9YQ0d7seQ==
+
 vue-router@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.6.tgz#2e4f0f9cbb0b96d0205ab2690cfe588935136ac3"

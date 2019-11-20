@@ -1,6 +1,6 @@
 <template>
-  <v-app dark>
-    <v-toolbar app dark>
+  <v-app :dark="getTheme">
+    <v-toolbar app :dark="getTheme">
       <v-toolbar-side-icon @click.stop="drawer = !drawer" v-show="$router.currentRoute.path === '/'"></v-toolbar-side-icon>
       <v-toolbar-title class="display-1 hidden-xs-only">
         Store
@@ -10,7 +10,6 @@
           <v-icon>home</v-icon>
         </v-btn>
         <v-btn v-if="getIsAdmin" flat to="/admin/">Admin</v-btn>
-        <v-btn flat to="/tit">Test</v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-title class="headline hidden-xs-only">{{getCurrentUser.name + ' ' + getCurrentUser.surname}}</v-toolbar-title>
@@ -44,10 +43,12 @@
 			AskDialog
 		},
 		methods: {
-			...mapActions(['getCurrentUserAction', 'getPostsAction', 'addPostAction', 'getUsersAction']),
+			...mapActions('app', ['getCurrentUserAction']),
+      ...mapActions('posts', ['getPostsAction', 'addPostAction']),
+      ...mapActions('users', ['getUsersAction'])
 		},
 		computed: {
-      ...mapGetters(['getCurrentUser', 'getIsAdmin'])
+      ...mapGetters('app', ['getCurrentUser', 'getIsAdmin',  'getTheme'])
 		},
 		created() {
 			// this.$store.dispatch('getCurrentUserAction'

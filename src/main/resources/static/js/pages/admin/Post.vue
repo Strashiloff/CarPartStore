@@ -23,8 +23,8 @@
             <template v-slot:items="props">
               <td class="text-xs-left"><i>{{props.item.id}}</i></td>
               <td class="text-xs-left">{{props.item.post}}</td>
-              <v-btn icon @click="">
-                <v-icon @click="editPost(props.item)">edit</v-icon>
+              <v-btn icon @click="editPost(props.item)">
+                <v-icon>edit</v-icon>
               </v-btn>
               <v-btn @click="removePost(props.item)" :disabled="dialog" icon>
                 <v-icon>delete</v-icon>
@@ -85,7 +85,7 @@
 			}
 		},
 		methods: {
-			...mapActions(['addPostAction', 'removePostAction']),
+			...mapActions('posts', ['addPostAction', 'removePostAction']),
 			editPost(post) {
 				this.post = post
 			},
@@ -94,14 +94,14 @@
 				this.dialog = true
 			},
 			addPost() {
-				if (this.newPost !== '' && this.posts.indexOf(this.newPost) === -1) {
+				if (this.newPost !== '' && this.getAllPosts.indexOf(this.newPost) === -1) {
 					this.addPostAction(this.newPost)
 					this.newPost = {post: ''}
 				}
 			}
 		},
 		computed: {
-      ...mapGetters(['getAllPosts'])
+      ...mapGetters('posts', ['getAllPosts'])
 		},
 		mounted() {
 			eventBus.$on('dialog', (ok) => {

@@ -6,7 +6,9 @@ import com.laba.store.services.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("position")
@@ -16,14 +18,14 @@ public class PositionController {
   private DataBaseService dataBaseService;
 
   @GetMapping
-  public ArrayList<Position> getAllPosition(@RequestBody Supply supply){ return dataBaseService.getPositionFromSupply(supply.getId()); }
+  public ArrayList<Position> getAllPosition(@RequestBody Supply supply) throws SQLException { return dataBaseService.getPositionFromSupply(supply.getId()); }
 
   @PostMapping
-  public boolean addPosition(@RequestBody Position position) { return dataBaseService.addPositionRequest(position); }
+  public HashMap<String, String> addPosition(@RequestBody Position position) throws SQLException { return dataBaseService.addPositionRequest(position); }
 
   @PutMapping
-  public boolean savePosition(@RequestBody Position position){ return dataBaseService.savePositionRequest(position); }
+  public HashMap<String, String> savePosition(@RequestBody Position position) throws SQLException { return dataBaseService.savePositionRequest(position); }
 
-  @DeleteMapping
-  public boolean deletePosition(@RequestBody Position position){ return dataBaseService.deletePositionRequest(position); }
+  @PostMapping("delete")
+  public HashMap<String, String> deletePosition(@RequestBody Position position) throws SQLException { return dataBaseService.deletePositionRequest(position); }
 }

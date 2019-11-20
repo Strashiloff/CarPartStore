@@ -9,7 +9,7 @@ function getIndex(list, id) {
 }
 
 export const moduleUsers = {
-	namespaced: false,
+	namespaced: true,
 	state: {
 		users: [],
 		errorAddUser: []
@@ -23,7 +23,7 @@ export const moduleUsers = {
 		async addUserAction({commit}, user) {
 			const result = await usersApi.addUser(user)
 			const data = await result.json()
-			commit('addUserMutation', data)
+			commit('addUserMutation', data, user)
 		},
 		async removeUserAction({commit}, user) {
 			const result = await usersApi.deleteUser(user.id)
@@ -44,8 +44,9 @@ export const moduleUsers = {
 			state.users = users
 		},
 
-		addUserMutation(state, error) {
+		addUserMutation(state, error, user) {
 			state.errorAddUser = error
+			if (!error.check) state.users.push(user)
 			eventBus.$emit('error', error)
 		},
 		errorMutation(state, error) {

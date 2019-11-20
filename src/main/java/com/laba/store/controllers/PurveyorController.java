@@ -5,7 +5,9 @@ import com.laba.store.services.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("purveyor")
@@ -15,14 +17,14 @@ public class PurveyorController {
   private DataBaseService dataBaseService;
 
   @GetMapping
-  public ArrayList<Purveyor> getAll() { return dataBaseService.getAllPurveyorRequest(); }
+  public ArrayList<Purveyor> getAll() throws SQLException { return dataBaseService.getAllPurveyorRequest(); }
 
   @PostMapping
-  public boolean addPurveyor(@RequestBody Purveyor purveyor) { return dataBaseService.addPurveyorRequest(purveyor); }
+  public HashMap<String, String> addPurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.addPurveyorRequest(purveyor); }
 
   @PutMapping
-  public boolean savePurveyor(@RequestBody Purveyor purveyor) { return dataBaseService.savePurveyorRequest(purveyor); }
+  public HashMap<String, String> savePurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.savePurveyorRequest(purveyor); }
 
-  @DeleteMapping
-  public boolean deletePurveyor(@RequestBody Purveyor purveyor) { return dataBaseService.deletePurveyorRequest(purveyor); }
+  @PostMapping("delete")
+  public HashMap<String, String> deletePurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.deletePurveyorRequest(purveyor); }
 }

@@ -2,27 +2,27 @@ package com.laba.store.domain;
 
 public class Stoke {
 
-    private Long Id;
+    private int Id;
     private String location;
     private Integer count;
 
     public Stoke() {
-        this.Id = -1L;
+        this.Id = -1;
         this.location = "";
         this.count = 0;
     }
 
-    public Stoke(Long id, String location, Integer count) {
+    public Stoke(int id, String location, Integer count) {
         this.Id = id;
         this.location = location;
         this.count = count;
     }
 
-    public Long getId() {
+    public int getId() {
         return Id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         Id = id;
     }
 

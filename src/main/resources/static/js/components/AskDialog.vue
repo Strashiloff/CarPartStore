@@ -1,14 +1,14 @@
 <template>
-  <v-dialog @keydown.prevent="onKeydown" persistent v-model="dialog" max-width="290">
+  <v-dialog @keydown.prevent="() => {}" persistent v-model="dialog" max-width="290">
     <v-card>
-      <v-card-title class="headline">{{text}}</v-card-title>
+      <v-card-title class="headline" style="text-align: center">{{text}}</v-card-title>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn flat="flat" @click="dialogClick(false)">
-          Disagree
-        </v-btn>
         <v-btn flat="flat" @click="dialogClick(true)">
           Agree
+        </v-btn>
+        <v-btn flat="flat" @click="dialogClick(false)">
+          Disagree
         </v-btn>
       </v-card-actions>
     </v-card>

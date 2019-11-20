@@ -12,35 +12,68 @@ Vue.use(VueRouter)
 
 const routes = [
 	{
-		path: '/',
+		path: '*',
+		name: 'home',
 		component: Home,
 	},
 	{
 		path: '/admin',
-		component: Admin,
+    component: Admin,
+		meta: {
+      permissions: [
+        {
+          role: 'USER',
+          access: false,
+          redirect: 'home'
+        }
+      ]
+    },
 		children: [
 			{
 				path: 'registration',
-				component: AddUser
+				component: AddUser,
+				meta: {
+          permissions: [
+            {
+              role: 'USER',
+              access: false,
+              redirect: 'home'
+            }
+          ]
+        },
 			},
 			{
 				path: 'posts',
-				component: Post
+				component: Post,
+				meta: {
+          permissions: [
+            {
+              role: 'USER',
+              access: false,
+              redirect: 'home'
+            }
+          ]
+        },
 			},
 			{
 				path: 'users',
-				component: Users
+				component: Users,
+				meta: {
+          permissions: [
+            {
+              role: 'USER',
+              access: false,
+              redirect: 'home'
+            }
+          ]
+        },
 			}
 		]
 	},
 	{
-		path: '/tit',
-		component: Test,
-	},
-	{
 		path: '/stokes',
 		component: Stoke,
-	}
+	},
 ]
 
 export default new VueRouter({

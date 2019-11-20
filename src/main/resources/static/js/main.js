@@ -7,13 +7,16 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import VueValidate from 'vee-validate'
 import store from 'store/store'
+import VueRouterUsersRoles from 'vue-router-user-roles'
 
 Vue.use(Vuetify)
 Vue.use(VueValidate)
+Vue.use(VueRouterUsersRoles, { router })
 Vue.http.headers.common['X-CSRF-TOKEN'] = token
 export const eventBus = new Vue()
+global['store']=store
 
-new Vue({
+window.vm = new Vue({
 	el: '#app',
 	router,
 	store,

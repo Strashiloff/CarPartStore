@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div v-if="getIsAdmin">
     <v-tabs centered>
-      <v-tab to="/admin/registration">Registration</v-tab>
-      <v-tab to="/admin/users">Users</v-tab>
-      <v-tab to="/admin/posts">Positions</v-tab>
+      <v-tab to="/admin/registration">Регистрация</v-tab>
+      <v-tab to="/admin/users">Пользователи</v-tab>
+      <v-tab to="/admin/posts">Должности</v-tab>
     </v-tabs>
     <router-view></router-view>
   </div>
@@ -14,14 +14,7 @@
 
 	export default {
 		name: "Admin",
-		computed: mapGetters(['getIsAdmin']),
-		beforeRouteUpdate(to, from, next) {
-			if (this.getIsAdmin) {
-				next();
-			} else {
-				next('/');
-			}
-		},
+		computed: mapGetters('app',['getIsAdmin']),
 		created() {
 			this.$router.push('/admin/users')
 		}

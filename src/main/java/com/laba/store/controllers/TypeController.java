@@ -5,7 +5,9 @@ import com.laba.store.services.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("type")
@@ -15,14 +17,14 @@ public class TypeController {
   private DataBaseService dataBaseService;
 
   @GetMapping
-  public ArrayList<Type> getAll() { return dataBaseService.getAllTypes(); }
+  public ArrayList<Type> getAll() throws SQLException { return dataBaseService.getAllTypes(); }
 
   @PostMapping
-  public boolean addType(@RequestBody Type type) { return dataBaseService.addTypeRequest(type); }
+  public HashMap<String, String> addType(@RequestBody Type type) throws SQLException { return dataBaseService.addTypeRequest(type); }
 
   @PutMapping
-  public boolean saveType(@RequestBody Type type) { return dataBaseService.saveTypeRequest(type); }
+  public HashMap<String, String> saveType(@RequestBody Type type) throws SQLException { return dataBaseService.saveTypeRequest(type); }
 
-  @DeleteMapping
-  public boolean deleteType(@RequestBody Type type) { return dataBaseService.deleteTypeRequest(type); }
+  @PostMapping("delete")
+  public HashMap<String, String> deleteType(@RequestBody Type type) throws SQLException { return dataBaseService.deleteTypeRequest(type); }
 }

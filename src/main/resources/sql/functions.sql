@@ -298,7 +298,7 @@ create or replace function del_purveyor(_id integer)
     returns boolean as
 $$
 begin
-    if not exists(select * from "suply" where id_purveyor = _id) then
+    if not exists(select * from "supply" where id_purveyor = _id) then
 		delete from "purveyor" where id_purveyor = _id;
         return true;
     else return false;
@@ -436,6 +436,222 @@ $$
 begin
     if exists(select * from "position" where id_position =_id_position) then
 		delete from "contract" where id_position =_id_position;
+		return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/* list */
+
+create or replace function add_list(_id_request integer, _id_position integer,
+	_amount integer, _price real)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "list" where _id_position =_id_position) then
+        insert into "list"(id_request, id_position, amount, price)
+        values(_id_request, _id_position, _amount, _price);
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_list(_id integer, _id_request integer, _id_position integer,
+	_amount integer, _price real)
+    returns boolean as
+$$
+begin
+    if exists(select * from "list" where id_list =_id) then
+        update "list" set id_request=_id_request, id_position=_id_position,
+		amount=_amount, price=_price where id_list=_id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_list(_id_list integer)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "defect" where id_list =_id_list) then
+		delete from "list" where id_list =_id_list;
+		return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/* request */
+
+create or replace function add_request(_id_user integer, _id_customer integer,
+	_date timestamp, _period timestamp)
+    returns boolean as
+$$
+begin
+	insert into "request"(id_user, id_customer, "date", "period")
+	values(_id_user, _id_customer, _date, _period);
+	return true;
+end;
+$$
+language plpgsql;
+
+create or replace function update_request(_id integer, _id_user integer, _id_customer integer,
+	_date timestamp, _period timestamp)
+    returns boolean as
+$$
+begin
+    if exists(select * from "request" where id_request =_id) then
+        update "request" set id_user=_id_user, id_customer=_id_customer,
+		"date"=_date, "period"=_period where id_request=_id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_request(_id integer)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "buy" where id_request =_id) then
+		delete from "list" where id_request =_id;
+		return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/* buy */
+
+create or replace function add_buy(_id_request integer, _completed integer,
+	_date timestamp)
+    returns boolean as
+$$
+begin
+	insert into "buy"(id_request, completed, "date")
+	values(_id_request, _completed, _date);
+	return true;
+end;
+$$
+language plpgsql;
+
+create or replace function update_buy(_id integer, _id_request integer, _completed integer,
+	_date timestamp)
+    returns boolean as
+$$
+begin
+    if exists(select * from "buy" where id_buy =_id) then
+        update "buy" set id_request=_id_request, completed=_completed,
+		"date"=_date where id_buy=_id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_buy(_id integer)
+    returns boolean as
+$$
+begin
+    if not exists(select * from "defect" where id_buy =_id) then
+		delete from "buy" where id_buy =_id;
+		return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/* buy */
+
+create or replace function add_defect(_id_buy integer, _id_list integer, _date timestamp,
+	_amount integer)
+    returns boolean as
+$$
+begin
+	insert into "defect"(id_buy, id_list, "date", amount)
+	values(_id_buy, _id_list, _date, _amount);
+	return true;
+end;
+$$
+language plpgsql;
+
+create or replace function update_defect(_id integer, _id_buy integer, _id_list integer, _date timestamp,
+	_amount integer)
+    returns boolean as
+$$
+begin
+    if exists(select * from "defect" where id_defect =_id) then
+        update "defect" set id_buy=_id_buy, _id_list=_id_list,
+		"date"=_date, amount=_amount where id_defect=_id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_defect(_id integer)
+    returns boolean as
+$$
+begin
+    if exists(select * from "defect" where id_defect =_id) then
+		delete from "defect" where id_defect =_id;
+		return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+/* Customer */
+
+create or replace function add_customer(_surname varchar(255), _name varchar(255), _patronymic varchar(255),
+	_contact_number varchar(20), _sex boolean)
+    returns boolean as
+$$
+begin
+	if not exists(select * from "customer" where surname =_surname and "name" = _name and  patronymic=_patronymic) then
+		insert into "customer"(surname, "name", patronymic, contact_number, sex)
+		values(_surname, _name, _patronymic, _contact_number, _sex);
+		return true;
+	else return false;
+	end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_customer(_id integer, _surname varchar(255), _name varchar(255), _patronymic varchar(255),
+	_contact_number varchar(20), _sex boolean)
+    returns boolean as
+$$
+begin
+    if exists(select * from "customer" where id_customer =_id) then
+        update "customer" set surname=_surname, "name"=_name,
+		patronymic=_patronymic, contact_number=_contact_number, sex=_sex where id_customer=_id;
+        return true;
+    else return false;
+    end if;
+end;
+$$
+language plpgsql;
+
+create or replace function del_customer(_id integer)
+    returns boolean as
+$$
+begin
+    if exists(select * from "customer" where id_customer =_id) then
+		delete from "customer" where id_customer =_id;
 		return true;
     else return false;
     end if;

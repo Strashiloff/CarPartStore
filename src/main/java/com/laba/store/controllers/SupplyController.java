@@ -5,7 +5,9 @@ import com.laba.store.services.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("supply")
@@ -15,14 +17,14 @@ public class SupplyController {
   private DataBaseService dataBaseService;
 
   @GetMapping
-  public ArrayList<Supply> getAllSupply(){ return dataBaseService.getAllSupplyRequest(); }
+  public ArrayList<Supply> getAllSupply() throws SQLException { return dataBaseService.getAllSupplyRequest(); }
 
   @PostMapping
-  public boolean addSupply(@RequestBody Supply supply) { return dataBaseService.addSupplyRequest(supply); }
+  public HashMap<String, String> addSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.addSupplyRequest(supply); }
 
   @PutMapping
-  public boolean saveSupply(@RequestBody Supply supply){ return dataBaseService.saveSupplyRequest(supply); }
+  public HashMap<String, String> saveSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.saveSupplyRequest(supply); }
 
-  @DeleteMapping
-  public boolean deleteSupply(@RequestBody Supply supply){ return dataBaseService.deleteSupplyRequest(supply); }
+  @PostMapping("delete")
+  public HashMap<String, String> deleteSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.deleteSupplyRequest(supply); }
 }

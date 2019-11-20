@@ -5,7 +5,9 @@ import com.laba.store.services.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("contract")
@@ -15,14 +17,14 @@ public class ContractController {
   private DataBaseService dataBaseService;
 
   @GetMapping
-  public ArrayList<Contract> getAllContract(){ return dataBaseService.getAllContractRequest(); }
+  public ArrayList<Contract> getAllContract() throws SQLException { return dataBaseService.getAllContractRequest(); }
 
   @PostMapping
-  public boolean addContract(@RequestBody Contract contract) { return dataBaseService.addContractRequest(contract); }
+  public HashMap<String, String> addContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.addContractRequest(contract); }
 
   @PutMapping
-  public boolean saveContract(@RequestBody Contract contract){ return dataBaseService.saveContractRequest(contract); }
+  public HashMap<String, String> saveContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.saveContractRequest(contract); }
 
-  @DeleteMapping
-  public boolean deleteContract(@RequestBody Contract contract){ return dataBaseService.deleteContractRequest(contract); }
+  @PostMapping("delete")
+  public HashMap<String, String> deleteContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.deleteContractRequest(contract); }
 }

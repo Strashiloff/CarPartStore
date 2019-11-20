@@ -5,7 +5,9 @@ import com.laba.store.services.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("stoke")
@@ -15,14 +17,14 @@ public class StokeController {
     private DataBaseService dataBaseService;
 
     @GetMapping
-    public ArrayList<Stoke> getAllStock(){ return dataBaseService.getAllStock(); }
+    public ArrayList<Stoke> getAllStock() throws SQLException { return dataBaseService.getAllStock(); }
 
     @PostMapping
-    public boolean addStoke(@RequestBody Stoke stoke) { return dataBaseService.addStokeRequest(stoke); }
+    public HashMap<String, String> addStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.addStokeRequest(stoke); }
 
     @PutMapping
-    public boolean saveStoke(@RequestBody Stoke stoke){ return dataBaseService.saveStokeRequest(stoke); }
+    public HashMap<String, String> saveStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.saveStokeRequest(stoke); }
 
-    @DeleteMapping
-    public boolean deleteStoke(@RequestBody Stoke stoke){ return dataBaseService.deleteStokeRequest(stoke); }
+    @PostMapping("delete")
+    public HashMap<String, String> deleteStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.deleteStokeRequest(stoke); }
 }
