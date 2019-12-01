@@ -3,7 +3,7 @@
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3 pt-5
               style="border: 20px solid #373737; border-radius: 20px; padding: 20px; margin-top: 20px">
-        <user-dialog :userFrom="user" :mode="false" :editMethod="registrationMethod"></user-dialog>
+        <user-dialog :userFrom="user" :mode="false" :editMethod="registrationMethod" max-width="500"></user-dialog>
       </v-flex>
     </v-layout>
   </div>

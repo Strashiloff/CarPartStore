@@ -13,6 +13,7 @@ public class Section {
         this.id_stoke = -1L;
         this.amount = 0;
         this.capacity = 0;
+        this.number = 0;
     }
 
     public Long getId() {

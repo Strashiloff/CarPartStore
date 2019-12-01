@@ -1,6 +1,7 @@
 package com.laba.store.services;
 
 import com.laba.store.domain.*;
+import org.hibernate.sql.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,12 +84,12 @@ public class DataBaseService {
     }
 
     public HashMap<String, String> addStokeRequest(Stoke stoke) throws SQLException {
-        String request = "select add_stoke("+stoke.getLocation()+","+stoke.getCount()+";";
+        String request = "select add_stoke('"+stoke.getLocation()+"',"+stoke.getCount()+")";
         return boolResponse(request);
     }
 
     public HashMap<String, String> saveStokeRequest(Stoke stoke) throws SQLException {
-        String request = "select update_stoke("+stoke.getLocation()+","+stoke.getCount()+";";
+        String request = "select update_stoke("+stoke.getId()+",'"+stoke.getLocation()+"',"+stoke.getCount()+")";
         return boolResponse(request);
     }
 
@@ -115,6 +116,7 @@ public class DataBaseService {
                 section.setId_stoke(Long.valueOf(resultSet.getString(2)));
                 section.setAmount(resultSet.getInt(3));
                 section.setCapacity(resultSet.getInt(4));
+                section.setNumber(resultSet.getInt(5));
                 arrayList.add(section);
             }
         }
@@ -144,6 +146,8 @@ public class DataBaseService {
                 section.setId_stoke(Long.valueOf(resultSet.getString(2)));
                 section.setAmount(resultSet.getInt(3));
                 section.setCapacity(resultSet.getInt(4));
+                System.out.println(resultSet.getInt(5));
+                section.setNumber(resultSet.getInt(5));
                 arrayList.add(section);
             }
         }
@@ -163,12 +167,12 @@ public class DataBaseService {
     }
 
     public HashMap<String, String> saveSectionRequest(Section section) throws SQLException {
-        String request = "select update_stoke("+section.getAmount()+","+section.getNumber()+";";
+        String request = "select update_section("+section.getId()+","+section.getAmount()+","+section.getCapacity()+","+section.getNumber()+")";
         return boolResponse(request);
     }
 
     public HashMap<String, String> deleteSectionRequest(Section section) throws SQLException {
-        String request = "select delete_section("+section.getId()+")";
+        String request = "select del_section("+section.getId()+")";
         return boolResponse(request);
     }
 
@@ -186,7 +190,7 @@ public class DataBaseService {
             Type type;
             while(resultSet.next()){
                 type = new Type();
-                type.setId(Long.getLong(resultSet.getString(1)));
+                type.setId(Long.valueOf(resultSet.getString(1)));
                 type.setName(resultSet.getString(2));
                 arrayList.add(type);
             }
@@ -202,12 +206,12 @@ public class DataBaseService {
     }
 
     public HashMap<String, String> addTypeRequest(Type type) throws SQLException {
-        String request = "select add_type("+type.getName()+")";
+        String request = "select add_type('"+type.getName()+"')";
         return boolResponse(request);
     }
 
     public HashMap<String, String> saveTypeRequest(Type type) throws SQLException {
-        String request = "select update_type("+type.getId()+","+type.getName()+")";
+        String request = "select update_type("+type.getId()+",'"+type.getName()+"')";
         return boolResponse(request);
     }
 
@@ -230,12 +234,12 @@ public class DataBaseService {
             Spare_part spare_part;
             while(resultSet.next()){
                 spare_part = new Spare_part();
-                spare_part.setId(Long.getLong(resultSet.getString(1)));
-                spare_part.setId_type(Long.getLong(resultSet.getString(2)));
-                spare_part.setId_section(Long.getLong(resultSet.getString(3)));
+                spare_part.setId(Long.valueOf(resultSet.getString(1)));
+                spare_part.setId_type(Long.valueOf(resultSet.getString(2)));
+                spare_part.setId_section(Long.valueOf(resultSet.getString(3)));
                 spare_part.setName(resultSet.getString(4));
-                spare_part.setPrice(resultSet.getDouble(5));
-                spare_part.setProportions(resultSet.getString(6));
+                spare_part.setPrice(resultSet.getDouble(6));
+                spare_part.setProportions(resultSet.getString(5));
                 arrayList.add(spare_part);
             }
         }
@@ -289,7 +293,7 @@ public class DataBaseService {
             Category category;
             while(resultSet.next()){
                 category = new Category();
-                category.setId(Long.getLong(resultSet.getString(1)));
+                category.setId(Long.valueOf(resultSet.getString(1)));
                 category.setName(resultSet.getString(2));
                 arrayList.add(category);
             }
@@ -333,7 +337,7 @@ public class DataBaseService {
             Country country;
             while(resultSet.next()){
                 country = new Country();
-                country.setId(Long.getLong(resultSet.getString(1)));
+                country.setId(Long.valueOf(resultSet.getString(1)));
                 country.setName(resultSet.getString(2));
                 arrayList.add(country);
             }
@@ -377,9 +381,9 @@ public class DataBaseService {
             Purveyor purveyor;
             while(resultSet.next()){
                 purveyor = new Purveyor();
-                purveyor.setId(Long.getLong(resultSet.getString(1)));
-                purveyor.setId_category(Long.getLong(resultSet.getString(2)));
-                purveyor.setId_country(Long.getLong(resultSet.getString(3)));
+                purveyor.setId(Long.valueOf(resultSet.getString(1)));
+                purveyor.setId_category(Long.valueOf(resultSet.getString(2)));
+                purveyor.setId_country(Long.valueOf(resultSet.getString(3)));
                 purveyor.setWarranty(resultSet.getString(4));
                 purveyor.setName(resultSet.getString(5));
                 purveyor.setAdress(resultSet.getString(6));
@@ -436,9 +440,9 @@ public class DataBaseService {
             Supply supply;
             while(resultSet.next()){
                 supply = new Supply();
-                supply.setId(Long.getLong(resultSet.getString(1)));
-                supply.setId_contract(Long.getLong(resultSet.getString(2)));
-                supply.setId_purveyor(Long.getLong(resultSet.getString(3)));
+                supply.setId(Long.valueOf(resultSet.getString(1)));
+                supply.setId_contract(Long.valueOf(resultSet.getString(2)));
+                supply.setId_purveyor(Long.valueOf(resultSet.getString(3)));
                 supply.setDate(LocalDateTime.parse(resultSet.getString(4)));
                 supply.setTax(resultSet.getDouble(5));
                 arrayList.add(supply);
@@ -492,7 +496,7 @@ public class DataBaseService {
             Contract contract;
             while(resultSet.next()){
                 contract = new Contract();
-                contract.setId(Long.getLong(resultSet.getString(1)));
+                contract.setId(Long.valueOf(resultSet.getString(1)));
                 contract.setMember_one(resultSet.getString(2));
                 contract.setMember_two(resultSet.getString(3));
                 contract.setBody(resultSet.getString(4));

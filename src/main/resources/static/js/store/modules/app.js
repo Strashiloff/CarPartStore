@@ -6,7 +6,9 @@ export const moduleApp = {
 		roles: ['ADMIN', 'USER'],
 		profile: [],
 		admin: false,
-		theme: true
+		theme: true,
+		drawer: false,
+		editItem: {}
 	},
 	actions: {
 		async getCurrentUserAction({commit}) {
@@ -14,7 +16,9 @@ export const moduleApp = {
 			const data = await result.json()
 			commit('getCurrentUserMutation', data)
 		},
-		setTheme: ({ commit }, payload) => commit('setThemeMutation', payload)
+		setTheme: ({ commit }, payload) => commit('setThemeMutation', payload),
+		setDrawer: ({ commit }, payload) => commit('setDrawerMutation'),
+		setEditItem: ({ commit }, payload) => commit('setEditItemMutation', payload),
 	},
 	mutations: {
 		getCurrentUserMutation(state, user) {
@@ -22,12 +26,20 @@ export const moduleApp = {
 //			this.$user.set({ role: user})
 			if (user.roles.includes('ADMIN')) state.admin = true
 		},
-		setThemeMutation: (state, payload) => { state.theme = payload}
+		setThemeMutation: (state, payload) => { state.theme = payload },
+		setDrawerMutation: (state) => { state.drawer = ! state.drawer },
+		setEditItemMutation: (state, payload) => { state.editItem = payload },
   },
   getters: {
-    getCurrentUser: state => state.profile,
+		getCurrentUser: state => state.profile,
+		getUserNameShort: state => { 
+			return state.profile.name && state.profile.name[0] + state.profile.surname[0]
+		},
+		getUserNameFull: state => state.profile.name + ' ' + state.profile.surname,
     getIsAdmin: state => state.admin,
 		getRoles: state => state.roles,
-		getTheme: state => state.theme
+		getTheme: state => state.theme,
+		getDrawer: state => state.drawer,
+		getEditItem: state => state.editItem
   }
 }

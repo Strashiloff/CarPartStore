@@ -68,12 +68,12 @@ end;
 $$
 language plpgsql;
 
-create or replace function update_section(_id integer, _max_amount integer, _number integer)
+create or replace function update_section(_id integer, _amount integer, _max_amount integer, _number integer)
     returns boolean as
 $$
 begin
      if exists(select * from "section" where id_section = _id) then
-        update "section" set "max_amount" = _max_amount, "number" = _number where id_section = _id;
+        update "section" set amount=_amount, "max_amount" = _max_amount, "number" = _number where id_section = _id;
         return true;
     else return false;
     end if;
@@ -81,12 +81,13 @@ end;
 $$
 language plpgsql;
 
-create or replace function delete_section(_id integer, _max_amount integer)
+create or replace function del_section(_id integer)
     returns boolean as
 $$
 begin
     if not exists(select * from "spare_part" where id_section = _id) then
         delete from "section" where id_section = _id;
+        return true;
     else return false;
     end if;
 end;
@@ -103,6 +104,7 @@ $$
 begin
     if not exists(select * from "type" where "name" = _name) then
         insert into "type"("name") values (_name);
+		return true;
     else return false;
     end if;
 end;
@@ -113,11 +115,13 @@ create or replace function update_type(_id integer, _name character varying (255
     returns boolean as
 $$
 begin
-    if not exists(select * from "type" where "name" = _name) then
+    if exists(select * from "type" where "name" = _name) then
         update "type" set "name" = _name where id_type = _id;
-    else return false;
+    	return true;
+	else return false;
     end if;
 end;
+
 $$
 language plpgsql;
 
@@ -125,11 +129,13 @@ create or replace function del_type(_id integer)
     returns boolean as
 $$
 begin
-    if not exists(select * from "spare_type" where id_type = _id) then
+    if not exists(select * from "spare_part" where id_type = _id) then
         delete from "type" where id_type = _id;
+		return true;
     else return false;
     end if;
 end;
+
 $$
 language plpgsql;
 

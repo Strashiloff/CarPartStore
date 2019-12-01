@@ -2,23 +2,23 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <title>StoreApp</title>
+  <title>Автозапчасти</title>
 </head>
 <body>
-    <div class="box">
-      <h1>Login</h1>
-      <div class="alert" th:if="${param.error}">
-        Invalid username and password.
-      </div>
-      <div class="alert" th:if="${param.logout}">
-        You have been logged out.
-      </div>
-      <form th:action="@{/login}" method="post">
-        <div><input type="text" name="username" placeholder="Username"/></div>
-        <div><input type="password" name="password" placeholder="Password"/></div>
-        <div><input type="submit" value="Sign In"/></div>
-      </form>
+  <div class="box">
+    <h1>Login</h1>
+    <div class="alert" th:if="${param.error}">
+      Ошибка в логине или пароле.
     </div>
-    <link rel="stylesheet" type="text/css" href="/css/loginSt.css">
+    <div class="alert" th:if="${param.logout}">
+      Вы вышли.
+    </div> 
+    <form th:action="@{/login}" method="post">
+      <div><input type="text" name="username" placeholder="Username"/></div>
+      <div><input type="password" name="password" placeholder="Password"/></div>
+      <div><input type="submit" value="Sign In"/></div>
+    </form>
+  </div>
+  <link rel="stylesheet" type="text/css" href="/css/loginSt.css">
 </body>
 </html>

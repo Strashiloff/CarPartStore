@@ -11,9 +11,6 @@ export default function () {
             window.vm.$user.set({ role: 'USER' })
           }
           break
-        default:
-          console.log(mutation.type)
-          break
       }
     })
   }

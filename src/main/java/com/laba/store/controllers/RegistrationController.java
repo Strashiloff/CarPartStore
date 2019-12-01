@@ -25,18 +25,13 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String registration(@RequestBody User user){
+    public User registration(@RequestBody User user){
         User userFromDb = userRepo.findByUsername(user.getUsername());
-        JSONObject object = new JSONObject();
-        if(userFromDb !=null){
-            object.put("error", "User \"" + user.getUsername() + "\" is exist!");
-            object.put("check", true);
-            return object.toString();
+        if(userFromDb != null){
+            user.setId(-1L);
+            return user;
         }
         user.setAction(false);
-        object.put("error", "");
-        object.put("check", false);
-        userRepo.save(user);
-        return object.toString();
+        return userRepo.save(user);
     }
 }

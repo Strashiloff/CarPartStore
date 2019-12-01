@@ -1,18 +1,22 @@
-import {eventBus} from "../../main";
-import usersApi from "../../api/users";
+import { eventBus } from "../../main"
+import usersApi from "../../api/users"
+import getIndex from './utils'
 
-function getIndex(list, id) {
-	for (let i = 0; i < list.length; i++) {
-		if (list[i].id === id) return i;
-	}
-	return -1;
-}
+// function getIndex(list, id) {
+// 	for (let i = 0; i < list.length; i++) {
+// 		if (list[i].id === id) return i;
+// 	}
+// 	return -1;
+// }
 
 export const moduleUsers = {
 	namespaced: true,
 	state: {
 		users: [],
-		errorAddUser: []
+		errorAddUser: {
+			check: false,
+			error: ''
+		}
 	},
 	actions: {
 		async getUsersAction({commit}) {
@@ -23,7 +27,7 @@ export const moduleUsers = {
 		async addUserAction({commit}, user) {
 			const result = await usersApi.addUser(user)
 			const data = await result.json()
-			commit('addUserMutation', data, user)
+			commit('addUserMutation', data)
 		},
 		async removeUserAction({commit}, user) {
 			const result = await usersApi.deleteUser(user.id)
@@ -44,10 +48,27 @@ export const moduleUsers = {
 			state.users = users
 		},
 
-		addUserMutation(state, error, user) {
-			state.errorAddUser = error
-			if (!error.check) state.users.push(user)
-			eventBus.$emit('error', error)
+		addUserMutation(state, user) {
+			if (user.id !== -1) {
+				state.users.push(user)
+				state.errorAddUser = {
+					check: false,
+					error: 'Пользоваетель добавлен'
+				}
+				eventBus.$emit('error', {
+					check: false,
+					error: 'Пользоваетель добавлен'
+				})
+			} else {
+				eventBus.$emit('error', {
+					check: true,
+					error: 'Пользователь с логином ' + user.username + ' уже существует'
+				})
+				state.errorAddUser = {
+					check: true,
+					error: 'Пользователь с логином ' + user.username + ' уже существует'
+				} 
+			}
 		},
 		errorMutation(state, error) {
 			state.errorAddUser = error

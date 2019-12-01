@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field data-vv-name="name" :rules="[rules.fill]" clearable v-model="userFrom.username" required label="Login"
+    <v-text-field data-vv-name="name" :rules="[rules.fill]" clearable v-model="userFrom.username" required label="Логин"
                   v-validate="'required|max:20'" :counter="20"></v-text-field>
     <v-text-field oninput="this.value = this.value.replace(' ', '')"
                   v-model="password = userFrom.password"
@@ -8,30 +8,33 @@
                   :rules="[rules.min]"
                   :type="show1 ? 'text' : 'password'"
                   name="password"
-                  label="Password"
-                  hint="At least 6 characters"
+                  label="Пароль"
+                  hint="Не менее 6 символов"
                   counter
                   @click:append="show1 = !show1"
     ></v-text-field>
     <v-text-field v-if="!getIsAdmin"
                   v-model="confPas"
                   :rules="[rules.pas, rules.fill]"
-                  label="Retry password"
+                  label="Подтверждение пароля"
     ></v-text-field>
     <v-text-field :rules="[rules.fill]" clearable v-model="userFrom.name" :type="'text'" data-vv-name="name" name="name"
-                  label="Name"></v-text-field>
+                  label="Имя"></v-text-field>
     <v-text-field :rules="[rules.fill]" clearable v-model="userFrom.surname" :type="'text'" data-vv-name="surname"
-                  name="password" label="Surname"></v-text-field>
-    <v-select v-if="getIsAdmin" v-model="userFrom.roles" :items="getRoles" attach label="User roles:" multiple></v-select>
+                  name="password" label="Фамилия"></v-text-field>
+    <v-select v-if="getIsAdmin" v-model="userFrom.roles" :items="getRoles" attach label="Системные роль:" multiple></v-select>
     <v-select v-if="getIsAdmin" :search="search" v-model="post = userFrom.position" :items="getAllPosts" return-object
-              item-text="post" label="Positions"></v-select>
-    <v-alert class="text-xs-center body-1 error" :value="getErrorAddUser.check">
+              item-text="post" label="Должность"></v-select>
+    <v-alert height="70px" class="text-xs-center body-1 error" v-show="getErrorAddUser.check">
       {{getErrorAddUser.error}}
     </v-alert>
+		<v-alert height="70px" v-show="!getErrorAddUser.check && getErrorAddUser.error !== ''" class="text-xs-center body-1 success">
+			{{getErrorAddUser.error}}
+		</v-alert>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn v-if="mode" @click="Canceled">Cancel</v-btn>
-      <v-btn @click="changeUser" :disabled="enter">Submit</v-btn>
+      <v-btn v-if="mode" @click="Canceled">Отмена</v-btn>
+      <v-btn @click="changeUser" :disabled="enter" color="indigo">Сохранить</v-btn>
     </v-card-actions>
   </div>
 </template>
@@ -91,9 +94,11 @@
     },
 		mounted() {
 			eventBus.$on('error', (data) => {
+				console.log(data)
 				if (data.check === false) {
 					eventBus.$emit('dialog2', false)
-				} else setTimeout(() => this.errorAction({check: false, error: ''}), 3000)
+				} 
+				setTimeout(() => this.errorAction({check: false, error: ''}), 3000)
 			})
 		}
 	}

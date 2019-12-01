@@ -15,9 +15,6 @@
 	export default {
 		name: "Admin",
 		computed: mapGetters('app',['getIsAdmin']),
-		created() {
-			this.$router.push('/admin/users')
-		}
 	}
 </script>
 

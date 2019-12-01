@@ -16,6 +16,7 @@
         :headers="headers"
         :items="getUsers"
         :search="search"
+				:rows-per-page-items="[10, 20, {text: 'all', value: -1}]"
     >
       <template v-slot:items="props">
         <td class="text-xs-left subtitle-1"><i>{{props.item.id}}</i></td>
@@ -26,10 +27,10 @@
         <td class="text-xs-center title"><i v-bind:key="role" v-for="role in props.item.roles">{{role + ' '}}</i></td>
         <td class="text-xs-center title">
 					<v-btn icon @click="editUser(props.item)" :disabled="dialog2">
-						<v-icon>edit</v-icon>
+						<v-icon color="orange">edit</v-icon>
 					</v-btn>
 					<v-btn @click="removeUser(props.item)" :disabled="dialog" icon>
-						<v-icon>delete</v-icon>
+						<v-icon color="error">delete</v-icon>
 					</v-btn>
 				</td>
       </template>
@@ -42,7 +43,12 @@
         <user-dialog :userFrom="user" :mode="true" :editMethod="updateUser"></user-dialog>
       </v-card>
     </v-dialog>
-    <ask-dialog :dialog="dialog" :text="text"></ask-dialog>
+    <ask-dialog 
+			:dialog="dialog"
+			:text="text"
+			@dialog="deleteUser($event)"
+		>
+		</ask-dialog>
   </v-card>
 </template>
 
@@ -148,10 +154,8 @@
 			updateUser(upUser) {
 				eventBus.$emit('error', {check: false})
 				this.updateUserAction(upUser)
-			}
-		},
-		mounted() {
-			eventBus.$on('dialog', (ok) => {
+			},
+			deleteUser (ok) {
 				this.dialog = false
 				if (ok) {
 					this.removeUserAction(this.user)
@@ -164,6 +168,11 @@
 					position: {post: ''},
 					roles: ['USER']
 				}
+			}
+		},
+		mounted() {
+			eventBus.$on('dialog', (ok) => {
+				
 			})
 			eventBus.$on('dialog2', (ok) => {
 				this.dialog2 = false

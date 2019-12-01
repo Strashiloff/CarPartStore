@@ -20,7 +20,7 @@ public class SectionController {
     public ArrayList<Section> getStokeSections(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.getSectionsFromStock(stoke.getId()); }
 
     @GetMapping("all")
-    public ArrayList<Section> getAllSection(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.getAllSectionsRequest(); }
+    public ArrayList<Section> getAllSection() throws SQLException { return dataBaseService.getAllSectionsRequest(); }
 
     @PostMapping
     public HashMap<String, String> saveSection(@RequestBody Section section) throws SQLException { return dataBaseService.addSectionRequest(section); }

@@ -1,7 +1,7 @@
 <template>
   <div id="container">
     <div id="grid-1">
-      <v-btn color="success" class="button">Каталог</v-btn>
+      <v-btn color="success" class="button">Заказы</v-btn>
     </div>
     <div id="grid-2">
       <v-btn color="error" to="/stokes" class="button">Склад</v-btn>

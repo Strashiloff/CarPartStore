@@ -1,25 +1,41 @@
 <template>
   <div>
     <TableView
-      :actions="[]"
       :headers="headers"
       :array="getAllStoke"
 			:title="'Склады'"
+			:classS="'mt-2'"
+			@addObject="add()"
 			@editObject="edit($event)"
 			@deleteObject="delObj($event)"
     />
-		<ask-dialog :dialog="dialog" :text="'Вы точно хотите удалить склад?'"></ask-dialog>
+		<EditAddStoke
+			:dialog="dialogAdd"
+			@submit="addItem($event)"
+			@cancel="dialogAdd = false"
+		/>
+		<EditAddStoke
+			:dialog="dialogEdit"
+			@submit="editItem($event)"
+			@cancel="cancel()"
+		/>
+		<ask-dialog
+			:dialog="dialogDel"
+			:text="'Вы точно хотите удалить склад?'"
+			@dialog="deleteItem($event)"
+		></ask-dialog>
   </div>
 </template>
 
 <script>
 	import TableView from "../../components/TableView.vue"
 	import AskDialog from '../../components/AskDialog.vue'
+	import EditAddStoke from './EditAddStoke.vue'
 	import { mapActions, mapGetters } from 'vuex'
 	import { eventBus } from 'main'
 
 	export default {
-		name: "Settings",
+		name: "settings-stoke",
     data () {
 			return {
 				headers: [
@@ -34,43 +50,72 @@
 						class: 'title'
 					},
 					{
-						text: 'Полки (шт)',
+						text: 'Макс. кол-во полок (шт)',
 						value: 'count',
 						class: 'title'
 					},
 					{
-						text: '',
-						value: 'buttons',
+						text: 'Редактировать',
+						value: '',
+						align: 'center',
+						class: 'title',
 						sortable: false
-					},
+					}
 				],
-				dialog: false,
-				item: null
+				dialogDel: false,
+				dialogAdd: false,
+				dialogEdit: false,
+				item: { }
       }
     },
     components: {
 			TableView,
-			AskDialog
+			AskDialog,
+			EditAddStoke
     },
 		methods: {
-			...mapActions('stoke', ['getAllStokeAction', 'deleteStokeAction']),
+			...mapActions('stoke', ['getAllStokeAction', 'deleteStokeAction', 'addStokeAction', 'setEditAction', 'saveStokeAction']),
+			add () {
+				this.setEditAction({
+					location: '',
+					count: 0,
+					id: -1
+				})
+				this.dialogAdd = true
+			},
 			edit (item) {
+				this.setEditAction(item)
+				this.dialogEdit = true
 				this.item = item
-				console.log('edit', item)
 			},
 			delObj (item) {
 				this.item = item
-				this.dialog = true
-				console.log('delObj', item)
+				this.dialogDel = true
 			},
-		},
-		mounted () {
-			eventBus.$on('dialog', (ok) => {
-				this.dialog = false
+			addItem (item) {
+				this.dialogAdd = false
+				this.addStokeAction(item)
+			},
+			editItem (item) {
+				this.dialogEdit = false
+				this.saveStokeAction(item)
+			},
+			deleteItem (ok) {
+				this.dialogDel = false
 				if (ok) {
 					this.deleteStokeAction(this.item)
 				}
-			})
+			},
+			cancel () {
+				console.log('cancel')
+				this.dialogEdit = false
+				this.item = {
+					location: '',
+					count: 0,
+					id: -1
+				}
+				this.setEditAction(this.item)
+			}
 		},
 		computed: {
       ...mapGetters('stoke', ['getAllStoke'])
