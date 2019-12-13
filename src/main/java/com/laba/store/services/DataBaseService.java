@@ -256,10 +256,10 @@ public class DataBaseService {
     public HashMap<String, String> addSparePartRequest(Spare_part spare_part) throws SQLException {
         String request = "select add_spare_part("
             +spare_part.getId_type()+","
-            +spare_part.getId_section()+","
-            +spare_part.getName()+","
-            +spare_part.getPrice()
-            +spare_part.getProportions()+")";
+            +spare_part.getId_section()+",'"
+            +spare_part.getName()+"',"
+            +spare_part.getPrice()+",'"
+            +spare_part.getProportions()+"')";
         return boolResponse(request);
     }
 
@@ -267,10 +267,10 @@ public class DataBaseService {
         String request = "select update_spare_part("
             +spare_part.getId()+","
             +spare_part.getId_type()+","
-            +spare_part.getId_section()+","
-            +spare_part.getName()+","
-            +spare_part.getPrice()
-            +spare_part.getProportions()+")";
+            +spare_part.getId_section()+",'"
+            +spare_part.getName()+"',"
+            +spare_part.getPrice()+",'"
+            +spare_part.getProportions()+"')";
         return boolResponse(request);
     }
 

@@ -78,6 +78,10 @@
 			...mapActions('app', ['getCurrentUserAction', 'setDrawer']),
       ...mapActions('posts', ['getPostsAction', 'addPostAction']),
       ...mapActions('users', ['getUsersAction']),
+      ...mapActions('section', ['setAllSectionsAction']),
+      ...mapActions('stoke', ['getAllStokeAction']),
+      ...mapActions('type', ['setAllTypesAction']),
+      ...mapActions('sparePart', ['getAllSparePartsAction']),
       drawerClick () {
         this.setDrawer()
       }
@@ -86,10 +90,13 @@
       ...mapGetters('app', ['getCurrentUser', 'getIsAdmin',  'getTheme', 'getDrawer', 'getUserNameShort', 'getUserNameFull'])
     },
 		created() {
-			// this.$store.dispatch('getCurrentUserAction'
 			this.getCurrentUserAction()
 			this.getPostsAction()
-			this.getUsersAction()
+      this.getUsersAction()
+      this.getAllStokeAction()
+      this.setAllSectionsAction()
+      this.getAllSparePartsAction()
+      this.setAllTypesAction()
 		}
 	}
 </script>

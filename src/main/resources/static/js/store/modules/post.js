@@ -1,4 +1,5 @@
 import postsApi from "../../api/post"
+import getIndex from './utils'
 
 export const modulePost = {
 	namespaced: true,
@@ -18,6 +19,13 @@ export const modulePost = {
 				commit('addPostMutation', data)
 			}
 		},
+		async savePostAction({commit}, post) {
+			const result = await postsApi.savePost(post)
+			if (result.ok) {
+				const data = await result.json()
+				commit('savePostMutation', data)
+			}
+		},
 		async removePostAction({commit}, post) {
 			const result = await postsApi.removePost(post.id)
 			if (result.ok) commit('removePostMutation', post)
@@ -32,6 +40,10 @@ export const modulePost = {
 				...state.posts,
 				post
 			]
+		},
+		savePostMutation(state, post) {
+			let index = getIndex(state.posts, post.id)
+			state.posts.splice(index, 1, post)
 		},
 		removePostMutation(state, post) {
 			state.posts.splice(state.posts.indexOf(post), 1)

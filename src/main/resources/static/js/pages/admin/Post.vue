@@ -8,17 +8,17 @@
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-text-field
-                v-model="search"
-                append-icon="search"
-                lable="Search"
-                single-line
-                hide-details
+              v-model="search"
+              append-icon="search"
+              lable="Search"
+              single-line
+              hide-details
             ></v-text-field>
           </v-card-title>
           <v-data-table
-              :headers="headers"
-              :items="getAllPosts"
-              :search="search"
+            :headers="headers"
+            :items="getAllPosts"
+            :search="search"
           >
             <template v-slot:items="props">
               <td class="text-xs-left title"><i>{{props.item.id}}</i></td>
@@ -36,6 +36,11 @@
               <v-alert :value="true" color="error" icon="warning"></v-alert>
             </template>
           </v-data-table>
+          <one-line-edit-add
+            :dialog="dialogEdit"
+            @submit="editItem($event)"
+            @cancel="dialogEdit = false"
+          />
           <asc-dialog
             :dialog="dialog"
             :text="text"
@@ -66,14 +71,16 @@
 </template>
 
 <script>
-	import AscDialog from 'components/AskDialog.vue'
+  import AscDialog from 'components/AskDialog.vue'
+  import OneLineEditAdd from '../../components/OneLineEditAdd.vue'
 	import { mapActions, mapGetters } from 'vuex'
 	import { eventBus } from 'main';
 
 	export default {
 		name: "Post",
 		components: {
-			AscDialog
+      AscDialog,
+      OneLineEditAdd
 		},
 		data() {
 			return {
@@ -91,7 +98,8 @@
 				search: '',
 				text: 'You want to delete this position?',
 				newPost: {post: ''},
-				dialog: false,
+        dialog: false,
+        dialogEdit: false,
 				post: {post: ''},
 				rules: {
 					fill: v => v !== '' || 'Fill in the position',
@@ -99,10 +107,23 @@
 			}
 		},
 		methods: {
-			...mapActions('posts', ['addPostAction', 'removePostAction']),
+      ...mapActions('posts', ['addPostAction', 'removePostAction', 'savePostAction']),
+      ...mapActions('app', ['setEditItem']),
 			editPost(post) {
-				this.post = post
-			},
+        this.dialogEdit = true
+        this.setEditItem({
+          id: post.id,
+          name: post.post
+        })
+      },
+      editItem (post) {
+        this.dialogEdit = false
+        let newPost = {
+          id: post.id,
+          post: post.name
+        }
+        this.savePostAction(newPost)
+      },
 			removePost(post) {
 				this.post = post
 				this.dialog = true

@@ -59,7 +59,9 @@ export const moduleStoke = {
 		}
 	},
 	getters: {
-		getAllStoke: state => state.stokes,
+		getAllStoke: state => state.stokes.sort((a, b) => {
+			return a.id - b.id
+		}),
 		getStokeById: state => id => state.stokes.find(elem => {
 			return elem.id == id
 		}),

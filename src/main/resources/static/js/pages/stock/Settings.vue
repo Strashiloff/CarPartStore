@@ -74,7 +74,7 @@
 			EditAddStoke
     },
 		methods: {
-			...mapActions('stoke', ['getAllStokeAction', 'deleteStokeAction', 'addStokeAction', 'setEditAction', 'saveStokeAction']),
+			...mapActions('stoke', ['deleteStokeAction', 'addStokeAction', 'setEditAction', 'saveStokeAction']),
 			add () {
 				this.setEditAction({
 					location: '',
@@ -119,9 +119,6 @@
 		},
 		computed: {
       ...mapGetters('stoke', ['getAllStoke'])
-		},
-		created() {
-			this.getAllStokeAction()
 		}
 	}
 </script>

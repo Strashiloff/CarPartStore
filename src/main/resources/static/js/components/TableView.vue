@@ -24,7 +24,14 @@
     >
       <template v-slot:items="props">
         <td class="text-xs-left"><i>{{props.item.id}}</i></td>
-        <td class="text-xs-left title" :class="{'pl-5': typeof value === 'number'}" v-bind:key="value" v-for="(value, name) in props.item" v-if="name !== 'id'" >{{ value }}</td>
+        <td class="text-xs-left title"
+          :class="{'pl-5': typeof value === 'number' && typeof editMetods != 'function'}"
+          v-bind:key="name"
+          v-for="(value, name, index) in props.item"
+          v-if="name !== 'id'"
+        >
+          {{ typeof editMetods == 'function' ? editMetods(value, name, index) : value }}
+        </td>
         <td class="text-xs-center title"> 
           <v-btn icon title="Редактировать" @click="edit(props.item)" :disabled="dialog2">
             <v-icon color="orange">edit</v-icon>
@@ -51,7 +58,13 @@
         dialog2: false,
       }
     },
-    props: ['headers', 'array', 'title', 'classS'],
+    props: {
+      headers: {},
+      array: {},
+      title: {},
+      classS: {},
+      editMetods: {},
+    },
     methods: {
       add () {
         this.$emit('addObject')
