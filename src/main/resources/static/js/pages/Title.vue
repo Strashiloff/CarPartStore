@@ -1,14 +1,17 @@
 <template>
-  <v-app :dark="getTheme">
+  <v-app :dark="getTheme" style="overflow: hidden;">
     <v-navigation-drawer
       v-model="drawer"
-      absolute
       temporary
+      fixed
     >
       <v-list class="ma-2">
         <v-list-tile avatar>
           <v-list-tile-avatar color="teal" size="55" class="mr-2 headline">
-            <span class="white--text ">{{ getUserNameShort }}</span>
+            <span
+              class="white--text"
+              style="font-family: Serif"
+            >{{ getUserNameShort }}</span>
           </v-list-tile-avatar>
 
           <v-list-tile-content>
@@ -17,21 +20,96 @@
         </v-list-tile>
       </v-list>
 
-      <v-list class="pt-0" dense>
-        <v-divider></v-divider>
-
-        <!-- <v-list-tile
-          v-for="item in items"
-          :key="item.title"
-        >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
+      <v-list>
+        <v-list-tile to="/">
+          <v-list-tile-action >
+            <v-icon>home</v-icon>
           </v-list-tile-action>
+          <v-list-tile-title>Home</v-list-tile-title>
+        </v-list-tile>
 
-          <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile> -->
+        <v-list-group
+          prepend-icon="mdi-shield-account"
+           v-if="getIsAdmin"
+        >
+          <template v-slot:activator>
+            <v-list-tile>
+              <v-list-tile-title>Панель Администратора</v-list-tile-title>
+            </v-list-tile>
+          </template>
+          <v-list-tile
+            v-for="(admin, i) in admins"
+            :key="i"
+            :to="admin[2]"
+            class="pl-4"
+          >
+            <v-list-tile-action>
+              <v-icon v-text="admin[1]"></v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title v-text="admin[0]"></v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
+        <v-list-group
+          prepend-icon="mdi-tray-full"
+        >
+          <template v-slot:activator>
+            <v-list-tile>
+              <v-list-tile-title>Склад</v-list-tile-title>
+            </v-list-tile>
+          </template>
+          <v-list-tile
+            v-for="(stoke, i) in stokes"
+            :key="i"
+            :to="stoke[2]"
+            class="pl-4"
+          >
+            <v-list-tile-action>
+              <v-icon v-text="stoke[1]"></v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title v-text="stoke[0]"></v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
+        <v-list-group
+          prepend-icon="mdi-truck"
+        >
+          <template v-slot:activator>
+            <v-list-tile>
+              <v-list-tile-title>Поставки</v-list-tile-title>
+            </v-list-tile>
+          </template>
+          <v-list-tile
+            v-for="(suppl, i) in supply"
+            :key="i"
+            :to="suppl[2]"
+            class="pl-4"
+          >
+            <v-list-tile-action>
+              <v-icon v-text="suppl[1]"></v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title v-text="suppl[0]"></v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
+        <v-list-group
+          prepend-icon="mdi-clipboard-list"
+        >
+          <template v-slot:activator>
+            <v-list-tile>
+              <v-list-tile-title>Заказы</v-list-tile-title>
+            </v-list-tile>
+          </template>
+          <!-- <v-list-tile
+            v-for="(stoke, i) in stokes"
+            :key="i"
+            :to="stoke[2]"
+            @click=""
+            class="pl-4"
+          >
+            <v-list-tile-action>
+              <v-icon v-text="stoke[1]"></v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title v-text="stoke[0]"></v-list-tile-title>
+          </v-list-tile> -->
+        </v-list-group>     
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app :dark="getTheme">
@@ -55,6 +133,23 @@
     <v-content>
       <router-view></router-view>
     </v-content>
+    <v-footer
+      height="auto"
+    >
+      <v-layout
+        justify-center
+        row
+        wrap
+      >
+        <v-flex
+          py-3
+          text-xs-center
+          xs12
+        >
+          &copy;2019 — <strong>Strashiloff LLC</strong>
+        </v-flex>
+      </v-layout>
+    </v-footer>
   </v-app>
 </template>
 
@@ -67,7 +162,22 @@
     name: "Title",
 		data() {
 			return {
-				drawer: false
+        drawer: false,
+        admins: [
+          ['Регистрация', 'mdi-account-plus', '/admin/registration'],
+          ['Пользователи', 'people_outline', '/admin/users'],
+          ['Должности', 'mdi-account-box', '/admin/posts']
+        ],
+        stokes: [
+          ['Настройка', 'mdi-settings', '/stokes/settings'],
+          ['Содержание', 'mdi-buffer', '/stokes/content'],
+          ['База запчастей', 'mdi-dresser', '/stokes/sparepart']
+        ],
+        supply: [
+          ['Список', 'mdi-clipboard-text', '/deliveries/supplies'],
+          ['Страны/Типы', 'mdi-flag', '/deliveries/countries'],
+          ['Поставщики', 'mdi-truck-fast', '/deliveries/purveyors']
+        ]
 			}
 		},
 		components: {
@@ -82,21 +192,39 @@
       ...mapActions('stoke', ['getAllStokeAction']),
       ...mapActions('type', ['setAllTypesAction']),
       ...mapActions('sparePart', ['getAllSparePartsAction']),
+      ...mapActions('country', ['getCountriesAction']),
+      ...mapActions('category', ['getCategoriesAction']),
+      ...mapActions('purveyor', ['getPurveyorsAction']),
+      ...mapActions('supply', ['getSuppliesAction']),
+      ...mapActions('position', ['setAllPositionsAction']),
+      ...mapActions('contract', ['getContractsAction']),
       drawerClick () {
         this.setDrawer()
+      },
+      getAllData() {
+        this.getCurrentUserAction()
+        this.getPostsAction()
+        this.getUsersAction()
+        this.getAllStokeAction()
+        this.setAllSectionsAction()
+        this.getAllSparePartsAction()
+        this.setAllTypesAction()
+        this.getCountriesAction()
+        this.getCategoriesAction()
+        this.getPurveyorsAction()
+        this.getSuppliesAction()
+        this.setAllPositionsAction()
+        this.getContractsAction()
       }
 		},
 		computed: {
       ...mapGetters('app', ['getCurrentUser', 'getIsAdmin',  'getTheme', 'getDrawer', 'getUserNameShort', 'getUserNameFull'])
     },
 		created() {
-			this.getCurrentUserAction()
-			this.getPostsAction()
-      this.getUsersAction()
-      this.getAllStokeAction()
-      this.setAllSectionsAction()
-      this.getAllSparePartsAction()
-      this.setAllTypesAction()
+      this.getAllData()
+      setInterval(() => {
+        this.getAllData()
+      }, 5 * 60 * 1000)
 		}
 	}
 </script>

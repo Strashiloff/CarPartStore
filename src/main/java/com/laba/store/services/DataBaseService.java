@@ -6,10 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import javax.validation.constraints.Null;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 @Service
 public class DataBaseService {
@@ -62,7 +67,7 @@ public class DataBaseService {
         ArrayList<Stoke> arrayList= new ArrayList<>();
         try {
             connection = connectDb();
-            statement = connection.prepareStatement("select * from storehouse;");
+            statement = connection.prepareStatement("select * from storehouse order by id_storehouse ASC;");
             ResultSet resultSet = statement.executeQuery();
             Stoke stoke;
             while(resultSet.next()){
@@ -104,7 +109,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Section> arrayList= new ArrayList<>();
-        String request = "select * from section;";
+        String request = "select * from section order by id_section ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -134,7 +139,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Section> arrayList= new ArrayList<>();
-        String request = "select * from section where id_storehouse="+id_stoke+";";
+        String request = "select * from section where id_storehouse="+id_stoke+" order by id_section ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -182,7 +187,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Type> arrayList= new ArrayList<>();
-        String request = "select * from type;";
+        String request = "select * from type order by id_type ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -226,7 +231,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Spare_part> arrayList= new ArrayList<>();
-        String request = "select * from spare_part;";
+        String request = "select * from spare_part order by id_spare_part ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -285,7 +290,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Category> arrayList= new ArrayList<>();
-        String request = "select * from category;";
+        String request = "select * from category order by id_category ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -309,12 +314,12 @@ public class DataBaseService {
     }
 
     public HashMap<String, String> addCategoryRequest(Category category) throws SQLException {
-        String request = "select add_category("+category.getName()+")";
+        String request = "select add_category('"+category.getName()+"')";
         return boolResponse(request);
     }
 
     public HashMap<String, String> saveCategoryRequest(Category category) throws SQLException {
-        String request = "select update_category("+category.getId()+","+category.getName()+")";
+        String request = "select update_category("+category.getId()+",'"+category.getName()+"')";
         return boolResponse(request);
     }
 
@@ -329,7 +334,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Country> arrayList= new ArrayList<>();
-        String request = "select * from country;";
+        String request = "select * from country order by id_country ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -353,12 +358,12 @@ public class DataBaseService {
     }
 
     public HashMap<String, String> addCountryRequest(Country country) throws SQLException {
-        String request = "select add_country("+country.getName()+")";
+        String request = "select add_country('"+country.getName()+"')";
         return boolResponse(request);
     }
 
     public HashMap<String, String> saveCountryRequest(Country country) throws SQLException {
-        String request = "select update_country("+country.getId()+","+country.getName()+")";
+        String request = "select update_country("+country.getId()+",'"+country.getName()+"')";
         return boolResponse(request);
     }
 
@@ -373,7 +378,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Purveyor> arrayList= new ArrayList<>();
-        String request = "select * from purveyor;";
+        String request = "select * from purveyor order by id_purveyor ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -403,10 +408,10 @@ public class DataBaseService {
     public HashMap<String, String> addPurveyorRequest(Purveyor purveyor) throws SQLException {
         String request = "select add_purveyor("
             +purveyor.getId_category()+","
-            +purveyor.getId_country()+","
-            +purveyor.getWarranty()+","
-            +purveyor.getName()+","
-            +purveyor.getAdress()+")";
+            +purveyor.getId_country()+",'"
+            +purveyor.getWarranty()+"','"
+            +purveyor.getName()+"','"
+            +purveyor.getAdress()+"')";
         return boolResponse(request);
     }
 
@@ -414,10 +419,10 @@ public class DataBaseService {
         String request = "select update_purveyor("
             +purveyor.getId()+","
             +purveyor.getId_category()+","
-            +purveyor.getId_country()+","
-            +purveyor.getWarranty()+","
-            +purveyor.getName()+","
-            +purveyor.getAdress()+")";
+            +purveyor.getId_country()+",'"
+            +purveyor.getWarranty()+"','"
+            +purveyor.getName()+"','"
+            +purveyor.getAdress()+"')";
         return boolResponse(request);
     }
 
@@ -432,7 +437,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Supply> arrayList= new ArrayList<>();
-        String request = "select * from supply;";
+        String request = "select * from supply order by id_supply DESC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -441,10 +446,15 @@ public class DataBaseService {
             while(resultSet.next()){
                 supply = new Supply();
                 supply.setId(Long.valueOf(resultSet.getString(1)));
-                supply.setId_contract(Long.valueOf(resultSet.getString(2)));
+                try {
+                    supply.setId_contract(Long.valueOf(resultSet.getString(2)));
+                } catch (Exception e) {
+                    supply.setId_contract(null);
+                }
                 supply.setId_purveyor(Long.valueOf(resultSet.getString(3)));
-                supply.setDate(LocalDateTime.parse(resultSet.getString(4)));
-                supply.setTax(resultSet.getDouble(5));
+                Timestamp timestamp = Timestamp.valueOf(resultSet.getString(4));
+                supply.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), TimeZone.getDefault().toZoneId()));
+                supply.setTax(Double.valueOf(resultSet.getString(5)));
                 arrayList.add(supply);
             }
         }
@@ -461,8 +471,8 @@ public class DataBaseService {
     public HashMap<String, String> addSupplyRequest(Supply supply) throws SQLException {
         String request = "select add_supply("
             +supply.getId_contract()+","
-            +supply.getId_purveyor()+","
-            +supply.getDate()+","
+            +supply.getId_purveyor()+",'"
+            +Timestamp.valueOf(supply.getDate())+"',"
             +supply.getTax()+")";
         return boolResponse(request);
     }
@@ -471,8 +481,8 @@ public class DataBaseService {
         String request = "select update_supply("
             +supply.getId()+","
             +supply.getId_contract()+","
-            +supply.getId_purveyor()+","
-            +supply.getDate()+","
+            +supply.getId_purveyor()+",'"
+            +Timestamp.valueOf(supply.getDate())+"',"
             +supply.getTax()+")";
         return boolResponse(request);
     }
@@ -488,7 +498,7 @@ public class DataBaseService {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Contract> arrayList= new ArrayList<>();
-        String request = "select * from contract;";
+        String request = "select * from contract order by id_contract DESC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -497,10 +507,9 @@ public class DataBaseService {
             while(resultSet.next()){
                 contract = new Contract();
                 contract.setId(Long.valueOf(resultSet.getString(1)));
-                contract.setMember_one(resultSet.getString(2));
-                contract.setMember_two(resultSet.getString(3));
-                contract.setBody(resultSet.getString(4));
-                contract.setDate(LocalDateTime.parse(resultSet.getString(5)));
+                contract.setBody(resultSet.getString(2));
+                Timestamp timestamp = Timestamp.valueOf(resultSet.getString(3));
+                contract.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), TimeZone.getDefault().toZoneId()));
                 arrayList.add(contract);
             }
         }
@@ -515,21 +524,17 @@ public class DataBaseService {
     }
 
     public HashMap<String, String> addContractRequest(Contract contract) throws SQLException {
-        String request = "select add_contract("
-            +contract.getMember_one()+","
-            +contract.getMember_two()+","
-            +contract.getBody()+","
-            +contract.getDate()+")";
+        String request = "select add_contract('"
+            +contract.getBody()+"','"
+            +Timestamp.valueOf(contract.getDate())+"')";
         return boolResponse(request);
     }
 
     public HashMap<String, String> saveContractRequest(Contract contract) throws SQLException {
         String request = "select update_contract("
-            +contract.getId()+","
-            +contract.getMember_one()+","
-            +contract.getMember_two()+","
-            +contract.getBody()+","
-            +contract.getDate()+")";
+            +contract.getId()+",'"
+            +contract.getBody()+"','"
+            +Timestamp.valueOf(contract.getDate())+"')";
         return boolResponse(request);
     }
 
@@ -540,11 +545,11 @@ public class DataBaseService {
 
     /* Position */
 
-    public ArrayList<Position> getPositionFromSupply(Long id_supply) throws SQLException {
+    public ArrayList<Position> getPositionFromSupply() throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<Position> arrayList= new ArrayList<>();
-        String request = "select * from position where id_supply="+id_supply+";";
+        String request = "select * from position order by id_position ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);

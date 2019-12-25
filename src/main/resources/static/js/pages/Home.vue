@@ -10,7 +10,7 @@
       <v-btn color="warning" class="button">Бухгалтерия</v-btn>
     </div>
     <div id="grid-4">
-      <v-btn color="info" class="button">Поставки</v-btn>
+      <v-btn color="info" to="/deliveries" class="button">Поставки</v-btn>
     </div>
   </div>
 </template>

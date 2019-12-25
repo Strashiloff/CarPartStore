@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field data-vv-name="name" :rules="[rules.fill]" clearable v-model="userFrom.username" required label="Логин"
+    <v-text-field data-vv-name="name" :rules="[rules.fill]" clearable v-model="userFrom.username" autofocus required label="Логин"
                   v-validate="'required|max:20'" :counter="20"></v-text-field>
     <v-text-field oninput="this.value = this.value.replace(' ', '')"
                   v-model="password = userFrom.password"

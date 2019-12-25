@@ -29,7 +29,7 @@ public class PostController {
     }
 
     @PutMapping("{id}")
-    public Post Update(@PathVariable("id") Post postFromDb, @RequestBody Post post){
+    public Post  Update(@PathVariable("id") Post postFromDb, @RequestBody Post post){
         BeanUtils.copyProperties(post, postFromDb, "id");
         return postRepo.save(postFromDb);
     }

@@ -7,16 +7,12 @@ import java.time.LocalDateTime;
 public class Contract {
 
   private Long Id;
-  private String member_one;
-  private String member_two;
   private String body;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime date;
 
   public Contract() {
     Id = -1L;
-    this.member_one = "";
-    this.member_two = "";
     this.body = "";
     this.date = null;
   }
@@ -27,22 +23,6 @@ public class Contract {
 
   public void setId(Long id) {
     Id = id;
-  }
-
-  public String getMember_one() {
-    return member_one;
-  }
-
-  public void setMember_one(String member_one) {
-    this.member_one = member_one;
-  }
-
-  public String getMember_two() {
-    return member_two;
-  }
-
-  public void setMember_two(String member_two) {
-    this.member_two = member_two;
   }
 
   public String getBody() {

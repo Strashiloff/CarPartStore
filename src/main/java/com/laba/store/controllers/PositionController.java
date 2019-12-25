@@ -18,7 +18,7 @@ public class PositionController {
   private DataBaseService dataBaseService;
 
   @GetMapping
-  public ArrayList<Position> getAllPosition(@RequestBody Supply supply) throws SQLException { return dataBaseService.getPositionFromSupply(supply.getId()); }
+  public ArrayList<Position> getAllPosition() throws SQLException { return dataBaseService.getPositionFromSupply(); }
 
   @PostMapping
   public HashMap<String, String> addPosition(@RequestBody Position position) throws SQLException { return dataBaseService.addPositionRequest(position); }

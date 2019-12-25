@@ -143,7 +143,7 @@ language plpgsql;
     spare_part
 */
 
-create or replace function add_spare_part(_id_type integer, _id_section integer, _name varchar(500), _price real, _proportions varchar(500))
+create or replace function add_spare_part(_id_type integer, _id_section integer, _name varchar(500), _price double precision, _proportions varchar(500))
     returns boolean as
 $$
 begin
@@ -157,7 +157,7 @@ end;
 $$
 language plpgsql;
 
-create or replace function update_spare_part(_id integer, _id_type integer, _id_section integer, _name varchar(500), _price real, _proportions varchar(500))
+create or replace function update_spare_part(_id integer, _id_type integer, _id_section integer, _name varchar(500), _price double precision, _proportions varchar(500))
     returns boolean as
 $$
 begin
@@ -194,6 +194,7 @@ $$
 begin
     if not exists(select * from "category" where "name" = _name) then
         insert into "category"("name") values (_name);
+        return true;
     else return false;
     end if;
 end;
@@ -206,6 +207,7 @@ $$
 begin
     if exists(select * from "category" where "name" = _name) then
         update "category" set "name" = _name where id_type = _id;
+        return true;
     else return false;
     end if;
 end;
@@ -235,6 +237,7 @@ $$
 begin
     if not exists(select * from "country" where "name" = _name) then
         insert into "country"("name") values (_name);
+		return true;
     else return false;
     end if;
 end;
@@ -305,7 +308,7 @@ create or replace function del_purveyor(_id integer)
 $$
 begin
     if not exists(select * from "supply" where id_purveyor = _id) then
-		delete from "purveyor" where id_purveyor = _id;
+		    delete from "purveyor" where id_purveyor = _id;
         return true;
     else return false;
     end if;
@@ -318,7 +321,7 @@ language plpgsql;
 */
 
 create or replace function add_supply(_id_contract integer, _id_purveyor integer,
-	_data timestamp, _tax real)
+	_data timestamp, _tax double precision)
     returns boolean as
 $$
 begin
@@ -333,13 +336,13 @@ $$
 language plpgsql;
 
 create or replace function update_supply(_id_supply integer, _id_contract integer, _id_purveyor integer,
-	_data timestamp, _tax real)
+	_data timestamp, _tax double precision)
     returns boolean as
 $$
 begin
     if exists(select * from "supply" where id_supply =_id_supply) then
         update "supply" set id_contract = _id_contract, id_purveyor =_id_purveyor,
-		"data" = _data, tax = _tax where id_supply = _id_supply;
+		"date" = _data, tax = _tax where id_supply = _id_supply;
         return true;
     else return false;
     end if;
@@ -361,14 +364,13 @@ language plpgsql;
 
 /* Contract */
 
-create or replace function add_contract(_member_one varchar(255), _member_two varchar(255),
-	_body text, _date timestamp)
+create or replace function add_contract(_body text, _date timestamp)
     returns boolean as
 $$
 begin
     if not exists(select * from "contract" where id_contract =_id_contract) then
-        insert into "contract"(member_one, member_two, body, "date")
-        values(_member_one, _member_two, _body, _date);
+        insert into "contract"(body, "date")
+        values(_body, _date);
         return true;
     else return false;
     end if;
@@ -376,14 +378,12 @@ end;
 $$
 language plpgsql;
 
-create or replace function update_contract(id_contract integer, _member_one varchar(255), _member_two varchar(255),
-	_body text, _date timestamp)
+create or replace function update_contract(_id integer, _body text, _date timestamp)
     returns boolean as
 $$
 begin
-    if not exists(select * from "contract" where id_contract =_id_contract) then
-        update "contract" set member_one = _member_one, member_two =_member_two,
-		body = _body, "date" = _date where id_supply = _id_supply;
+    if not exists(select * from "contract" where id_contract =_id) then
+        update "contract" set body = _body, "date" = _date where id_contract = _id;
         return true;
     else return false;
     end if;
@@ -407,11 +407,11 @@ language plpgsql;
 /* Position */
 
 create or replace function add_position(_id_supply integer, _id_spare_part integer,
-	_amount integer, _price real)
+	_amount integer, _price double precision)
     returns boolean as
 $$
 begin
-    if not exists(select * from "position" where id_spare_part =_id_spare_part) then
+    if not exists(select * from "position" where id_spare_part =_id_spare_part and id_supply = _id_supply) then
         insert into "position"(id_supply, id_spare_part, amount, price)
         values(_id_supply, _id_spare_part, _amount, _price);
         return true;
@@ -422,7 +422,7 @@ $$
 language plpgsql;
 
 create or replace function update_position(_id integer, _id_supply integer, _id_spare_part integer,
-	_amount integer, _price real)
+	_amount integer, _price double precision)
     returns boolean as
 $$
 begin
@@ -452,7 +452,7 @@ language plpgsql;
 /* list */
 
 create or replace function add_list(_id_request integer, _id_position integer,
-	_amount integer, _price real)
+	_amount integer, _price double precision)
     returns boolean as
 $$
 begin
@@ -467,7 +467,7 @@ $$
 language plpgsql;
 
 create or replace function update_list(_id integer, _id_request integer, _id_position integer,
-	_amount integer, _price real)
+	_amount integer, _price double precision)
     returns boolean as
 $$
 begin

@@ -9,6 +9,12 @@ import { moduleStoke } from './modules/stoke'
 import { moduleSection } from './modules/section'
 import { moduleTypes } from './modules/type'
 import { moduleSpareParts } from './modules/spare_part'
+import { moduleCountry } from './modules/country'
+import { moduleCategory } from './modules/category'
+import { modulePurveyor } from './modules/purveyor'
+import { moduleSupply } from './modules/supply'
+import { modulePositions } from './modules/position'
+import { moduleContract } from './modules/contract'
 
 
 //plugins
@@ -26,7 +32,13 @@ export default new Vuex.Store({
 		stoke: moduleStoke,
 		section: moduleSection,
 		type: moduleTypes,
-		sparePart: moduleSpareParts
+		sparePart: moduleSpareParts,
+		country: moduleCountry,
+		category: moduleCategory,
+		purveyor: modulePurveyor,
+		supply: moduleSupply,
+		position: modulePositions,
+		contract: moduleContract
 	},
 	plugins: [
 		rolesPlugin(),
