@@ -1,17 +1,13 @@
 package com.laba.store.services;
 
 import com.laba.store.domain.*;
-import org.hibernate.sql.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import javax.validation.constraints.Null;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TimeZone;
@@ -669,11 +665,13 @@ public class DataBaseService {
             Request request1;
             while(resultSet.next()){
                 request1 = new Request();
-                request1.setId(Long.valueOf(resultSet.getString(1)));
-                request1.setId_customer(Long.valueOf(resultSet.getString(3)));
-                request1.setDate(LocalDateTime.parse(resultSet.getString(4)));
-                request1.setPeriod(LocalDateTime.parse(resultSet.getString(5)));
-                request1.setId_user(Long.valueOf(resultSet.getString(2)));
+                request1.setId(resultSet.getLong(1));
+                request1.setId_customer(resultSet.getLong(2));
+                Timestamp timestamp = Timestamp.valueOf(resultSet.getString(3));
+                request1.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), TimeZone.getDefault().toZoneId()));
+                timestamp = Timestamp.valueOf(resultSet.getString(4));
+                request1.setPeriod(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), TimeZone.getDefault().toZoneId()));
+                request1.setId_user(Long.valueOf(resultSet.getString(5)));
                 arrayList.add(request1);
             }
         }
@@ -898,7 +896,7 @@ public class DataBaseService {
                 customer.setName(resultSet.getString(3));
                 customer.setPatronymic(resultSet.getString(4));
                 customer.setContact(resultSet.getString(5));
-                customer.setSex(Boolean.parseBoolean(resultSet.getString(6)));
+                customer.setSex(resultSet.getBoolean(6));
                 arrayList.add(customer);
             }
         }
@@ -944,22 +942,22 @@ public class DataBaseService {
     }
 
     public HashMap<String, String> addCustomerRequest(Customer customer) throws SQLException {
-        String request = "select add_customer("
-            +customer.getSurname()+","
-            +customer.getName()+","
-            +customer.getPatronymic()+","
-            +customer.getContact()+","
+        String request = "select add_customer('"
+            +customer.getSurname()+"','"
+            +customer.getName()+"','"
+            +customer.getPatronymic()+"','"
+            +customer.getContact()+"',"
             +customer.isSex()+")";
         return boolResponse(request);
     }
 
     public HashMap<String, String> saveCustomerRequest(Customer customer) throws SQLException {
         String request = "select update_customer("
-            +customer.getId()+","
-            +customer.getSurname()+","
-            +customer.getName()+","
-            +customer.getPatronymic()+","
-            +customer.getContact()+","
+            +customer.getId()+",'"
+            +customer.getSurname()+"','"
+            +customer.getName()+"','"
+            +customer.getPatronymic()+"','"
+            +customer.getContact()+"',"
             +customer.isSex()+")";
         return boolResponse(request);
     }
