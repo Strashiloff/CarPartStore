@@ -2,4 +2,4 @@
 target/
 node_modules/
 src/main/resources/static/js
-node/
+/node/
