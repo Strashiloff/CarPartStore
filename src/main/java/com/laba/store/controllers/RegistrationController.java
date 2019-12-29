@@ -5,6 +5,7 @@ import com.laba.store.repos.PostRepo;
 import com.laba.store.repos.UserRepo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,9 @@ public class RegistrationController {
     private PostRepo postRepo;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     public RegistrationController(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
@@ -31,6 +35,7 @@ public class RegistrationController {
             user.setId(-1L);
             return user;
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAction(true);
         return userRepo.save(user);
     }

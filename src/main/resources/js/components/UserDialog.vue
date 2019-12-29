@@ -3,7 +3,7 @@
     <v-text-field data-vv-name="name" :disabled="displayRoles" :rules="[rules.fill]" clearable v-model="userFrom.username" autofocus required label="Логин"
                   v-validate="'required|max:20'" :counter="20"></v-text-field>
     <v-text-field oninput="this.value = this.value.replace(' ', '')"
-                  v-model="password = userFrom.password"
+                  v-model="password"
                   :append-icon="show1 ? 'visibility' : 'visibility_off'"
                   :rules="[rules.min]"
                   :type="show1 ? 'text' : 'password'"
@@ -14,7 +14,8 @@
 									:disabled="displayRoles"
                   @click:append="show1 = !show1"
     ></v-text-field>
-    <v-text-field v-if="profile"
+    <v-text-field
+									:disabled="displayRoles"
                   v-model="confPas"
 									:type="'password'"
                   :rules="[rules.pas, rules.fill]"
@@ -36,7 +37,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn v-if="mode" @click="Canceled">Отмена</v-btn>
-      <v-btn @click="changeUser" :disabled="enter" color="indigo">Сохранить</v-btn>
+      <v-btn @click="changeUser" :disabled="enter || confPas != password || password == ''" color="indigo">Сохранить</v-btn>
     </v-card-actions>
   </div>
 </template>
@@ -92,6 +93,8 @@
 				} else this.errorAction({check: true, error: 'Fill in all the fields!'})
 			},
 			Canceled() {
+				this.confPas = '',
+				this.password = '',
 				eventBus.$emit('dialog2', false)
 			}
 		},
