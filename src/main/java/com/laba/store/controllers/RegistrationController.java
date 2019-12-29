@@ -36,7 +36,7 @@ public class RegistrationController {
             return user;
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setAction(true);
+        user.setAction(false);
         return userRepo.save(user);
     }
 }
