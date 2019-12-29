@@ -33,7 +33,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="$emit('cancel', false)">Отмена</v-btn>
-        <v-btn :disabled="password != conf || password != ''" @click="add()">Сохранить</v-btn>
+        <v-btn :disabled="password != conf || password == ''" @click="add()">Сохранить</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
