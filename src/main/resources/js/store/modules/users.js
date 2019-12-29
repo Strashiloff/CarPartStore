@@ -85,7 +85,7 @@ export const moduleUsers = {
 		getErrorAddUser: state => state.errorAddUser,
 		getUsers: state => state.users,
 		getUserById: state => id => state.users.find(elem => {
-			return elem.id = id
+			return elem.id == id
 		})
 	}
 }

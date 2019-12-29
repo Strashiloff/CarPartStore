@@ -31,7 +31,7 @@ public class RegistrationController {
             user.setId(-1L);
             return user;
         }
-        user.setAction(false);
+        user.setAction(true);
         return userRepo.save(user);
     }
 }

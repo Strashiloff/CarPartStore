@@ -1,52 +1,52 @@
-import customerApi from '../../api/customer'
+import buyApi from '../../api/buy'
 import getIndex from './utils'
 
-export const moduleCustomer = {
+export const moduleBuy = {
 	namespaced: true,
 	state: {
-		customers: [],
+		buys: [],
 	},
 	actions: {
-		async getCustomersAction({commit}) {
-			const result = await customerApi.allCustomers()
+		async getBuysAction({commit}) {
+			const result = await buyApi.allbuys()
 			const data = await result.json()
-			commit('getCustomersMutation', data)
+			commit('getBuysMutation', data)
 		},
-		async addCustomerAction({commit}, paylaod) {
-			const result = await customerApi.addCustomer(paylaod.customer)
+		async addBuyAction({commit}, buy) {
+			const result = await buyApi.addbuy(buy)
 			const data = await result.json()
 			if (data.ok) {
-				commit('addCustomerMutation', paylaod)
+				commit('addBuyMutation', buy)
 			}
 		},
-		async saveCustomerAction({commit}, customer) {
-			const result = await customerApi.saveCustomer(customer)
+		async saveBuyAction({commit}, buy) {
+			const result = await buyApi.savebuy(buy)
 			const data = await result.json()
-			if (data.ok) commit('saveCustomerMutation', customer)
+			if (data.ok) commit('saveBuyMutation', buy)
 		},
-		async removeCustomerAction({commit}, customer) {
-			const result = await customerApi.removeCustomer(customer)
+		async removeBuyAction({commit}, buy) {
+			const result = await buyApi.removebuy(buy)
 			const data = await result.json()
-			if (data.ok) commit('removeCustomerMutation', customer)
+			if (data.ok) commit('removeBuyMutation', buy)
 		}
 	},
 	mutations: {
-		getCustomersMutation(state, customers) {
-			state.customers = customers
+		getBuysMutation(state, buys) {
+			state.buys = buys
 		},
-		addCustomerMutation(state, customer) {},
-		saveCustomerMutation(state, customer) {
-			let index = getIndex(state.customers, customer.id)
-			state.customers.splice(index, 1, customer)
+		addBuyMutation(state, buy) {},
+		saveBuyMutation(state, buy) {
+			let index = getIndex(state.buys, buy.id)
+			state.buys.splice(index, 1, buy)
 		},
-		removeCustomerMutation(state, customer) {
-			state.customers.splice(getIndex(state.customers, customer.id), 1)
+		removeBuyMutation(state, buy) {
+			state.buys.splice(getIndex(state.buys, buy.id), 1)
 		},
 	},
 	getters: {
-		getAllCustomers: state => state.customers,
-		getCustomerById: state => id => state.customers.find(elem => {
+		getAllBuys: state => state.buys,
+		getBuyById: state => id => state.buys.find(elem => {
 			return elem.id == id
-		})
+		}) 
   }
 }

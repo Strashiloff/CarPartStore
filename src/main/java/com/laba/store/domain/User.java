@@ -18,6 +18,9 @@ public class User {
     private boolean action;
     private String name;
     private String surname;
+    private String status;
+    private String image;
+    private String color;
 
     @ManyToOne
     @JoinColumn(name = "post", referencedColumnName = "id")
@@ -90,5 +93,29 @@ public class User {
 
     public void setPosition(Post post) {
         this.post = post;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

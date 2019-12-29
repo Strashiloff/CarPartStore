@@ -7,6 +7,8 @@ export default function () {
         case 'app/getCurrentUserMutation':
           if (payload.roles.includes('ADMIN')) {
             window.vm.$user.set({ role: 'ADMIN' })
+          } else if (payload.roles.includes('GENERAL_ADMIN')) {
+            window.vm.$user.set({ role: 'ADMIN' })
           } else {
             window.vm.$user.set({ role: 'USER' })
           }

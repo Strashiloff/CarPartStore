@@ -3,9 +3,10 @@ import usersApi from "../../api/users";
 export const moduleApp = {
 	namespaced: true,
 	state: {
-		roles: ['ADMIN', 'USER'],
+		roles: ['GENERAL_ADMIN','ADMIN', 'USER'],
 		profile: [],
 		admin: false,
+		general: false,
 		theme: true,
 		drawer: false,
 		editItem: {}
@@ -25,6 +26,10 @@ export const moduleApp = {
 			state.profile = user
 //			this.$user.set({ role: user})
 			if (user.roles.includes('ADMIN')) state.admin = true
+			if (user.roles.includes('GENERAL_ADMIN')) {
+				state.general = true
+				state.admin = true
+			}
 		},
 		setThemeMutation: (state, payload) => { state.theme = payload },
 		setDrawerMutation: (state) => { state.drawer = ! state.drawer },
@@ -36,7 +41,8 @@ export const moduleApp = {
 			return state.profile.name && state.profile.name[0] + state.profile.surname[0]
 		},
 		getUserNameFull: state => state.profile.name + ' ' + state.profile.surname,
-    getIsAdmin: state => state.admin,
+		getIsAdmin: state => state.admin,
+		getIsGeneral: state => state.general,
 		getRoles: state => state.roles,
 		getTheme: state => state.theme,
 		getDrawer: state => state.drawer,

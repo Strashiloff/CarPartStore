@@ -1,5 +1,7 @@
 package com.laba.store.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 public class Defect {
@@ -7,6 +9,7 @@ public class Defect {
   private Long Id;
   private Long id_buy;
   private Long id_list;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime date;
   private int amount;
 

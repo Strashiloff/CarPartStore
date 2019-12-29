@@ -7,7 +7,7 @@
       <v-btn color="error" to="/stokes" class="button">Склад</v-btn>
     </div>
     <div id="grid-3">
-      <v-btn color="warning" class="button">Бухгалтерия</v-btn>
+      <v-btn color="warning" title="Раздел в разработке"  class="button">Бухгалтерия</v-btn>
     </div>
     <div id="grid-4">
       <v-btn color="info" to="/deliveries" class="button">Поставки</v-btn>

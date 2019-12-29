@@ -6,11 +6,12 @@ export const moduleLists = {
 	namespaced: true,
 	state: {
     lists: [],
-    listsCollection: {}
+    listsCollection: {},
+		edit: {}
 	},
 	actions: {
 		async setAllListsAction ({ commit }) {
-      let result = await listsApi.getAllLists()
+      let result = await listsApi.allLists()
       let data = await result.json()
       commit('setAllListsMutation', data)
     },
@@ -34,6 +35,9 @@ export const moduleLists = {
       if (data.ok) {
         commit('deleteListMutation', list)
       }
+    },
+		setEditItem ({ commit }, position) {
+      commit('setEditPositionMutation', position)
     }
 	},
 	mutations: {
@@ -41,13 +45,13 @@ export const moduleLists = {
       state.lists = data
       state.listsCollection = {}
       data.forEach(list => {
-        if (state.listsCollection[list.id_stoke]) {
-          let array = state.listsCollection[list.id_stoke]
-          state.listsCollection[list.id_stoke].push(list)
+        if (state.listsCollection[list.id_request]) {
+          let array = state.listsCollection[list.id_request]
+          state.listsCollection[list.id_request].push(list)
         } else {
-          Vue.set(state.listsCollection, list.id_stoke, [])
-          state.listsCollection[list.id_stoke] = new Array()
-          state.listsCollection[list.id_stoke].push(list)
+          Vue.set(state.listsCollection, list.id_request, [])
+          state.listsCollection[list.id_request] = new Array()
+          state.listsCollection[list.id_request].push(list)
         }
       })
     },
@@ -60,9 +64,18 @@ export const moduleLists = {
       let index = getIndex(state.lists, data.id)
       state.lists.splice(index, 1)
     },
+    setEditPositionMutation (state, data) {
+      state.edit = data
+    }
 	},
 	getters: {
     getAllLists: state => state.lists,
-    getListById: state => id => state.lists[getIndex(state.lists, id)]
+    getListById: state => id => state.lists[getIndex(state.lists, id)],
+    getListByRequesttId: state => id => {
+      return state.listsCollection[id] && Array.from(state.listsCollection[id]).sort((a, b) => { 
+        return a.number - b.number 
+      }) || []
+    },
+    getEditList: state => state.edit
 	}
 }

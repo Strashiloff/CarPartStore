@@ -597,11 +597,11 @@ public class DataBaseService {
 
     /* List */
 
-    public ArrayList<List> getListFromRequest(Long id) throws SQLException {
+    public ArrayList<List> getListFromRequest() throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ArrayList<List> arrayList= new ArrayList<>();
-        String request = "select * from list where id_list="+id+";";
+        String request = "select * from list order by id_list ASC;";
         try {
             connection = connectDb();
             statement = connection.prepareStatement(request);
@@ -718,9 +718,9 @@ public class DataBaseService {
     public HashMap<String, String> addRequestRequest(Request req) throws SQLException {
         String request = "select add_request("
             +req.getId_user()+","
-            +req.getId_customer()+","
-            +req.getDate()+","
-            +req.getPeriod()+")";
+            +req.getId_customer()+",'"
+            +Timestamp.valueOf(req.getDate())+"','"
+            +Timestamp.valueOf(req.getPeriod())+"')";
         return boolResponse(request);
     }
 
@@ -728,9 +728,9 @@ public class DataBaseService {
         String request = "select update_request("
             +req.getId()+","
             +req.getId_user()+","
-            +req.getId_customer()+","
-            +req.getDate()+","
-            +req.getPeriod()+")";
+            +req.getId_customer()+",'"
+            +Timestamp.valueOf(req.getDate())+"','"
+            +Timestamp.valueOf(req.getPeriod())+"')";
         return boolResponse(request);
     }
 
@@ -753,10 +753,11 @@ public class DataBaseService {
             Buy buy;
             while(resultSet.next()){
                 buy = new Buy();
-                buy.setId(Long.valueOf(resultSet.getString(1)));
-                buy.setId_request(Long.valueOf(resultSet.getString(1)));
-                buy.setDate(LocalDateTime.parse(resultSet.getString(3)));
-                buy.setCompleted(Boolean.parseBoolean(resultSet.getString(2)));
+                buy.setId(resultSet.getLong(1));
+                buy.setId_request(resultSet.getLong(2));
+                Timestamp timestamp = Timestamp.valueOf(resultSet.getString(3));
+                buy.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), TimeZone.getDefault().toZoneId()));
+                buy.setCompleted(resultSet.getBoolean(4));
                 arrayList.add(buy);
             }
         }
@@ -802,8 +803,8 @@ public class DataBaseService {
     public HashMap<String, String> addBuyRequest(Buy buy) throws SQLException {
         String request = "select add_buy("
             +buy.getId_request()+","
-            +buy.isCompleted()+","
-            +buy.getDate()+")";
+            +buy.isCompleted()+",'"
+            +Timestamp.valueOf(buy.getDate())+"')";
         return boolResponse(request);
     }
 
@@ -811,8 +812,8 @@ public class DataBaseService {
         String request = "select update_buy("
             +buy.getId()+","
             +buy.getId_request()+","
-            +buy.isCompleted()+","
-            +buy.getDate()+")";
+            +buy.isCompleted()+",'"
+            +Timestamp.valueOf(buy.getDate())+"')";
         return boolResponse(request);
     }
 
@@ -835,10 +836,11 @@ public class DataBaseService {
             Defect defect;
             while(resultSet.next()){
                 defect = new Defect();
-                defect.setId(Long.valueOf(resultSet.getString(1)));
-                defect.setId_buy(Long.valueOf(resultSet.getString(2)));
-                defect.setId_list(Long.valueOf(resultSet.getString(3)));
-                defect.setDate(LocalDateTime.parse(resultSet.getString(4)));
+                defect.setId(resultSet.getLong(1));
+                defect.setId_buy(resultSet.getLong(2));
+                defect.setId_list(resultSet.getLong(3));
+                Timestamp timestamp = Timestamp.valueOf(resultSet.getString(4));
+                defect.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp.getTime()), TimeZone.getDefault().toZoneId()));
                 defect.setAmount(resultSet.getInt(5));
                 arrayList.add(defect);
             }
@@ -856,8 +858,8 @@ public class DataBaseService {
     public HashMap<String, String> addDefectRequest(Defect defect) throws SQLException {
         String request = "select add_defect("
             +defect.getId_buy()+","
-            +defect.getId_list()+","
-            +defect.getDate()+","
+            +defect.getId_list()+",'"
+            +Timestamp.valueOf(defect.getDate())+"',"
             +defect.getAmount()+")";
         return boolResponse(request);
     }
@@ -866,8 +868,8 @@ public class DataBaseService {
         String request = "select update_defect("
             +defect.getId()+","
             +defect.getId_buy()+","
-            +defect.getId_list()+","
-            +defect.getDate()+","
+            +defect.getId_list()+",'"
+            +Timestamp.valueOf(defect.getDate())+"',"
             +defect.getAmount()+")";
         return boolResponse(request);
     }

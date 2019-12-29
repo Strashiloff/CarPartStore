@@ -7,6 +7,7 @@ export const modulePositions = {
 	state: {
     positions: [],
     positionsCollection: {},
+    positionSparePart: {},
     edit: {}
 	},
 	actions: {
@@ -44,7 +45,15 @@ export const modulePositions = {
 		setAllPositionsMutation (state, data) {
       state.positions = data
       state.positionsCollection = {}
+      state.positionSparePart = {}
       data.forEach(position => {
+        if (state.positionSparePart[position.id_spare_part]) {
+          state.positionSparePart[position.id_spare_part].push(position)
+        } else {
+          Vue.set(state.positionSparePart, position.id_spare_part, [])
+          state.positionSparePart[position.id_spare_part] = new Array()
+          state.positionSparePart[position.id_spare_part].push(position)
+        }
         if (state.positionsCollection[position.id_supply]) {
           state.positionsCollection[position.id_supply].push(position)
         } else {
@@ -76,6 +85,11 @@ export const modulePositions = {
     getPositionById: state => id => state.positions.length && state.positions[getIndex(state.positions, id)],
     getPositionBySupplyId: state => id => {
       return state.positionsCollection[id] && Array.from(state.positionsCollection[id]).sort((a, b) => { 
+        return a.number - b.number 
+      }) || []
+    },
+    getPositionBySparePartId: state => id => {
+      return state.positionSparePart[id] && Array.from(state.positionSparePart[id]).sort((a, b) => { 
         return a.number - b.number 
       }) || []
     },

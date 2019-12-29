@@ -17,6 +17,9 @@ import { modulePositions } from './modules/position'
 import { moduleContract } from './modules/contract'
 import { moduleCustomer } from './modules/customer'
 import { moduleRequest } from './modules/request'
+import { moduleLists } from './modules/list'
+import { moduleBuy } from './modules/buy'
+import { moduleDefect } from './modules/defect'
 
 //plugins
 import rolesPlugin from './plugins/rolesPlugin.js'
@@ -41,7 +44,10 @@ export default new Vuex.Store({
 		position: modulePositions,
 		contract: moduleContract,
 		customer: moduleCustomer,
-		request: moduleRequest
+		request: moduleRequest,
+		list: moduleLists,
+		buy: moduleBuy,
+		defect: moduleDefect
 	},
 	plugins: [
 		rolesPlugin(),

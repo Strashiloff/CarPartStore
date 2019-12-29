@@ -56,7 +56,7 @@ export const moduleSpareParts = {
 		getAllSpareParts: state => state.spareParts,
 		getSparePartById: state => id => state.spareParts.find(elem => {
 			return elem.id == id
-		}),
+		}) || { id: -1 },
 		// getStokeById: state => id => state.stokes
 		getEdit: state => state.edit
 	}

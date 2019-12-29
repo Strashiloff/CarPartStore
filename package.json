@@ -12,6 +12,7 @@
     "moment": "^2.24.0",
     "vee-validate": "^2.2.10",
     "vue": "^2.6.10",
+    "vue-color": "^2.7.0",
     "vue-material-design-icons": "^4.2.0",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.6",

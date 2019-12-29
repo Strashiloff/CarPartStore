@@ -1,11 +1,17 @@
 export default function () {
   return store => {
     let dispatch = store.dispatch
+    let getter = store.getters
 
     store.subscribe((mutation, state) => {
       let payload = mutation.payload
 
       switch (mutation.type) {
+        case 'users/updateUserMutation':
+          if (payload.username == getter['app/getCurrentUser'].username) {
+            dispatch('app/getCurrentUserAction')
+          }
+          break
         case 'stoke/addStokeMutation':
           dispatch('stoke/getAllStokeAction')
           break
@@ -39,6 +45,18 @@ export default function () {
           break
         case 'customer/addCustomerMutation':
           dispatch('customer/getCustomersAction')
+          break
+        case 'request/addRequestMutation':
+          dispatch('request/getRequestsAction')
+          break
+        case 'list/addListMutation':
+          dispatch('list/setAllListsAction')
+          break
+        case 'buy/addBuyMutation':
+          dispatch('buy/getBuysAction')
+          break
+        case 'defect/addDefectMutation':
+          dispatch('defect/getDefectsAction')
           break
       }
     })

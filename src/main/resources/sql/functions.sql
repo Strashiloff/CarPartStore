@@ -538,14 +538,17 @@ language plpgsql;
 
 /* buy */
 
-create or replace function add_buy(_id_request integer, _completed integer,
+create or replace function add_buy(_id_request integer, _completed boolean,
 	_date timestamp)
     returns boolean as
 $$
 begin
-	insert into "buy"(id_request, completed, "date")
-	values(_id_request, _completed, _date);
-	return true;
+  if exists (select * from request where id_request = _id_request)
+    insert into "buy"(id_request, completed, "date")
+    values(_id_request, _completed, _date);
+    return true;
+   else return false;
+   end if;
 end;
 $$
 language plpgsql;

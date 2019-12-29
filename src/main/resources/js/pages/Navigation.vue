@@ -85,16 +85,6 @@
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Navigation',
-  // props: {
-  //   drawer: {
-  //     default: false
-  //   }
-  // },
-  watch: {
-    drawer () {
-      console.log(this.drawer)
-    }
-  },
   data () {
     return {
       items: [

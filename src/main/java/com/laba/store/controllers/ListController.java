@@ -17,7 +17,7 @@ public class ListController {
   private DataBaseService dataBaseService;
 
   @GetMapping
-  public ArrayList<List> getAllList(@RequestBody Request request) throws SQLException { return dataBaseService.getListFromRequest(request.getId()); }
+  public ArrayList<List> getAllList() throws SQLException { return dataBaseService.getListFromRequest(); }
 
   @PostMapping
   public HashMap<String, String> addList(@RequestBody List list) throws SQLException { return dataBaseService.addListRequest(list); }

@@ -37,7 +37,6 @@ export const moduleRequest = {
 	mutations: {
 		getRequestsMutation(state, data) {
 			state.requests = data.requests
-			console.log(data.rootGetters['app/getCurrentUser'])
 			// requests.forEach(elem => {
 			// 	state.requestsView.push({
 			// 		id: id,

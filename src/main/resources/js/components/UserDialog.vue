@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field data-vv-name="name" :rules="[rules.fill]" clearable v-model="userFrom.username" autofocus required label="Логин"
+    <v-text-field data-vv-name="name" :disabled="displayRoles" :rules="[rules.fill]" clearable v-model="userFrom.username" autofocus required label="Логин"
                   v-validate="'required|max:20'" :counter="20"></v-text-field>
     <v-text-field oninput="this.value = this.value.replace(' ', '')"
                   v-model="password = userFrom.password"
@@ -11,19 +11,21 @@
                   label="Пароль"
                   hint="Не менее 6 символов"
                   counter
+									:disabled="displayRoles"
                   @click:append="show1 = !show1"
     ></v-text-field>
-    <v-text-field v-if="!getIsAdmin"
+    <v-text-field v-if="profile"
                   v-model="confPas"
+									:type="'password'"
                   :rules="[rules.pas, rules.fill]"
                   label="Подтверждение пароля"
     ></v-text-field>
-    <v-text-field :rules="[rules.fill]" clearable v-model="userFrom.name" :type="'text'" data-vv-name="name" name="name"
+    <v-text-field :rules="[rules.fill]" :disabled="displayRoles" clearable v-model="userFrom.name" :type="'text'" data-vv-name="name" name="name"
                   label="Имя"></v-text-field>
-    <v-text-field :rules="[rules.fill]" clearable v-model="userFrom.surname" :type="'text'" data-vv-name="surname"
+    <v-text-field :rules="[rules.fill]" :disabled="displayRoles" clearable v-model="userFrom.surname" :type="'text'" data-vv-name="surname"
                   name="password" label="Фамилия"></v-text-field>
-    <v-select v-if="getIsAdmin" v-model="userFrom.roles" :items="getRoles" attach label="Системные роль:" multiple></v-select>
-    <v-select v-if="getIsAdmin" :search="search" v-model="post = userFrom.position" :items="getAllPosts" return-object
+    <v-select v-if="getIsAdmin" v-model="roles = userFrom.roles" :disabled="displayRoles" :items="getRols" attach label="Системные роль:" multiple></v-select>
+    <v-select :disabled="displayRoles" :search="search" v-model="post = userFrom.position" :items="getAllPosts" return-object
               item-text="post" label="Должность"></v-select>
     <v-alert height="70px" class="text-xs-center body-1 error" v-show="getErrorAddUser.check">
       {{getErrorAddUser.error}}
@@ -44,7 +46,7 @@
 	import { eventBus } from 'main';
 
 	export default {
-		props: ['userFrom', 'editMethod', 'mode'],
+		props: ['userFrom', 'editMethod', 'mode', 'profile'],
 		name: "UserDialog",
 		data() {
 			return {
@@ -52,6 +54,7 @@
 				password: '',
 				text: [],
 				post: {},
+				roles: [],
 				show1: false,
 				enter: false,
 				search: '',
@@ -68,6 +71,11 @@
 			},
 			password() {
 				this.enter = this.userFrom.password.length < 6
+			},
+			roles (value) {
+				if (value.length == 0) {
+					this.roles.push('USER')
+				}
 			}
 		},
 		methods: {
@@ -89,12 +97,18 @@
 		},
 		computed: {
 			...mapGetters('users', ['getErrorAddUser']),
-			...mapGetters('app', ['getRoles', 'getIsAdmin']),
-			...mapGetters('posts', ['getAllPosts'])
+			...mapGetters('app', ['getRoles', 'getIsAdmin', 'getIsGeneral', 'getCurrentUser']),
+			...mapGetters('posts', ['getAllPosts']),
+			getRols () {
+				return this.getIsGeneral == false ? this.getRoles.filter(elem => elem != 'GENERAL_ADMIN') : this.getRoles
+			},
+			displayRoles () {
+				let bl = !this.getIsGeneral && (this.getIsAdmin && !(this.userFrom.username == this.getCurrentUser.username) && !this.profile && !(this.userFrom.roles.includes('USER') && this.userFrom.roles.length == 1))
+				return bl
+			}
     },
 		mounted() {
 			eventBus.$on('error', (data) => {
-				console.log(data)
 				if (data.check === false) {
 					eventBus.$emit('dialog2', false)
 				} 

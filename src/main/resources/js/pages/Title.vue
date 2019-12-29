@@ -27,7 +27,12 @@
           </v-list-tile-action>
           <v-list-tile-title>Home</v-list-tile-title>
         </v-list-tile>
-
+        <v-list-tile to="/account">
+          <v-list-tile-action >
+            <v-icon>mdi-account</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>Аккаунт</v-list-tile-title>
+        </v-list-tile>
         <v-list-group
           prepend-icon="mdi-shield-account"
            v-if="getIsAdmin"
@@ -108,7 +113,13 @@
             </v-list-tile-action>
             <v-list-tile-title v-text="order[0]"></v-list-tile-title>
           </v-list-tile>
-        </v-list-group>     
+        </v-list-group>   
+        <v-list-tile to="/userlist">
+          <v-list-tile-action >
+            <v-icon>mdi-account-supervisor</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>Сотрудники</v-list-tile-title>
+        </v-list-tile>  
       </v-list>
     </v-navigation-drawer>
     <v-toolbar app :dark="getTheme">
@@ -121,15 +132,39 @@
         <v-btn class="ml-4" to="/" icon>
           <v-icon large>home</v-icon>
         </v-btn>
-        <v-btn class="ml-2" v-if="getIsAdmin" flat to="/admin/">Панель админа</v-btn>
+        <v-btn class="ml-2 hidden-xs-only" v-if="getIsAdmin" flat to="/admin/">Панель админа</v-btn>
+        <v-btn class="ml-2 hidden-xs-only" flat to="/userlist">Доска сотрудников</v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
-      <v-toolbar-title class="headline hidden-xs-only">{{getUserNameFull}}</v-toolbar-title>
+      <v-menu 
+        offset-y
+        open-on-hover
+        align-center
+      >
+        <template v-slot:activator="{ on }">
+          <v-toolbar-title
+            v-on="on"
+            open-on-hover
+            class="headline hidden-xs-only"
+          >
+            {{getUserNameFull}}
+          </v-toolbar-title>
+        </template>
+        <v-list >
+          <v-list-tile to="/account">
+            <v-list-tile-title class="text-xs-center">Аккаунт</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile href="/logout">
+            <v-list-tile-title class="text-xs-center">Выйти</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <!-- <v-toolbar-title to="/"  class="headline hidden-xs-only">{{getUserNameFull}}</v-toolbar-title> -->
       <v-btn icon href="/logout">
         <v-icon large color="error">mdi-exit-to-app</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-content>
+    <v-content class="back-image">
       <router-view></router-view>
     </v-content>
     <v-footer
@@ -149,6 +184,18 @@
         </v-flex>
       </v-layout>
     </v-footer>
+    <v-btn
+      v-scroll="onScroll"
+      v-show="fab"
+      fab
+      fixed
+      bottom
+      right
+      color="indigo"
+      @click="toTop"
+    >
+      <v-icon>keyboard_arrow_up</v-icon>
+    </v-btn>
   </v-app>
 </template>
 
@@ -162,6 +209,7 @@
 		data() {
 			return {
         drawer: false,
+        fab: false,
         admins: [
           ['Регистрация', 'mdi-account-plus', '/admin/registration'],
           ['Пользователи', 'people_outline', '/admin/users'],
@@ -205,6 +253,9 @@
       ...mapActions('contract', ['getContractsAction']),
       ...mapActions('customer', ['getCustomersAction']),
       ...mapActions('request', ['getRequestsAction']),
+      ...mapActions('list', ['setAllListsAction']),
+      ...mapActions('buy', ['getBuysAction']),
+      ...mapActions('defect', ['getDefectsAction']),
       drawerClick () {
         this.setDrawer()
       },
@@ -224,6 +275,17 @@
         this.getContractsAction()
         this.getCustomersAction()
         this.getRequestsAction()
+        this.setAllListsAction()
+        this.getBuysAction()
+        this.getDefectsAction()
+      },
+      onScroll (e) {
+        if (typeof window === 'undefined') return
+        const top = window.pageYOffset ||   e.target.scrollTop || 0
+        this.fab = top > 20
+      },
+      toTop () {
+        this.$vuetify.goTo(0)
       }
 		},
 		computed: {
@@ -261,5 +323,10 @@
 
   .font {
     font-size: 15pt;
+  }
+
+  .back-image {
+    background: url('/img/back.jpg') repeat-y;
+    background-size: 100vw 100vh
   }
 </style>
