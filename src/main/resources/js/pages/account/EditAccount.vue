@@ -33,7 +33,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="$emit('cancel', false)">Отмена</v-btn>
-        <v-btn :disabled="password != conf" @click="add()">Сохранить</v-btn>
+        <v-btn :disabled="password != conf || password != ''" @click="add()">Сохранить</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -75,7 +75,7 @@ export default {
     getEditItem (value) {
       this.id = value.id
       this.username = value.username
-      this.password = value.password
+      // this.password = value.password
       this.conf = value.conf
       this.action = value.action
       this.name = value.name
