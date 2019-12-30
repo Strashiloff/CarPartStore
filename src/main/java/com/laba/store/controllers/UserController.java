@@ -24,9 +24,7 @@ public class UserController  {
     @Autowired
     private DataBaseService dataBaseService;
 
-    public UserController(UserRepo userRepo, PasswordEncoder passwordEncoder) { this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
+    public UserController(UserRepo userRepo) { this.userRepo = userRepo; }
 
     @GetMapping
     public List<User> getAllUser(){ return userRepo.findAll(); }
