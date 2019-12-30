@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/registration")
 public class RegistrationController {
 
+    @Autowired
     private final UserRepo userRepo;
 
     @Autowired
@@ -22,10 +23,8 @@ public class RegistrationController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public RegistrationController(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public RegistrationController(UserRepo userRepo) {
         this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping

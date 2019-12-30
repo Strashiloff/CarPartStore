@@ -16,6 +16,7 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController  {
 
+    @Autowired
     private final UserRepo userRepo;
 
     @Autowired
@@ -27,7 +28,6 @@ public class UserController  {
     @Autowired
     public UserController(UserRepo userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
