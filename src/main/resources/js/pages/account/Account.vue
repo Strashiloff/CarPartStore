@@ -52,9 +52,17 @@
                   fab
                   title="Редактировать данные"
                   @click="edit"
-                  class="mt-2 ml-0"
+                  class="mt-2 mr-0"
                 >
                   <v-icon color="grey">mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn icon
+                  fab
+                  title="Изменить пароль"
+                  @click="password"
+                  class="mt-2 ml-0"
+                >
+                  <v-icon color="grey">mdi-key</v-icon>
                 </v-btn>
               </div>
               <div v-if="getCurrentUser" class="title grey--text">{{text}}</div>
@@ -90,11 +98,17 @@
 			@submit="editItem($event)"
 			@cancel="dialog = false"
     />
+    <edit-password
+      :dialog="dialog2"
+      @submit="editItem($event)"
+      @cancel="dialog2 = false"
+    />
   </div>
 </template>
 
 <script>
 import EditAccount from './EditAccount.vue'
+import EditPassword from './EditPassword.vue'
 import { mapGetters, mapActions } from 'vuex'
 import { Sketch } from 'vue-color'
 
@@ -107,6 +121,7 @@ export default {
       reader: null,
       image: null,
       dialog: false,
+      dialog2: false,
       colors: {
         hex: '#1976D2'
       },
@@ -115,7 +130,8 @@ export default {
   },
   components: {
     'photoshop-picker': Sketch,
-    EditAccount
+    EditAccount,
+    EditPassword
   },
   computed: {
     ...mapGetters('app', ['getUserNameShort', 'getUserNameFull', 'getCurrentUser']),
@@ -176,8 +192,13 @@ export default {
       this.dialog = true
       this.setEditItem(this.getUserById(this.getCurrentUser.id))
     },
+    password (item) {
+      this.dialog2 = true
+      this.setEditItem(this.getUserById(this.getCurrentUser.id))
+    },
     editItem (item) {
       this.dialog = false
+      this.dialog2 = false
       this.updateUserAction(item)
     }
   }

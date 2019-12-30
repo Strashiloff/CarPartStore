@@ -1,9 +1,7 @@
 <template>
-  <v-dialog persistent v-model="dialog" max-width="50%">
+  <v-dialog v-model="dialog" persistent max-width="400px">
     <v-card style="padding: 50px">
-      <v-text-field data-vv-name="name"  :rules="[rules.fill]" clearable v-model="  username" autofocus required label="Логин"
-                  v-validate="'required|max:20'" :counter="20"></v-text-field>
-      <!-- <v-text-field oninput="this.value = this.value.replace(' ', '')"
+      <v-text-field oninput="this.value = this.value.replace(' ', '')"
                     v-model="password"
                     :append-icon="show1 ? 'visibility' : 'visibility_off'"
                     :rules="[rules.min]"
@@ -19,21 +17,11 @@
 									:type="'password'"
                   :rules="[rules.pas, rules.fill]"
                   label="Подтверждение пароля"
-      ></v-text-field> -->
-      <v-text-field :rules="[rules.fill]"  clearable v-model="name" :type="'text'" data-vv-name="name" name="name"
-                    label="Имя"></v-text-field>
-      <v-text-field :rules="[rules.fill]"  clearable v-model="surname" :type="'text'" data-vv-name="surname"
-                    name="password" label="Фамилия"></v-text-field>
-      <v-textarea
-        label="Описание"
-        rows="10"
-        no-resize
-        v-model="status"
-      ></v-textarea>
+      ></v-text-field>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="$emit('cancel', false)">Отмена</v-btn>
-        <v-btn @click="add()">Сохранить</v-btn>
+        <v-btn @click="add()" :disabled="conf != password || password == ''">Сохранить</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -43,7 +31,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'EditAccount',
+  name: 'EditPassword',
   props: {
     dialog: {
       default: false
@@ -76,7 +64,6 @@ export default {
       this.id = value.id
       this.username = value.username
       // this.password = value.password
-      this.conf = value.conf
       this.action = value.action
       this.name = value.name
       this.surname = value.surname
@@ -89,7 +76,6 @@ export default {
   },
   computed: {
     ...mapGetters('app', ['getEditItem', 'getRoles']),
-    ...mapGetters('posts', ['getAllPosts']),
   },
   methods: {
     add () {
@@ -100,7 +86,7 @@ export default {
         action: this.action,
         name: this.name,
         surname: this.surname,
-        status: this.status == '' ? null : this.status,
+        status: this.status,
         image: this.image,
         color: this.color,
         roles: this.roles,

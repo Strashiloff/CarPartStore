@@ -39,8 +39,12 @@ public class UserController  {
 
     @PutMapping("{id}")
     public void Update(@PathVariable("id") User userFromDb, @RequestBody User user){
-        BeanUtils.copyProperties(user, userFromDb, "id");
-        userFromDb.setPassword(passwordEncoder.encode(userFromDb.getPassword()));
+        if (user.getPassword().length() >= 6) {
+            BeanUtils.copyProperties(user, userFromDb, "id");
+            userFromDb.setPassword(passwordEncoder.encode(userFromDb.getPassword()));
+        } else {
+            BeanUtils.copyProperties(user, userFromDb, "id", "password");
+        }
         userRepo.save(userFromDb);
     }
 

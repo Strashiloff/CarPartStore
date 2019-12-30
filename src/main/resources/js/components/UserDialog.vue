@@ -2,7 +2,8 @@
   <div>
     <v-text-field data-vv-name="name" :disabled="displayRoles" :rules="[rules.fill]" clearable v-model="userFrom.username" autofocus required label="Логин"
                   v-validate="'required|max:20'" :counter="20"></v-text-field>
-    <v-text-field oninput="this.value = this.value.replace(' ', '')"
+    <label v-if="!profile" for="password">Пароль меньше 6 символов не сохраняется (Если не хотите изменять пароль, не заполняйте)</label>
+		<v-text-field oninput="this.value = this.value.replace(' ', '')"
                   v-model="password"
                   :append-icon="show1 ? 'visibility' : 'visibility_off'"
                   :rules="[rules.min]"
@@ -14,17 +15,10 @@
 									:disabled="displayRoles"
                   @click:append="show1 = !show1"
     ></v-text-field>
-    <v-text-field
-									:disabled="displayRoles"
-                  v-model="confPas"
-									:type="'password'"
-                  :rules="[rules.pas, rules.fill]"
-                  label="Подтверждение пароля"
-    ></v-text-field>
     <v-text-field :rules="[rules.fill]" :disabled="displayRoles" clearable v-model="userFrom.name" :type="'text'" data-vv-name="name" name="name"
                   label="Имя"></v-text-field>
     <v-text-field :rules="[rules.fill]" :disabled="displayRoles" clearable v-model="userFrom.surname" :type="'text'" data-vv-name="surname"
-                  name="password" label="Фамилия"></v-text-field>
+                  name="surname" label="Фамилия"></v-text-field>
     <v-select v-if="getIsAdmin" v-model="roles = userFrom.roles" :disabled="displayRoles" :items="getRols" attach label="Системные роль:" multiple></v-select>
     <v-select :disabled="displayRoles" :search="search" v-model="post = userFrom.position" :items="getAllPosts" return-object
               item-text="post" label="Должность"></v-select>
@@ -37,7 +31,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn v-if="mode" @click="Canceled">Отмена</v-btn>
-      <v-btn @click="changeUser" :disabled="enter || confPas != password || password == ''" color="indigo">Сохранить</v-btn>
+      <v-btn @click="changeUser" color="indigo">Сохранить</v-btn>
     </v-card-actions>
   </div>
 </template>
@@ -85,7 +79,7 @@
 				this.userFrom.password = this.password
 				var user = this.userFrom
 				user.position = this.post
-				if (user.username !== '' && user.name !== '' && user.surname !== '' && user.password !== '') {
+				if (user.username !== '' && user.name !== '' && user.surname !== '') {
 					user.username.replace(' ', '_')
 					user.name.replace(' ', '_')
 					user.surname.replace(' ', '_')
