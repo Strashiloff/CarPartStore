@@ -6,9 +6,11 @@
       fixed
     >
       <v-list class="ma-2">
-        <v-list-tile avatar>
+        <v-list-tile avatar inactive @click="$router.currentRoute.path !== '/account' ? $router.push('/account') : null">
           <v-list-tile-avatar color="teal" size="55" class="mr-2 headline">
+            <img v-if="getCurrentUser.image" :src="getCurrentUser.image">
             <span
+              v-else
               class="white--text"
               style="font-family: Serif"
             >{{ getUserNameShort }}</span>
