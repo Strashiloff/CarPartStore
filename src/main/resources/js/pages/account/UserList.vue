@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-layout align-space-around justify-center column>
-      <v-flex xs6 sm1>
+      <v-flex xs6 sm>
         <v-card hover class="back-color mb-1" :key="index" v-for="(user, index) in getUsers">
             <v-card-title primary-title class="py-2">
             <v-avatar
