@@ -20,11 +20,11 @@ public class SparePartController {
   public ArrayList<Spare_part> getAllSparePart() throws SQLException { return dataBaseService.getAllSparePartRequest(); }
 
   @PostMapping
-  public HashMap<String, String> addSparePart(@RequestBody Spare_part spare_part) throws SQLException { return dataBaseService.addSparePartRequest(spare_part); }
+  public HashMap<String, Boolean> addSparePart(@RequestBody Spare_part spare_part) throws SQLException { return dataBaseService.addSparePartRequest(spare_part); }
 
   @PutMapping
-  public HashMap<String, String> saveSparePart(@RequestBody Spare_part spare_part) throws SQLException { return dataBaseService.saveSparePartRequest(spare_part); }
+  public HashMap<String, Boolean> saveSparePart(@RequestBody Spare_part spare_part) throws SQLException { return dataBaseService.saveSparePartRequest(spare_part); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteSparePart(@RequestBody Spare_part spare_part) throws SQLException { return dataBaseService.deleteSparePartRequest(spare_part); }
+  public HashMap<String, Boolean> deleteSparePart(@RequestBody Spare_part spare_part) throws SQLException { return dataBaseService.deleteSparePartRequest(spare_part); }
 }

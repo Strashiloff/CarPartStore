@@ -10,33 +10,42 @@ export const moduleLists = {
 		edit: {}
 	},
 	actions: {
-		async setAllListsAction ({ commit }) {
+		async setAllListsAction ({ commit, dispatch }) {
       let result = await listsApi.allLists()
       let data = await result.json()
       commit('setAllListsMutation', data)
     },
-    async addListAction ({ commit }, list) {
+    async addListAction ({ commit, dispatch }, list) {
       let result = await listsApi.addList(list)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('addListMutation', list)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось добавить позицию, возможно запчасть уже есть в заявке'
+      }, { root: true })
     },
-    async saveListAction ({ commit }, list) {
+    async saveListAction ({ commit, dispatch }, list) {
       let result = await listsApi.saveList(list)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('saveListMutation', list)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось изменить позицию'
+      }, { root: true })
     },
-    async deleteListAction ({ commit }, list) {
+    async deleteListAction ({ commit, dispatch }, list) {
       let result = await listsApi.delList(list)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('deleteListMutation', list)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось удалить позицию, возможно она содержится в покупке'
+      }, { root: true })
     },
-		setEditItem ({ commit }, position) {
+		setEditItem ({ commit, dispatch }, position) {
       commit('setEditPositionMutation', position)
     }
 	},

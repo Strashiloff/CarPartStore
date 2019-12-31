@@ -7,27 +7,38 @@ export const moduleCategory = {
 		categories: [],
 	},
 	actions: {
-		async getCategoriesAction({commit}) {
+		async getCategoriesAction({ commit, dispatch }) {
 			const result = await categoriesApi.allCategories()
 			const data = await result.json()
 			commit('getCategoriesMutation', data)
 		},
-		async addCategoryAction({commit}, category) {
+		async addCategoryAction({ commit, dispatch }, category) {
 			const result = await categoriesApi.addCategory(category)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addCategoryMutation', category)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка добавления категории'
+      }, { root: true })
 		},
-		async saveCategoryAction({commit}, category) {
+		async saveCategoryAction({ commit, dispatch }, category) {
 			const result = await categoriesApi.saveCategory(category)
 			const data = await result.json()
-			if (data.ok) commit('saveCategoryMutation', category)
+			if (data.okey) commit('saveCategoryMutation', category)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка сохранения категории'
+      }, { root: true })
 		},
-		async removeCategoryAction({commit}, category) {
+		async removeCategoryAction({ commit, dispatch }, category) {
 			const result = await categoriesApi.removeCategory(category)
 			const data = await result.json()
-			if (data.ok) commit('removeCategoryMutation', category)
+			if (data.okey) commit('removeCategoryMutation', category)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка удаления категории, возможно есть поставщик в данной категории'
+      }, { root: true })
 		}
 	},
 	mutations: {

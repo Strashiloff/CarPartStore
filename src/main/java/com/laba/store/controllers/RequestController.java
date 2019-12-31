@@ -24,11 +24,11 @@ public class RequestController {
   public ArrayList<Request> getRequest(@RequestBody Buy buy) throws SQLException { return dataBaseService.getRequestFromBuy(buy.getId()); }
 
   @PostMapping
-  public HashMap<String, String> addRequest(@RequestBody Request request) throws SQLException { return dataBaseService.addRequestRequest(request); }
+  public HashMap<String, Boolean> addRequest(@RequestBody Request request) throws SQLException { return dataBaseService.addRequestRequest(request); }
 
   @PutMapping
-  public HashMap<String, String> saveRequest(@RequestBody Request request) throws SQLException { return dataBaseService.saveRequestRequest(request); }
+  public HashMap<String, Boolean> saveRequest(@RequestBody Request request) throws SQLException { return dataBaseService.saveRequestRequest(request); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteRequest(@RequestBody Request request) throws SQLException { return dataBaseService.deleteRequestRequest(request); }
+  public HashMap<String, Boolean> deleteRequest(@RequestBody Request request) throws SQLException { return dataBaseService.deleteRequestRequest(request); }
 }

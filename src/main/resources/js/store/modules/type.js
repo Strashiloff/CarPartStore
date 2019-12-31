@@ -7,31 +7,40 @@ export const moduleTypes = {
     types: []
 	},
 	actions: {
-		async setAllTypesAction ({ commit }) {
+		async setAllTypesAction ({ commit, dispatch }) {
       let result = await typesApi.getAllTypes()
       let data = await result.json()
       commit('setAllTypesMutation', data)
     },
-    async addTypeAction ({ commit }, type) {
+    async addTypeAction ({ commit, dispatch }, type) {
       let result = await typesApi.addType(type)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('addTypeMutation', type)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось добавить тип'
+      }, { root: true })
     },
-    async saveTypeAction ({ commit }, type) {
+    async saveTypeAction ({ commit, dispatch }, type) {
       let result = await typesApi.saveType(type)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('saveTypeMutation', type)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалость сохранить тип'
+      }, { root: true })
     },
-    async deleteTypeAction ({ commit }, type) {
+    async deleteTypeAction ({ commit, dispatch }, type) {
       let result = await typesApi.delType(type)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('deleteTypeMutation', type)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалость удалить тип'
+      }, { root: true })
     }
 	},
 	mutations: {

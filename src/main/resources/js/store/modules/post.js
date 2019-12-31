@@ -7,26 +7,26 @@ export const modulePost = {
 		posts: [],
 	},
 	actions: {
-		async getPostsAction({commit}) {
+		async getPostsAction({ commit, dispatch }) {
 			const result = await postsApi.allPosts()
 			const data = await result.json()
 			commit('getPostsMutation', data)
 		},
-		async addPostAction({commit}, post) {
+		async addPostAction({ commit, dispatch }, post) {
 			const result = await postsApi.addPost(post)
 			if (result != null) {
 				const data = await result.json()
 				commit('addPostMutation', data)
 			}
 		},
-		async savePostAction({commit}, post) {
+		async savePostAction({ commit, dispatch }, post) {
 			const result = await postsApi.savePost(post)
 			if (result.ok) {
 				const data = await result.json()
 				commit('savePostMutation', data)
 			}
 		},
-		async removePostAction({commit}, post) {
+		async removePostAction({ commit, dispatch }, post) {
 			const result = await postsApi.removePost(post.id)
 			if (result.ok) commit('removePostMutation', post)
 		}

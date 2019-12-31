@@ -198,11 +198,27 @@
     >
       <v-icon>keyboard_arrow_up</v-icon>
     </v-btn>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="6 * 1000"
+      top
+      multi-line
+      class="title"
+    >
+      {{ getTextSnackbar }}
+      <v-btn
+        color="pink"
+        flat
+        @click="snackbar = false"
+      >
+        Закрыть
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
-	import { mapActions, mapGetters } from 'vuex'
+	import { mapActions, mapGetters, mapState } from 'vuex'
   import AskDialog from "components/AskDialog.vue"
   import Navigation from './Navigation.vue'
 
@@ -240,7 +256,7 @@
       Navigation
 		},
 		methods: {
-			...mapActions('app', ['getCurrentUserAction', 'setDrawer']),
+			...mapActions('app', ['getCurrentUserAction', 'setDrawer', 'setSnackbar']),
       ...mapActions('posts', ['getPostsAction', 'addPostAction']),
       ...mapActions('users', ['getUsersAction']),
       ...mapActions('section', ['setAllSectionsAction']),
@@ -291,7 +307,18 @@
       }
 		},
 		computed: {
-      ...mapGetters('app', ['getCurrentUser', 'getIsAdmin',  'getTheme', 'getDrawer', 'getUserNameShort', 'getUserNameFull'])
+      ...mapGetters('app', ['getCurrentUser', 'getIsAdmin',  'getTheme', 'getDrawer', 'getUserNameShort', 'getUserNameFull', 'getSnackbar', 'getTextSnackbar']),
+      snackbar: {
+        get () {
+          return this.getSnackbar
+        },
+        set (value) {
+          this.setSnackbar({
+            snackbar: value,
+            text: ''
+          })
+        }
+      }
     },
 		created() {
       this.getAllData()

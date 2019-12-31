@@ -7,27 +7,38 @@ export const moduleContract = {
 		contracts: [],
 	},
 	actions: {
-		async getContractsAction({commit}) {
+		async getContractsAction({ commit, dispatch }) {
 			const result = await contractApi.allContracts()
 			const data = await result.json()
 			commit('getContractsMutation', data)
 		},
-		async addContractAction({commit}, paylaod) {
+		async addContractAction({ commit, dispatch }, paylaod) {
 			const result = await contractApi.addContract(paylaod.contract)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addContractMutation', paylaod)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка создания контракта'
+      }, { root: true })
 		},
-		async saveContractAction({commit}, contract) {
+		async saveContractAction({ commit, dispatch }, contract) {
 			const result = await contractApi.saveContract(contract)
 			const data = await result.json()
-			if (data.ok) commit('saveContractMutation', contract)
+			if (data.okey) commit('saveContractMutation', contract)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка сохранения контракта'
+      }, { root: true })
 		},
-		async removeContractAction({commit}, contract) {
+		async removeContractAction({ commit, dispatch }, contract) {
 			const result = await contractApi.removeContract(contract)
 			const data = await result.json()
-			if (data.ok) commit('removeContractMutation', contract)
+			if (data.okey) commit('removeContractMutation', contract)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка удаления контракта'
+      }, { root: true })
 		}
 	},
 	mutations: {

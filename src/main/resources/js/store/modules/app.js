@@ -9,17 +9,20 @@ export const moduleApp = {
 		general: false,
 		theme: true,
 		drawer: false,
-		editItem: {}
+		editItem: {},
+		snackbar: false,
+		text: ''
 	},
 	actions: {
-		async getCurrentUserAction({commit}) {
+		async getCurrentUserAction({ commit, dispatch }) {
 			const result = await usersApi.currentUser()
 			const data = await result.json()
 			commit('getCurrentUserMutation', data)
 		},
-		setTheme: ({ commit }, payload) => commit('setThemeMutation', payload),
-		setDrawer: ({ commit }, payload) => commit('setDrawerMutation'),
-		setEditItem: ({ commit }, payload) => commit('setEditItemMutation', payload),
+		setTheme: ({ commit, dispatch }, payload) => commit('setThemeMutation', payload),
+		setDrawer: ({ commit, dispatch }, payload) => commit('setDrawerMutation'),
+		setEditItem: ({ commit, dispatch }, payload) => commit('setEditItemMutation', payload),
+		setSnackbar: ({ commit, dispatch }, payload) => commit('setSnackbarMutation', payload)
 	},
 	mutations: {
 		getCurrentUserMutation(state, user) {
@@ -34,6 +37,10 @@ export const moduleApp = {
 		setThemeMutation: (state, payload) => { state.theme = payload },
 		setDrawerMutation: (state) => { state.drawer = ! state.drawer },
 		setEditItemMutation: (state, payload) => { state.editItem = payload },
+		setSnackbarMutation: (state, payload) => {
+			state.snackbar = payload.snackbar
+			state.text = payload.text
+		}
   },
   getters: {
 		getCurrentUser: state => state.profile,
@@ -46,6 +53,8 @@ export const moduleApp = {
 		getRoles: state => state.roles,
 		getTheme: state => state.theme,
 		getDrawer: state => state.drawer,
-		getEditItem: state => state.editItem
+		getEditItem: state => state.editItem,
+		getSnackbar: state => state.snackbar,
+		getTextSnackbar: state => state.text
   }
 }

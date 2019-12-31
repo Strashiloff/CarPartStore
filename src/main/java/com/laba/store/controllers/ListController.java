@@ -20,11 +20,11 @@ public class ListController {
   public ArrayList<List> getAllList() throws SQLException { return dataBaseService.getListFromRequest(); }
 
   @PostMapping
-  public HashMap<String, String> addList(@RequestBody List list) throws SQLException { return dataBaseService.addListRequest(list); }
+  public HashMap<String, Boolean> addList(@RequestBody List list) throws SQLException { return dataBaseService.addListRequest(list); }
 
   @PutMapping
-  public HashMap<String, String> saveList(@RequestBody List list) throws SQLException { return dataBaseService.saveListRequest(list); }
+  public HashMap<String, Boolean> saveList(@RequestBody List list) throws SQLException { return dataBaseService.saveListRequest(list); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteList(@RequestBody List list) throws SQLException { return dataBaseService.deleteListRequest(list); }
+  public HashMap<String, Boolean> deleteList(@RequestBody List list) throws SQLException { return dataBaseService.deleteListRequest(list); }
 }

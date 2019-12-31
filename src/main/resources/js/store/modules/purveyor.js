@@ -7,27 +7,38 @@ export const modulePurveyor = {
 		purveyors: [],
 	},
 	actions: {
-		async getPurveyorsAction({commit}) {
+		async getPurveyorsAction({ commit, dispatch }) {
 			const result = await purveyorApi.allPurveyors()
 			const data = await result.json()
 			commit('getPurveyorsMutation', data)
 		},
-		async addPurveyorAction({commit}, purveyor) {
+		async addPurveyorAction({ commit, dispatch }, purveyor) {
 			const result = await purveyorApi.addPurveyor(purveyor)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addPurveyorMutation', purveyor)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось добавить поставщика, возможно такой поставщик уже есть в базе'
+      }, { root: true })
 		},
-		async savePurveyorAction({commit}, purveyor) {
+		async savePurveyorAction({ commit, dispatch }, purveyor) {
 			const result = await purveyorApi.savePurveyor(purveyor)
 			const data = await result.json()
-			if (data.ok) commit('savePurveyorMutation', purveyor)
+			if (data.okey) commit('savePurveyorMutation', purveyor)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось сохрнанить поставщика'
+      }, { root: true })
 		},
-		async removePurveyorAction({commit}, purveyor) {
+		async removePurveyorAction({ commit, dispatch }, purveyor) {
 			const result = await purveyorApi.removePurveyor(purveyor)
 			const data = await result.json()
-			if (data.ok) commit('removePurveyorMutation', purveyor)
+			if (data.okey) commit('removePurveyorMutation', purveyor)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось удалить поставщика, возможно поставщик указан в поставке'
+      }, { root: true })
 		}
 	},
 	mutations: {

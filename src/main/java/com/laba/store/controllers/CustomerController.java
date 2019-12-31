@@ -22,11 +22,11 @@ public class CustomerController {
   public ArrayList<Customer> getCustomer(@RequestBody Customer buy) throws SQLException { return dataBaseService.getCustomerFromRequest(buy.getId()); }
 
   @PostMapping
-  public HashMap<String, String> addCustomer(@RequestBody Customer buy) throws SQLException { return dataBaseService.addCustomerRequest(buy); }
+  public HashMap<String, Boolean> addCustomer(@RequestBody Customer buy) throws SQLException { return dataBaseService.addCustomerRequest(buy); }
 
   @PutMapping
-  public HashMap<String, String> saveCustomer(@RequestBody Customer buy) throws SQLException { return dataBaseService.saveCustomerRequest(buy); }
+  public HashMap<String, Boolean> saveCustomer(@RequestBody Customer buy) throws SQLException { return dataBaseService.saveCustomerRequest(buy); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteCustomer(@RequestBody Customer buy) throws SQLException { return dataBaseService.deleteCustomerRequest(buy); }
+  public HashMap<String, Boolean> deleteCustomer(@RequestBody Customer buy) throws SQLException { return dataBaseService.deleteCustomerRequest(buy); }
 }

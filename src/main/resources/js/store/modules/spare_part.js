@@ -8,7 +8,7 @@ export const moduleSpareParts = {
 		edit: {}
 	},
 	actions: {
-		async getAllSparePartsAction ({ commit }) {
+		async getAllSparePartsAction ({ commit, dispatch }) {
 			const result = await sparePartApi.getAllSpareParts()
 			const data = await result.json()
 			commit('getAllSparePartMutation', data)
@@ -16,26 +16,35 @@ export const moduleSpareParts = {
 		async addSparePartsAction ({ commit, state }, part) {
 			const result = await sparePartApi.addSparePart(part)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addSparePartsMutation', part)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось добавить запчасть'
+      }, { root: true })
 		},
 		async deleteSparePartsAction ({ commit, state }, part) {
 			let sp = getIndex(state.spareParts, part.id)
 			const result = await sparePartApi.delSparePart(state.spareParts[sp])
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('deleteSparePartsMutation', part)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось удалить запчасть, возможно она содержится в поставке'
+      }, { root: true })
 		},
-		async saveSparePartsAction ({ commit }, part) {
+		async saveSparePartsAction ({ commit, dispatch }, part) {
 			const result = await sparePartApi.saveSparePart(part)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('saveSparePartsMutation', part)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось сохранить запчасть'
+      }, { root: true })
 		},
-		setEditSparePartAction ({ commit }, part) { commit('setEditSparePartMutation', part)}
+		setEditSparePartAction ({ commit, dispatch }, part) { commit('setEditSparePartMutation', part)}
 	},
 	mutations: {
 		getAllSparePartMutation (state, data) { state.spareParts = data },

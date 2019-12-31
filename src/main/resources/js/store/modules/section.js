@@ -16,33 +16,42 @@ export const moduleSection = {
 		}
 	},
 	actions: {
-		async setAllSectionsAction ({ commit }) {
+		async setAllSectionsAction ({ commit, dispatch }) {
       let result = await sectionApi.getAllSections()
       let data = await result.json()
       commit('setAllSectionsMutation', data)
     },
-    async addSectionAction ({ commit }, section) {
+    async addSectionAction ({ commit, dispatch }, section) {
       let result = await sectionApi.addSection(section)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('addSectionMutation', section)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось добавить полку'
+      }, { root: true })
     },
-    async saveSectionAction ({ commit }, section) {
+    async saveSectionAction ({ commit, dispatch }, section) {
       let result = await sectionApi.saveSection(section)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('saveSectionMutation', section)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось сохранить полку'
+      }, { root: true })
     },
-    async deleteSectionAction ({ commit }, section) {
+    async deleteSectionAction ({ commit, dispatch }, section) {
       let result = await sectionApi.delSection(section)
       let data = await result.json()
-      if (data.ok) {
+      if (data.okey) {
         commit('deleteSectionMutation', section)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось удалить полку, возможно на ней лежат запчасти'
+      }, { root: true })
     },
-    setEditSectionAction ({ commit }, section) { commit('setEditSectionMutation', section)}
+    setEditSectionAction ({ commit, dispatch }, section) { commit('setEditSectionMutation', section)}
 	},
 	mutations: {
 		setAllSectionsMutation (state, data) {

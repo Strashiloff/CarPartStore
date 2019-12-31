@@ -7,27 +7,38 @@ export const moduleSupply = {
 		supplies: [],
 	},
 	actions: {
-		async getSuppliesAction({commit}) {
+		async getSuppliesAction({ commit, dispatch }) {
 			const result = await supplyApi.getAllSupplies()
 			const data = await result.json()
 			commit('getSuppliesMutation', data)
 		},
-		async addSupplyAction({commit}, supply) {
+		async addSupplyAction({ commit, dispatch }, supply) {
 			const result = await supplyApi.addSypply(supply)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addSupplyMutation', supply)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось сохранить поставку'
+      }, { root: true })
 		},
-		async saveSupplyAction({commit}, supply) {
+		async saveSupplyAction({ commit, dispatch }, supply) {
 			const result = await supplyApi.saveSypply(supply)
 			const data = await result.json()
-			if (data.ok) commit('saveSupplyMutation', supply)
+			if (data.okey) commit('saveSupplyMutation', supply)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось сохранить поставку'
+      }, { root: true })
 		},
-		async removeSupplyAction({commit}, supply) {
+		async removeSupplyAction({ commit, dispatch }, supply) {
 			const result = await supplyApi.delSypply(supply)
 			const data = await result.json()
-			if (data.ok) commit('removeSupplyMutation', supply)
+			if (data.okey) commit('removeSupplyMutation', supply)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось удалить поставку'
+      }, { root: true })
 		}
 	},
 	mutations: {

@@ -12,7 +12,7 @@ export const moduleStoke = {
 		}
 	},
 	actions: {
-		async getAllStokeAction ({ commit }) {
+		async getAllStokeAction ({ commit, dispatch }) {
 			const result = await stokeApi.getAllStokes()
 			const data = await result.json()
 			commit('getAllStokeMutation', data)
@@ -20,26 +20,35 @@ export const moduleStoke = {
 		async addStokeAction ({ commit, state }, stoke) {
 			const result = await stokeApi.addStoke(stoke)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addStokeMutation', stoke)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось добавить склад'
+      }, { root: true })
 		},
 		async deleteStokeAction ({ commit, state }, stoke) {
 			let st = state.stokes.indexOf(stoke)
 			const result = await stokeApi.delStoke(state.stokes[st])
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('deleteStokeMutation', stoke)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось удалить склад'
+      }, { root: true })
 		},
-		async saveStokeAction ({ commit }, stoke) {
+		async saveStokeAction ({ commit, dispatch }, stoke) {
 			const result = await stokeApi.saveStoke(stoke)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('saveStokeMutation', stoke)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось сохранить склад'
+      }, { root: true })
 		},
-		setEditAction ({ commit }, stoke) { commit('setEditMutation', stoke)}
+		setEditAction ({ commit, dispatch }, stoke) { commit('setEditMutation', stoke)}
 	},
 	mutations: {
 		getAllStokeMutation (state, data) { state.stokes = data },

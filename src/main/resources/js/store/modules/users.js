@@ -19,26 +19,26 @@ export const moduleUsers = {
 		}
 	},
 	actions: {
-		async getUsersAction({commit}) {
+		async getUsersAction({ commit, dispatch }) {
 			const result = await usersApi.allUsers()
 			const data = await result.json()
 			commit('getUsersMutation', data)
 		},
-		async addUserAction({commit}, user) {
+		async addUserAction({ commit, dispatch }, user) {
 			const result = await usersApi.addUser(user)
 			const data = await result.json()
 			commit('addUserMutation', data)
 		},
-		async removeUserAction({commit}, user) {
+		async removeUserAction({ commit, dispatch }, user) {
 			const result = await usersApi.deleteUser(user.id)
 			if (result.ok) {
 				commit('removeUserMutation', user)
 			}
 		},
-		async errorAction({commit}, error) {
+		async errorAction({ commit, dispatch }, error) {
 			commit('errorMutation', error)
 		},
-		async updateUserAction({commit}, user) {
+		async updateUserAction({ commit, dispatch }, user) {
 			const result = await usersApi.updateUser(user)
 			if (result.ok) commit('updateUserMutation', user)
 		},

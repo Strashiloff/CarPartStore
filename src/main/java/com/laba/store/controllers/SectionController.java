@@ -23,11 +23,11 @@ public class SectionController {
     public ArrayList<Section> getAllSection() throws SQLException { return dataBaseService.getAllSectionsRequest(); }
 
     @PostMapping
-    public HashMap<String, String> saveSection(@RequestBody Section section) throws SQLException { return dataBaseService.addSectionRequest(section); }
+    public HashMap<String, Boolean> saveSection(@RequestBody Section section) throws SQLException { return dataBaseService.addSectionRequest(section); }
 
     @PutMapping
-    public HashMap<String, String> updateSection(@RequestBody Section section) throws SQLException { return dataBaseService.saveSectionRequest(section); }
+    public HashMap<String, Boolean> updateSection(@RequestBody Section section) throws SQLException { return dataBaseService.saveSectionRequest(section); }
 
     @PostMapping("delete")
-    public HashMap<String, String> deleteSection(@RequestBody Section section) throws SQLException { return dataBaseService.deleteSectionRequest(section); }
+    public HashMap<String, Boolean> deleteSection(@RequestBody Section section) throws SQLException { return dataBaseService.deleteSectionRequest(section); }
 }

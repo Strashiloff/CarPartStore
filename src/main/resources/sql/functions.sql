@@ -441,8 +441,8 @@ create or replace function del_position(_id_position integer)
 $$
 begin
     if exists(select * from "position" where id_position =_id_position) then
-		delete from "contract" where id_position =_id_position;
-		return true;
+      delete from "position" where id_position =_id_position;
+      return true;
     else return false;
     end if;
 end;
@@ -543,7 +543,7 @@ create or replace function add_buy(_id_request integer, _completed boolean,
     returns boolean as
 $$
 begin
-  if exists (select * from request where id_request = _id_request)
+  if not exists (select * from buy where id_request = _id_request) then
     insert into "buy"(id_request, completed, "date")
     values(_id_request, _completed, _date);
     return true;

@@ -20,11 +20,11 @@ public class ContractController {
   public ArrayList<Contract> getAllContract() throws SQLException { return dataBaseService.getAllContractRequest(); }
 
   @PostMapping
-  public HashMap<String, String> addContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.addContractRequest(contract); }
+  public HashMap<String, Boolean> addContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.addContractRequest(contract); }
 
   @PutMapping
-  public HashMap<String, String> saveContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.saveContractRequest(contract); }
+  public HashMap<String, Boolean> saveContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.saveContractRequest(contract); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.deleteContractRequest(contract); }
+  public HashMap<String, Boolean> deleteContract(@RequestBody Contract contract) throws SQLException { return dataBaseService.deleteContractRequest(contract); }
 }

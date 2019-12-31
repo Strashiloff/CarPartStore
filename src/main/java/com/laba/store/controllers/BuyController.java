@@ -23,11 +23,11 @@ public class BuyController {
   public ArrayList<Buy> getBuy(@RequestBody Buy buy) throws SQLException { return dataBaseService.getBuyFromDefect(buy.getId()); }
 
   @PostMapping
-  public HashMap<String, String> addBuy(@RequestBody Buy buy) throws SQLException { return dataBaseService.addBuyRequest(buy); }
+  public HashMap<String, Boolean> addBuy(@RequestBody Buy buy) throws SQLException { return dataBaseService.addBuyRequest(buy); }
 
   @PutMapping
-  public HashMap<String, String> saveBuy(@RequestBody Buy buy) throws SQLException { return dataBaseService.saveBuyRequest(buy); }
+  public HashMap<String, Boolean> saveBuy(@RequestBody Buy buy) throws SQLException { return dataBaseService.saveBuyRequest(buy); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteBuy(@RequestBody Buy buy) throws SQLException { return dataBaseService.deleteBuyRequest(buy); }
+  public HashMap<String, Boolean> deleteBuy(@RequestBody Buy buy) throws SQLException { return dataBaseService.deleteBuyRequest(buy); }
 }

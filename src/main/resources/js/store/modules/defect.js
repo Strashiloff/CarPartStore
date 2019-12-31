@@ -8,27 +8,38 @@ export const moduleDefect = {
 		defectsView: []
 	},
 	actions: {
-		async getDefectsAction({commit}) {
+		async getDefectsAction({ commit, dispatch }) {
 			const result = await defectApi.allDefects()
 			const data = await result.json()
 			commit('getDefectsMutation', data)
 		},
-		async addDefectAction({commit}, defect) {
+		async addDefectAction({ commit, dispatch }, defect) {
 			const result = await defectApi.addDefect(defect)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addDefectMutation', defect)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка добавления позиции с дефектом'
+      }, { root: true })
 		},
-		async saveDefectAction({commit}, defect) {
+		async saveDefectAction({ commit, dispatch }, defect) {
 			const result = await defectApi.saveDefect(defect)
 			const data = await result.json()
-			if (data.ok) commit('saveDefectMutation', defect)
+			if (data.okey) commit('saveDefectMutation', defect)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка сохранения покупателя'
+      }, { root: true })
 		},
-		async removeDefectAction({commit}, defect) {
+		async removeDefectAction({ commit, dispatch }, defect) {
 			const result = await defectApi.removeDefect(defect)
 			const data = await result.json()
-			if (data.ok) commit('removeDefectMutation', defect)
+			if (data.okey) commit('removeDefectMutation', defect)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка удаления информации о дефекте'
+      }, { root: true })
 		}
 	},
 	mutations: {

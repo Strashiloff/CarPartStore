@@ -20,11 +20,11 @@ public class CountryController {
   public ArrayList<Country> getAll() throws SQLException { return dataBaseService.getAllCountries(); }
 
   @PostMapping
-  public HashMap<String, String> addCountry(@RequestBody Country country) throws SQLException { return dataBaseService.addCountryRequest(country); }
+  public HashMap<String, Boolean> addCountry(@RequestBody Country country) throws SQLException { return dataBaseService.addCountryRequest(country); }
 
   @PutMapping
-  public HashMap<String, String> saveCountry(@RequestBody Country country) throws SQLException { return dataBaseService.saveCountryRequest(country); }
+  public HashMap<String, Boolean> saveCountry(@RequestBody Country country) throws SQLException { return dataBaseService.saveCountryRequest(country); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteCountry(@RequestBody Country country) throws SQLException { return dataBaseService.deleteCountryRequest(country); }
+  public HashMap<String, Boolean> deleteCountry(@RequestBody Country country) throws SQLException { return dataBaseService.deleteCountryRequest(country); }
 }

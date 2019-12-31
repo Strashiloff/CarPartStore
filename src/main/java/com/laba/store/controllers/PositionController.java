@@ -21,11 +21,11 @@ public class PositionController {
   public ArrayList<Position> getAllPosition() throws SQLException { return dataBaseService.getPositionFromSupply(); }
 
   @PostMapping
-  public HashMap<String, String> addPosition(@RequestBody Position position) throws SQLException { return dataBaseService.addPositionRequest(position); }
+  public HashMap<String, Boolean> addPosition(@RequestBody Position position) throws SQLException { return dataBaseService.addPositionRequest(position); }
 
   @PutMapping
-  public HashMap<String, String> savePosition(@RequestBody Position position) throws SQLException { return dataBaseService.savePositionRequest(position); }
+  public HashMap<String, Boolean> savePosition(@RequestBody Position position) throws SQLException { return dataBaseService.savePositionRequest(position); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deletePosition(@RequestBody Position position) throws SQLException { return dataBaseService.deletePositionRequest(position); }
+  public HashMap<String, Boolean> deletePosition(@RequestBody Position position) throws SQLException { return dataBaseService.deletePositionRequest(position); }
 }

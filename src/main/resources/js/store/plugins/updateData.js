@@ -42,6 +42,13 @@ export default function () {
           break
         case 'position/addPositionMutation':
           dispatch('position/setAllPositionsAction')
+          dispatch('section/setAllSectionsAction')
+          break
+        case 'position/savePositionMutation':
+          dispatch('section/setAllSectionsAction')
+          break
+        case 'position/deletePositionMutation':
+          dispatch('section/setAllSectionsAction')
           break
         case 'customer/addCustomerMutation':
           dispatch('customer/getCustomersAction')

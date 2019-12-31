@@ -31,9 +31,9 @@ public class DataBaseService {
         return connection;
     }
 
-    private HashMap<String, String> boolResponse(String request) throws SQLException {
+    private HashMap<String, Boolean> boolResponse(String request) throws SQLException {
         boolean response = false;
-        HashMap<String, String> map = new HashMap<>();
+        HashMap<String, Boolean> map = new HashMap<>();
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -51,7 +51,7 @@ public class DataBaseService {
             if (statement != null) statement.close();
             if (connection != null) connection.close();
         }
-        map.put("ok", Boolean.toString(response));
+        map.put("okey", response);
         return map;
     }
 
@@ -84,17 +84,17 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addStokeRequest(Stoke stoke) throws SQLException {
+    public HashMap<String, Boolean> addStokeRequest(Stoke stoke) throws SQLException {
         String request = "select add_stoke('"+stoke.getLocation()+"',"+stoke.getCount()+")";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveStokeRequest(Stoke stoke) throws SQLException {
+    public HashMap<String, Boolean> saveStokeRequest(Stoke stoke) throws SQLException {
         String request = "select update_stoke("+stoke.getId()+",'"+stoke.getLocation()+"',"+stoke.getCount()+")";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteStokeRequest(Stoke stoke) throws SQLException {
+    public HashMap<String, Boolean> deleteStokeRequest(Stoke stoke) throws SQLException {
         String request = "select del_stoke("+stoke.getId()+")";
         return boolResponse(request);
     }
@@ -162,17 +162,17 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addSectionRequest(Section section) throws SQLException {
+    public HashMap<String, Boolean> addSectionRequest(Section section) throws SQLException {
         String request = "select add_section("+section.getId_stoke()+","+section.getCapacity()+","+section.getNumber()+")";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveSectionRequest(Section section) throws SQLException {
+    public HashMap<String, Boolean> saveSectionRequest(Section section) throws SQLException {
         String request = "select update_section("+section.getId()+","+section.getAmount()+","+section.getCapacity()+","+section.getNumber()+")";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteSectionRequest(Section section) throws SQLException {
+    public HashMap<String, Boolean> deleteSectionRequest(Section section) throws SQLException {
         String request = "select del_section("+section.getId()+")";
         return boolResponse(request);
     }
@@ -206,17 +206,17 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addTypeRequest(Type type) throws SQLException {
+    public HashMap<String, Boolean> addTypeRequest(Type type) throws SQLException {
         String request = "select add_type('"+type.getName()+"')";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveTypeRequest(Type type) throws SQLException {
+    public HashMap<String, Boolean> saveTypeRequest(Type type) throws SQLException {
         String request = "select update_type("+type.getId()+",'"+type.getName()+"')";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteTypeRequest(Type type) throws SQLException {
+    public HashMap<String, Boolean> deleteTypeRequest(Type type) throws SQLException {
         String request = "select del_type("+type.getId()+")";
         return boolResponse(request);
     }
@@ -254,7 +254,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addSparePartRequest(Spare_part spare_part) throws SQLException {
+    public HashMap<String, Boolean> addSparePartRequest(Spare_part spare_part) throws SQLException {
         String request = "select add_spare_part("
             +spare_part.getId_type()+","
             +spare_part.getId_section()+",'"
@@ -264,7 +264,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveSparePartRequest(Spare_part spare_part) throws SQLException {
+    public HashMap<String, Boolean> saveSparePartRequest(Spare_part spare_part) throws SQLException {
         String request = "select update_spare_part("
             +spare_part.getId()+","
             +spare_part.getId_type()+","
@@ -275,7 +275,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteSparePartRequest(Spare_part spare_part) throws SQLException {
+    public HashMap<String, Boolean> deleteSparePartRequest(Spare_part spare_part) throws SQLException {
         String request = "select del_spare_part(" + spare_part.getId() + ")";
         return boolResponse(request);
     }
@@ -309,17 +309,17 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addCategoryRequest(Category category) throws SQLException {
+    public HashMap<String, Boolean> addCategoryRequest(Category category) throws SQLException {
         String request = "select add_category('"+category.getName()+"')";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveCategoryRequest(Category category) throws SQLException {
+    public HashMap<String, Boolean> saveCategoryRequest(Category category) throws SQLException {
         String request = "select update_category("+category.getId()+",'"+category.getName()+"')";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteCategoryRequest(Category category) throws SQLException {
+    public HashMap<String, Boolean> deleteCategoryRequest(Category category) throws SQLException {
         String request = "select del_category("+category.getId()+")";
         return boolResponse(request);
     }
@@ -353,17 +353,17 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addCountryRequest(Country country) throws SQLException {
+    public HashMap<String, Boolean> addCountryRequest(Country country) throws SQLException {
         String request = "select add_country('"+country.getName()+"')";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveCountryRequest(Country country) throws SQLException {
+    public HashMap<String, Boolean> saveCountryRequest(Country country) throws SQLException {
         String request = "select update_country("+country.getId()+",'"+country.getName()+"')";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteCountryRequest(Country country) throws SQLException {
+    public HashMap<String, Boolean> deleteCountryRequest(Country country) throws SQLException {
         String request = "select del_country("+country.getId()+")";
         return boolResponse(request);
     }
@@ -401,7 +401,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addPurveyorRequest(Purveyor purveyor) throws SQLException {
+    public HashMap<String, Boolean> addPurveyorRequest(Purveyor purveyor) throws SQLException {
         String request = "select add_purveyor("
             +purveyor.getId_category()+","
             +purveyor.getId_country()+",'"
@@ -411,7 +411,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> savePurveyorRequest(Purveyor purveyor) throws SQLException {
+    public HashMap<String, Boolean> savePurveyorRequest(Purveyor purveyor) throws SQLException {
         String request = "select update_purveyor("
             +purveyor.getId()+","
             +purveyor.getId_category()+","
@@ -422,7 +422,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deletePurveyorRequest(Purveyor purveyor) throws SQLException {
+    public HashMap<String, Boolean> deletePurveyorRequest(Purveyor purveyor) throws SQLException {
         String request = "select del_purveyor("+purveyor.getId()+")";
         return boolResponse(request);
     }
@@ -464,7 +464,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addSupplyRequest(Supply supply) throws SQLException {
+    public HashMap<String, Boolean> addSupplyRequest(Supply supply) throws SQLException {
         String request = "select add_supply("
             +supply.getId_contract()+","
             +supply.getId_purveyor()+",'"
@@ -473,7 +473,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveSupplyRequest(Supply supply) throws SQLException {
+    public HashMap<String, Boolean> saveSupplyRequest(Supply supply) throws SQLException {
         String request = "select update_supply("
             +supply.getId()+","
             +supply.getId_contract()+","
@@ -483,7 +483,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteSupplyRequest(Supply supply) throws SQLException {
+    public HashMap<String, Boolean> deleteSupplyRequest(Supply supply) throws SQLException {
         String request = "select del_supply("+supply.getId()+")";
         return boolResponse(request);
     }
@@ -519,14 +519,14 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addContractRequest(Contract contract) throws SQLException {
+    public HashMap<String, Boolean> addContractRequest(Contract contract) throws SQLException {
         String request = "select add_contract('"
             +contract.getBody()+"','"
             +Timestamp.valueOf(contract.getDate())+"')";
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveContractRequest(Contract contract) throws SQLException {
+    public HashMap<String, Boolean> saveContractRequest(Contract contract) throws SQLException {
         String request = "select update_contract("
             +contract.getId()+",'"
             +contract.getBody()+"','"
@@ -534,7 +534,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteContractRequest(Contract contract) throws SQLException {
+    public HashMap<String, Boolean> deleteContractRequest(Contract contract) throws SQLException {
         String request = "select del_contract("+contract.getId()+")";
         return boolResponse(request);
     }
@@ -571,7 +571,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addPositionRequest(Position position) throws SQLException {
+    public HashMap<String, Boolean> addPositionRequest(Position position) throws SQLException {
         String request = "select add_position("
             +position.getId_supply()+","
             +position.getId_spare_part()+","
@@ -580,7 +580,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> savePositionRequest(Position position) throws SQLException {
+    public HashMap<String, Boolean> savePositionRequest(Position position) throws SQLException {
         String request = "select update_position("
             +position.getId()+","
             +position.getId_supply()+","
@@ -590,7 +590,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deletePositionRequest(Position position) throws SQLException {
+    public HashMap<String, Boolean> deletePositionRequest(Position position) throws SQLException {
         String request = "select del_position("+position.getId()+")";
         return boolResponse(request);
     }
@@ -627,7 +627,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addListRequest(List list) throws SQLException {
+    public HashMap<String, Boolean> addListRequest(List list) throws SQLException {
         String request = "select add_list("
             +list.getId_request()+","
             +list.getId_position()+","
@@ -636,7 +636,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveListRequest(List list) throws SQLException {
+    public HashMap<String, Boolean> saveListRequest(List list) throws SQLException {
         String request = "select update_list("
             +list.getId()+","
             +list.getId_request()+","
@@ -646,7 +646,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteListRequest(List list) throws SQLException {
+    public HashMap<String, Boolean> deleteListRequest(List list) throws SQLException {
         String request = "select del_list("+list.getId()+")";
         return boolResponse(request);
     }
@@ -715,7 +715,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addRequestRequest(Request req) throws SQLException {
+    public HashMap<String, Boolean> addRequestRequest(Request req) throws SQLException {
         String request = "select add_request("
             +req.getId_user()+","
             +req.getId_customer()+",'"
@@ -724,7 +724,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveRequestRequest(Request req) throws SQLException {
+    public HashMap<String, Boolean> saveRequestRequest(Request req) throws SQLException {
         String request = "select update_request("
             +req.getId()+","
             +req.getId_user()+","
@@ -734,7 +734,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteRequestRequest(Request req) throws SQLException {
+    public HashMap<String, Boolean> deleteRequestRequest(Request req) throws SQLException {
         String request = "select del_request("+req.getId()+")";
         return boolResponse(request);
     }
@@ -800,7 +800,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addBuyRequest(Buy buy) throws SQLException {
+    public HashMap<String, Boolean> addBuyRequest(Buy buy) throws SQLException {
         String request = "select add_buy("
             +buy.getId_request()+","
             +buy.isCompleted()+",'"
@@ -808,7 +808,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveBuyRequest(Buy buy) throws SQLException {
+    public HashMap<String, Boolean> saveBuyRequest(Buy buy) throws SQLException {
         String request = "select update_buy("
             +buy.getId()+","
             +buy.getId_request()+","
@@ -817,7 +817,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteBuyRequest(Buy buy) throws SQLException {
+    public HashMap<String, Boolean> deleteBuyRequest(Buy buy) throws SQLException {
         String request = "select del_buy("+buy.getId()+")";
         return boolResponse(request);
     }
@@ -855,7 +855,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addDefectRequest(Defect defect) throws SQLException {
+    public HashMap<String, Boolean> addDefectRequest(Defect defect) throws SQLException {
         String request = "select add_defect("
             +defect.getId_buy()+","
             +defect.getId_list()+",'"
@@ -864,7 +864,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveDefectRequest(Defect defect) throws SQLException {
+    public HashMap<String, Boolean> saveDefectRequest(Defect defect) throws SQLException {
         String request = "select update_defect("
             +defect.getId()+","
             +defect.getId_buy()+","
@@ -874,7 +874,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteDefectRequest(Defect defect) throws SQLException {
+    public HashMap<String, Boolean> deleteDefectRequest(Defect defect) throws SQLException {
         String request = "select del_defect("+defect.getId()+")";
         return boolResponse(request);
     }
@@ -943,7 +943,7 @@ public class DataBaseService {
         return arrayList;
     }
 
-    public HashMap<String, String> addCustomerRequest(Customer customer) throws SQLException {
+    public HashMap<String, Boolean> addCustomerRequest(Customer customer) throws SQLException {
         String request = "select add_customer('"
             +customer.getSurname()+"','"
             +customer.getName()+"','"
@@ -953,7 +953,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> saveCustomerRequest(Customer customer) throws SQLException {
+    public HashMap<String, Boolean> saveCustomerRequest(Customer customer) throws SQLException {
         String request = "select update_customer("
             +customer.getId()+",'"
             +customer.getSurname()+"','"
@@ -964,7 +964,7 @@ public class DataBaseService {
         return boolResponse(request);
     }
 
-    public HashMap<String, String> deleteCustomerRequest(Customer customer) throws SQLException {
+    public HashMap<String, Boolean> deleteCustomerRequest(Customer customer) throws SQLException {
         String request = "select del_customer("+customer.getId()+")";
         return boolResponse(request);
     }

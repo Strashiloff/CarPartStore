@@ -209,7 +209,7 @@ export default {
   methods: {
     ...mapActions('position', ['setEditItem']),
     ...mapActions('contract', ['addContractAction', 'saveContractAction']),
-    ...mapActions('position', ['addPositionAction', 'savePositionAction', 'deletePositionMutation']),
+    ...mapActions('position', ['addPositionAction', 'savePositionAction', 'deletePositionAction']),
     view (value, name, index) {
       if (name == 'id_spare_part') return (this.getSparePartById(value) && this.getSparePartById(value).name || null)
       return value
@@ -245,7 +245,7 @@ export default {
     deleteItem (ok) {
       this.dialogDel = false
       if (ok) {
-        this.deletePositionMutation(this.item)
+        this.deletePositionAction(this.item)
       }
     },
     save () {

@@ -11,27 +11,35 @@ export const moduleRequest = {
 		async getRequestsAction({commit, rootGetters}) {
 			const result = await requestApi.allRequests()
 			const data = await result.json()
-			commit('getRequestsMutation', {
-				requests: data,
-				rootGetters: rootGetters
-			})
+			commit('getRequestsMutation', { requests: data })
 		},
-		async addRequestAction({commit}, request) {
+		async addRequestAction({ commit, dispatch }, request) {
 			const result = await requestApi.addRequest(request)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addRequestMutation', request)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось создать заявку'
+      }, { root: true })
 		},
-		async saveRequestAction({commit}, request) {
+		async saveRequestAction({ commit, dispatch }, request) {
 			const result = await requestApi.saveRequest(request)
 			const data = await result.json()
-			if (data.ok) commit('saveRequestMutation', request)
+			if (data.okey) commit('saveRequestMutation', request)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось изменить заявку'
+      }, { root: true })
 		},
-		async removeRequestAction({commit}, request) {
+		async removeRequestAction({ commit, dispatch }, request) {
 			const result = await requestApi.removeRequest(request)
 			const data = await result.json()
-			if (data.ok) commit('removeRequestMutation', request)
+			if (data.okey) commit('removeRequestMutation', request)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось удалить заявку, возможно на неё уже оформлена покупка'
+      }, { root: true })
 		}
 	},
 	mutations: {

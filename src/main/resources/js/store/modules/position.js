@@ -11,33 +11,42 @@ export const modulePositions = {
     edit: {}
 	},
 	actions: {
-		async setAllPositionsAction ({ commit }) {
+		async setAllPositionsAction ({ commit, dispatch }) {
       let result = await positionsApi.allPositions()
       let data = await result.json()
       commit('setAllPositionsMutation', data)
     },
-    async addPositionAction ({ commit }, position) {
-      let result = await positionsApi.addPosition(position)
-      let data = await result.json()
-      if (data.ok) {
+    async addPositionAction ({ commit, dispatch }, position) {
+      const result = await positionsApi.addPosition(position)
+      const data = await result.json()
+      if (data.okey) {
         commit('addPositionMutation', position)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось добавление позиции, возможно запчасть уже есть в поставки'
+      }, { root: true })
     },
-    async savePositionAction ({ commit }, position) {
-      let result = await positionsApi.savePosition(position)
-      let data = await result.json()
-      if (data.ok) {
+    async savePositionAction ({ commit, dispatch }, position) {
+      const result = await positionsApi.savePosition(position)
+      const data = await result.json()
+      if (data.okey) {
         commit('savePositionMutation', position)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось изменить позицию'
+      }, { root: true })
     },
-    async deletePositionAction ({ commit }, position) {
-      let result = await positionsApi.delPosition(position)
-      let data = await result.json()
-      if (data.ok) {
+    async deletePositionAction ({ commit, dispatch }, position) {
+      const result = await positionsApi.removePosition(position)
+      const data = await result.json()
+      if (data.okey) {
         commit('deletePositionMutation', position)
-      }
+      } else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Не удалось удалить позицию, возможно она содержится в заявках'
+      }, { root: true })
     },
-    setEditItem ({ commit }, position) {
+    setEditItem ({ commit, dispatch }, position) {
       commit('setEditPositionMutation', position)
     }
 	},
@@ -73,7 +82,7 @@ export const modulePositions = {
     deletePositionMutation (state, data) {
       let index = getIndex(state.positions, data.id)
       state.positions.splice(index, 1)
-      index = getIndex(state.sectionList[data.id_supply], data.id)
+      index = getIndex(state.positionsCollection[data.id_supply], data.id)
       state.positionsCollection[data.id_supply].splice(index, 1)
     },
     setEditPositionMutation (state, data) {

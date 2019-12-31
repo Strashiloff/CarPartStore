@@ -20,11 +20,11 @@ public class SupplyController {
   public ArrayList<Supply> getAllSupply() throws SQLException { return dataBaseService.getAllSupplyRequest(); }
 
   @PostMapping
-  public HashMap<String, String> addSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.addSupplyRequest(supply); }
+  public HashMap<String, Boolean> addSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.addSupplyRequest(supply); }
 
   @PutMapping
-  public HashMap<String, String> saveSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.saveSupplyRequest(supply); }
+  public HashMap<String, Boolean> saveSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.saveSupplyRequest(supply); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.deleteSupplyRequest(supply); }
+  public HashMap<String, Boolean> deleteSupply(@RequestBody Supply supply) throws SQLException { return dataBaseService.deleteSupplyRequest(supply); }
 }

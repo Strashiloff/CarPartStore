@@ -65,10 +65,10 @@ export default {
   methods: {
     add () {
       this.$emit('submit', {
-        id_supply: this.item.id,
+        id_supply: this.item != null ? this.item.id : this.id_supply,
         id_spare_part: this.id_spare_part,
-        amount: this.amount,
-        price: this.price,
+        amount: parseInt(this.amount, 10),
+        price: parseFloat(this.price),
         id: this.id
       })
       this.id = -1

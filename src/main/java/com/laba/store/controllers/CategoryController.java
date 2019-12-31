@@ -20,11 +20,11 @@ public class CategoryController {
   public ArrayList<Category> getAll() throws SQLException { return dataBaseService.getAllCategories(); }
 
   @PostMapping
-  public HashMap<String, String> addCategory(@RequestBody Category category) throws SQLException { return dataBaseService.addCategoryRequest(category); }
+  public HashMap<String, Boolean> addCategory(@RequestBody Category category) throws SQLException { return dataBaseService.addCategoryRequest(category); }
 
   @PutMapping
-  public HashMap<String, String> saveCategory(@RequestBody Category category) throws SQLException { return dataBaseService.saveCategoryRequest(category); }
+  public HashMap<String, Boolean> saveCategory(@RequestBody Category category) throws SQLException { return dataBaseService.saveCategoryRequest(category); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteCategory(@RequestBody Category category) throws SQLException { return dataBaseService.deleteCategoryRequest(category); }
+  public HashMap<String, Boolean> deleteCategory(@RequestBody Category category) throws SQLException { return dataBaseService.deleteCategoryRequest(category); }
 }

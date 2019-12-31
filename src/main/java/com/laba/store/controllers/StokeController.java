@@ -20,11 +20,11 @@ public class StokeController {
     public ArrayList<Stoke> getAllStock() throws SQLException { return dataBaseService.getAllStock(); }
 
     @PostMapping
-    public HashMap<String, String> addStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.addStokeRequest(stoke); }
+    public HashMap<String, Boolean> addStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.addStokeRequest(stoke); }
 
     @PutMapping
-    public HashMap<String, String> saveStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.saveStokeRequest(stoke); }
+    public HashMap<String, Boolean> saveStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.saveStokeRequest(stoke); }
 
     @PostMapping("delete")
-    public HashMap<String, String> deleteStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.deleteStokeRequest(stoke); }
+    public HashMap<String, Boolean> deleteStoke(@RequestBody Stoke stoke) throws SQLException { return dataBaseService.deleteStokeRequest(stoke); }
 }

@@ -20,11 +20,11 @@ public class PurveyorController {
   public ArrayList<Purveyor> getAll() throws SQLException { return dataBaseService.getAllPurveyorRequest(); }
 
   @PostMapping
-  public HashMap<String, String> addPurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.addPurveyorRequest(purveyor); }
+  public HashMap<String, Boolean> addPurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.addPurveyorRequest(purveyor); }
 
   @PutMapping
-  public HashMap<String, String> savePurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.savePurveyorRequest(purveyor); }
+  public HashMap<String, Boolean> savePurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.savePurveyorRequest(purveyor); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deletePurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.deletePurveyorRequest(purveyor); }
+  public HashMap<String, Boolean> deletePurveyor(@RequestBody Purveyor purveyor) throws SQLException { return dataBaseService.deletePurveyorRequest(purveyor); }
 }

@@ -7,27 +7,38 @@ export const moduleCustomer = {
 		customers: [],
 	},
 	actions: {
-		async getCustomersAction({commit}) {
+		async getCustomersAction({ commit, dispatch }) {
 			const result = await customerApi.allCustomers()
 			const data = await result.json()
 			commit('getCustomersMutation', data)
 		},
-		async addCustomerAction({commit}, customer) {
+		async addCustomerAction({ commit, dispatch }, customer) {
 			const result = await customerApi.addCustomer(customer)
 			const data = await result.json()
-			if (data.ok) {
+			if (data.okey) {
 				commit('addCustomerMutation', customer)
-			}
+			} else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка добавления покупателя, возможно такой уже существует'
+      }, { root: true })
 		},
-		async saveCustomerAction({commit}, customer) {
+		async saveCustomerAction({ commit, dispatch }, customer) {
 			const result = await customerApi.saveCustomer(customer)
 			const data = await result.json()
-			if (data.ok) commit('saveCustomerMutation', customer)
+			if (data.okey) commit('saveCustomerMutation', customer)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка сохранения покупателя'
+      }, { root: true })
 		},
-		async removeCustomerAction({commit}, customer) {
+		async removeCustomerAction({ commit, dispatch }, customer) {
 			const result = await customerApi.removeCustomer(customer)
 			const data = await result.json()
-			if (data.ok) commit('removeCustomerMutation', customer)
+			if (data.okey) commit('removeCustomerMutation', customer)
+			else dispatch('app/setSnackbar', {
+        snackbar: true,
+        text: 'Ошибка удаления покупателя'
+      }, { root: true })
 		}
 	},
 	mutations: {

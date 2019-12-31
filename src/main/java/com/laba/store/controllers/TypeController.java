@@ -20,11 +20,11 @@ public class TypeController {
   public ArrayList<Type> getAll() throws SQLException { return dataBaseService.getAllTypes(); }
 
   @PostMapping
-  public HashMap<String, String> addType(@RequestBody Type type) throws SQLException { return dataBaseService.addTypeRequest(type); }
+  public HashMap<String, Boolean> addType(@RequestBody Type type) throws SQLException { return dataBaseService.addTypeRequest(type); }
 
   @PutMapping
-  public HashMap<String, String> saveType(@RequestBody Type type) throws SQLException { return dataBaseService.saveTypeRequest(type); }
+  public HashMap<String, Boolean> saveType(@RequestBody Type type) throws SQLException { return dataBaseService.saveTypeRequest(type); }
 
   @PostMapping("delete")
-  public HashMap<String, String> deleteType(@RequestBody Type type) throws SQLException { return dataBaseService.deleteTypeRequest(type); }
+  public HashMap<String, Boolean> deleteType(@RequestBody Type type) throws SQLException { return dataBaseService.deleteTypeRequest(type); }
 }
