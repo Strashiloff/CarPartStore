@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "vee-validate": "^2.2.10",
     "vue": "^2.6.10",
     "vue-color": "^2.7.0",
